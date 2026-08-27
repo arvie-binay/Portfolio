@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+<a href="#" class="logo">
+          <img src="image/Logo.png" alt="King's BizOps Solutions Logo" class="logo-image">King's BizOps Solutions
+        </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#" class="auth-button" id="viewSamplesBtn">View Sample Websites</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Transform Your Business</h1>
+        <p class="hero-subtitle">We deliver innovative solutions that drive growth and success for your company</p>
+        <a href="#services" class="hero-button">Explore Our Services</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <div class="container">
+      <h2 class="section-title">Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+              <polyline points="2 17 12 22 22 17"/>
+              <polyline points="2 12 12 17 22 12"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Strategy</h3>
+          <p class="service-description">Comprehensive business strategy and planning to achieve your goals</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="9" y1="9" x2="15" y2="9"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Development</h3>
+          <p class="service-description">Custom software development tailored to your unique requirements</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Design</h3>
+          <p class="service-description">Beautiful and intuitive user interfaces that enhance user experience</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Consulting</h3>
+          <p class="service-description">Expert advice to guide your business decisions and operations</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            </svg>
+          </div>
+          <h3 class="service-title">Hosting Retainer</h3>
+          <p class="service-description">Reliable hosting with ongoing support, updates, and maintenance to keep your site secure and performant</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <h2 class="section-title">KING ARVIE D. BINAY</h2>
+          <p class="about-role">WEB DEVELOPER</p>
+          <p class="about-description">Bachelor of Science in Information System graduate with skills in web development, problem-solving, system design, and building clean, functional digital solutions.</p>
+        </div>
+        <div class="about-image">
+          <img src="image/Profile.jpg" alt="About Us">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="container">
+        <div class="contact-content">
+            <h2 class="contact-title">Ready to Get Started?</h2>
+            <p class="contact-subtitle">Contact us today to discuss your project</p>
+
+            <!-- Contact Button -->
+            <button type="button" class="contact-button" onclick="openContactModal()">
+                Contact Us
+            </button>
+        </div>
+    </div>
+</section>
+<div id="contactModal" class="contact-modal">
+    <div class="contact-modal-content">
+
+        <!-- Close Button -->
+        <button type="button" class="contact-modal-close" onclick="closeContactModal()">
+            &times;
+        </button>
+
+        <h3>Contact Us</h3>
+        <p>Choose how you would like to contact us.</p>
+
+        <div class="contact-options">
+
+            <!-- Facebook -->
+            <a href="https://web.facebook.com/binay.king.355"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="contact-option facebook-option">
+                <span class="contact-icon">f</span>
+                <span>
+                    <strong>Facebook</strong>
+                    <small>Message us on Facebook</small>
+                </span>
+            </a>
+
+            <!-- Gmail -->
+           <!-- Gmail -->
+<a href="https://mail.google.com/mail/?view=cm&fs=1&to=kingbinay22@gmail.com&su=Project%20Inquiry&body=Hello%20King%20Binay%2C%0A%0AI%20would%20like%20to%20discuss%20a%20project%20with%20you."
+   target="_blank"
+   rel="noopener noreferrer"
+   class="contact-option gmail-option">
+
+    <span class="contact-icon">@</span>
+
+    <span>
+        <strong>Gmail</strong>
+        <small>Compose an email</small>
+    </span>
+
+</a>
+
+        </div>
+    </div>
+</div>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-info">
+<h3 class="footer-logo">King Arvie D. Binay</h3>
+          <p class="footer-text">Your reliable, committed and trustworthy programmer.</p>
+        </div>
+        <div class="footer-links">
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+<p>&copy; 2026 King's Website Portfolio. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="samples-modal-overlay" id="samplesModalOverlay">
+    <div class="samples-modal">
+      <button class="samples-modal-close" id="samplesModalClose" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <h2 class="samples-modal-title">Choose a Sample Website</h2>
+      <p class="samples-modal-subtitle">Select the sample that best matches your project needs</p>
+      <div class="samples-modal-grid">
+        <button class="samples-modal-card" type="button" id="starterPresenceCard">
+          <div class="samples-modal-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="9" y1="21" x2="9" y2="9"/>
+            </svg>
+          </div>
+          <h3 class="samples-modal-card-title">STARTER WEB PRESENCE</h3>
+          <p class="samples-modal-card-ideal">Ideal for: Local Cafes, Clinics, Small Retail</p>
+          <div class="samples-modal-card-section">
+            <p class="samples-modal-card-label">Features</p>
+            <ul class="samples-modal-card-list">
+              <li>3–5 Mobile-Responsive Pages</li>
+              <li>Google Maps &amp; Local SEO Setup</li>
+              <li>Click-to-Call / Messenger Integration</li>
+            </ul>
+          </div>
+          <div class="samples-modal-card-meta">
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Delivery</p>
+              <p class="samples-modal-meta-value">14 Days (2 Weeks)</p>
+            </div>
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Price</p>
+              <p class="samples-modal-meta-value samples-modal-price">Starts at ₱5,000</p>
+            </div>
+          </div>
+        </button>
+        <button class="samples-modal-card" type="button" id="customManagementCard">
+          <div class="samples-modal-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18"/>
+              <path d="M7 14l4-4 4 4 5-5"/>
+              <rect x="18" y="3" width="3" height="3"/>
+              <rect x="14" y="6" width="3" height="3"/>
+            </svg>
+          </div>
+          <h3 class="samples-modal-card-title">CUSTOM MANAGEMENT SYSTEM</h3>
+          <p class="samples-modal-card-ideal">Ideal for: Wholesale Traders, Lenders, Resorts, Local Operations</p>
+          <div class="samples-modal-card-section">
+            <p class="samples-modal-card-label">Features</p>
+            <ul class="samples-modal-card-list">
+              <li>Custom Admin Dashboard (AdminLTE / PHP &amp; MySQL)</li>
+              <li>Inventory, Booking, or Member Records Tracking</li>
+              <li>Role-Based Access Controls &amp; Data Reports</li>
+            </ul>
+          </div>
+          <div class="samples-modal-card-meta">
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Delivery</p>
+              <p class="samples-modal-meta-value">1–2 Months (4–8 Weeks)</p>
+            </div>
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Price</p>
+              <p class="samples-modal-meta-value samples-modal-price">Starts at ₱15,000</p>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="samples-modal-overlay starter-sub-overlay" id="starterSubModalOverlay">
+    <div class="samples-modal starter-sub-modal">
+      <button class="samples-modal-close" id="starterSubModalClose" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <button class="starter-back-btn" id="starterBackBtn" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back
+      </button>
+      <h2 class="samples-modal-title">Starter Web Presence</h2>
+      <p class="samples-modal-subtitle">Choose a sample template to preview the design and layout</p>
+      <div class="samples-modal-grid starter-sub-grid">
+        <a class="samples-modal-card starter-sub-card" href="starter-web-presence/local-cafes/homepage.html" target="_blank" rel="noopener noreferrer">
+          <div class="samples-modal-card-icon starter-icon-cafe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/>
+              <line x1="6" y1="2" x2="6" y2="4"/>
+              <line x1="10" y1="2" x2="10" y2="4"/>
+              <line x1="14" y1="2" x2="14" y2="4"/>
+            </svg>
+          </div>
+          <h3 class="samples-modal-card-title">LOCAL CAFES</h3>
+          <p class="samples-modal-card-ideal">Coffee shops, bakeries, and neighborhood eateries</p>
+          <div class="samples-modal-card-section">
+            <p class="samples-modal-card-label">Sections</p>
+            <ul class="samples-modal-card-list">
+              <li>Hero with signature drink &amp; call-to-action</li>
+              <li>Menu showcase with pricing cards</li>
+              <li>About, features, map, and contact details</li>
+            </ul>
+          </div>
+          <div class="samples-modal-card-meta">
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Live Preview</p>
+              <p class="samples-modal-meta-value samples-modal-price">Open Homepage</p>
+            </div>
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Admin Demo</p>
+              <p class="samples-modal-meta-value samples-modal-price">Includes Dashboard</p>
+            </div>
+          </div>
+          <div class="starter-card-badge">Available</div>
+        </a>
+
+        <button class="samples-modal-card starter-sub-card starter-sub-disabled" type="button" disabled>
+          <div class="samples-modal-card-icon starter-icon-clinic">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3 7h7l-5.5 4.5L18 22l-6-4-6 4 1.5-8.5L2 9h7z"/>
+            </svg>
+          </div>
+          <h3 class="samples-modal-card-title">CLINIC</h3>
+          <p class="samples-modal-card-ideal">Dental, medical clinics, and outpatient centers</p>
+          <div class="samples-modal-card-section">
+            <p class="samples-modal-card-label">Sections</p>
+            <ul class="samples-modal-card-list">
+              <li>Doctor profiles &amp; specialties</li>
+              <li>Services &amp; appointment info</li>
+              <li>Clinic hours, location &amp; map</li>
+            </ul>
+          </div>
+          <div class="samples-modal-card-meta">
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Live Preview</p>
+              <p class="samples-modal-meta-value">Coming Soon</p>
+            </div>
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Admin Demo</p>
+              <p class="samples-modal-meta-value">Planned</p>
+            </div>
+          </div>
+          <div class="starter-card-badge starter-badge-soon">Coming Soon</div>
+        </button>
+
+        <button class="samples-modal-card starter-sub-card starter-sub-disabled" type="button" disabled>
+          <div class="samples-modal-card-icon starter-icon-retail">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+          </div>
+          <h3 class="samples-modal-card-title">SMALL RETAIL</h3>
+          <p class="samples-modal-card-ideal">Sari-sari stores, boutiques, and specialty shops</p>
+          <div class="samples-modal-card-section">
+            <p class="samples-modal-card-label">Sections</p>
+            <ul class="samples-modal-card-list">
+              <li>Featured products &amp; catalog grid</li>
+              <li>Pricing / promos and announcements</li>
+              <li>Store information, hours and map</li>
+            </ul>
+          </div>
+          <div class="samples-modal-card-meta">
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Live Preview</p>
+              <p class="samples-modal-meta-value">Coming Soon</p>
+            </div>
+            <div class="samples-modal-meta-item">
+              <p class="samples-modal-meta-label">Admin Demo</p>
+              <p class="samples-modal-meta-value">Planned</p>
+            </div>
+          </div>
+          <div class="starter-card-badge starter-badge-soon">Coming Soon</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,2982 @@
+<?php ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Orders — CaféHub Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f4f1;
+            color: #292421;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+         .sidebar {
+    width: 250px;
+    background: #2c211c;
+    color: white;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    padding: 20px 15px;
+
+    z-index: 1000;
+
+    transition:
+        width 0.3s ease,
+        transform 0.3s ease;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #5a453d transparent;
+}
+/* =========================
+   COLLAPSED SIDEBAR
+========================= */
+
+.sidebar.collapsed {
+    width: 75px;
+}
+/* Custom Scrollbar for Chrome, Edge, Safari */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #5a453d; /* Matches your warm brown theme */
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #7c5f54; /* Highlight color on hover */
+}
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: #c48a5a;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .logo h2 {
+            font-size: 20px;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 11px;
+            color: #cdbeb5;
+            margin-top: 2px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #9d8d83;
+            margin: 25px 12px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: #d8ccc5;
+            text-decoration: none;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px;
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #4a362c;
+            color: white;
+        }
+
+        .sidebar-menu .icon {
+            width: 25px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+         .main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
+}
+
+/* Main content when sidebar is collapsed */
+.main.sidebar-collapsed {
+    margin-left: 75px;
+    width: calc(100% - 75px);
+}
+/* =========================================================
+   COLLAPSED SIDEBAR CONTENT
+========================================================= */
+
+/* Hide logo text */
+.sidebar.collapsed .logo h2,
+.sidebar.collapsed .logo span {
+    display: none;
+}
+
+/* Center logo */
+.sidebar.collapsed .logo {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Remove unnecessary gap */
+.sidebar.collapsed .logo {
+    gap: 0;
+}
+
+/* Center menu icons */
+.sidebar.collapsed .sidebar-menu a {
+    justify-content: center;
+    gap: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Hide menu text */
+.sidebar.collapsed .sidebar-menu a span:not(.icon) {
+    display: none;
+}
+
+/* Hide section titles */
+.sidebar.collapsed .menu-title {
+    display: none;
+}
+
+/* Center icons */
+.sidebar.collapsed .sidebar-menu .icon {
+    width: auto;
+    font-size: 18px;
+}
+
+/* Keep menu items properly sized */
+.sidebar.collapsed .sidebar-menu a {
+    width: 100%;
+}
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e9e3df;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .page-title h1 {
+            font-size: 22px;
+        }
+
+        .page-title p {
+            color: #8b817b;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -7px;
+
+            width: 17px;
+            height: 17px;
+
+            background: #d9534f;
+            color: white;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 10px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #c48a5a;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info small {
+            color: #8b817b;
+            font-size: 11px;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+
+            border: 1px solid #eee7e2;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .stat-card h4 {
+            color: #8b817b;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .stat-card h2 {
+            margin-top: 8px;
+            font-size: 25px;
+        }
+
+        .stat-change {
+            margin-top: 7px;
+            font-size: 11px;
+        }
+
+        .positive {
+            color: #3c8c58;
+        }
+
+        .negative {
+            color: #c94c4c;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .brown {
+            background: #f4e9df;
+        }
+
+        .green {
+            background: #e5f2e8;
+        }
+
+        .orange {
+            background: #fff0dc;
+        }
+
+        .blue {
+            background: #e7eef8;
+        }
+
+        /* =========================
+           GRID
+        ========================= */
+
+        .card {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+        }
+
+        .card-header a {
+            color: #a66b3f;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        /* =========================
+           FILTER / SEARCH
+        ========================= */
+
+        .filter-card {
+            margin-bottom: 25px;
+        }
+
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            color: #6b605a;
+            font-weight: 500;
+        }
+
+        .filter-group input[type="date"],
+        .filter-group select {
+            padding: 9px 12px;
+            border: 1px solid #ddd5ce;
+            border-radius: 8px;
+            background: white;
+            font-size: 13px;
+            color: #292421;
+            min-width: 160px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .filter-group input[type="date"]:focus,
+        .filter-group select:focus {
+            border-color: #c48a5a;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #a66b3f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #8c5731;
+        }
+
+        .btn-secondary {
+            background: #f4e9df;
+            color: #7a543a;
+        }
+
+        .btn-secondary:hover {
+            background: #ead6c4;
+        }
+
+        /* =========================
+           ORDERS TABLE
+        ========================= */
+
+        .table-card {
+            margin-bottom: 25px;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            text-align: left;
+            font-size: 11px;
+            color: #8b817b;
+
+            padding: 12px;
+
+            background: #faf8f6;
+        }
+
+        .orders-table td {
+            padding: 14px 12px;
+
+            border-bottom: 1px solid #f0ebe7;
+
+            font-size: 13px;
+        }
+
+        .orders-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .completed {
+            background: #e4f3e8;
+            color: #398052;
+        }
+
+        .pending {
+            background: #fff1d9;
+            color: #a86b16;
+        }
+
+        .preparing {
+            background: #e8eef8;
+            color: #466a9f;
+        }
+
+        .cancelled {
+            background: #f5e0e0;
+            color: #b04040;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-link {
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .view-link {
+            background: #e7eef8;
+            color: #466a9f;
+        }
+
+        .view-link:hover {
+            background: #d5e1f1;
+        }
+
+        .edit-link {
+            background: #f4e9df;
+            color: #a66b3f;
+        }
+
+        .edit-link:hover {
+            background: #ead6c4;
+        }
+
+        /* =========================
+   MENU TOGGLE
+========================= */
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 23px;
+    cursor: pointer;
+
+    color: #292421;
+}
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+           
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .orders-table {
+                min-width: 900px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group input[type="date"],
+            .filter-group select {
+                width: 100%;
+                min-width: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .topbar {
+                height: 65px;
+            }
+
+            .page-title p {
+                display: none;
+            }
+        }
+        /* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+.user-dropdown {
+    position: relative;
+}
+
+
+/* Profile button */
+
+.user-profile-btn {
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    padding: 5px 8px;
+
+    border-radius: 10px;
+
+    transition: 0.2s;
+}
+
+.user-profile-btn:hover {
+    background: #f6f1ed;
+}
+
+
+/* Arrow */
+
+.dropdown-arrow {
+    color: #8b817b;
+
+    font-size: 14px;
+
+    margin-left: 3px;
+
+    transition: 0.2s;
+}
+
+
+/* Dropdown */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 270px;
+
+    background: white;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 10px 30px rgba(44, 33, 28, 0.12);
+
+    padding: 10px;
+
+    z-index: 2000;
+
+    /* Hidden by default */
+    display: none;
+
+    animation: dropdownAnimation 0.18s ease;
+}
+
+
+/* Show dropdown */
+
+.profile-dropdown.show {
+    display: block;
+}
+
+
+/* Dropdown animation */
+
+@keyframes dropdownAnimation {
+
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Dropdown header */
+
+.dropdown-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px;
+}
+
+
+/* Large dropdown avatar */
+
+.dropdown-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #c48a5a;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 13px;
+
+    color: #332b27;
+}
+
+
+.dropdown-header small {
+    display: block;
+
+    color: #8b817b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+
+/* Divider */
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #eee7e2;
+
+    margin: 7px 0;
+}
+
+
+/* Dropdown item */
+
+.dropdown-item {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: #403631;
+
+    background: transparent;
+
+    border: none;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.dropdown-item:hover {
+    background: #f8f2ed;
+}
+
+
+/* Icon */
+
+.dropdown-item > span {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 8px;
+
+    background: #f4e9df;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+
+/* Text */
+
+.dropdown-item strong {
+    display: block;
+
+    font-size: 12px;
+
+    color: #403631;
+}
+
+
+.dropdown-item small {
+    display: block;
+
+    color: #91857d;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* Logout */
+
+.logout-item:hover {
+    background: #fff1ef;
+}
+
+
+.logout-item:hover > span {
+    background: #f9dddd;
+}
+
+
+.logout-item:hover strong {
+    color: #c94c4c;
+}
+
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .profile-dropdown {
+        width: 250px;
+
+        right: -5px;
+    }
+
+    .dropdown-arrow {
+        display: none;
+    }
+
+}
+/* =========================================================
+   LOGOUT CONFIRMATION MODAL
+========================================================= */
+
+.logout-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5000;
+
+    padding: 20px;
+}
+
+
+/* Show modal */
+
+.logout-modal-overlay.show {
+    display: flex;
+}
+
+
+/* Modal */
+
+.logout-modal {
+
+    width: 100%;
+    max-width: 400px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.2);
+
+    animation: logoutModalAnimation 0.2s ease;
+}
+
+
+/* Animation */
+
+@keyframes logoutModalAnimation {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+/* Logout icon */
+
+.logout-modal-icon {
+
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    background: #fff0ed;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+/* Title */
+
+.logout-modal h2 {
+
+    font-size: 20px;
+
+    color: #332b27;
+
+    margin-bottom: 8px;
+}
+
+
+/* Message */
+
+.logout-modal p {
+
+    color: #8b817b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+}
+
+
+/* Buttons */
+
+.logout-modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* Cancel */
+
+.logout-cancel {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-cancel:hover {
+
+    background: #f7f3f0;
+}
+
+
+/* Confirm */
+
+.logout-confirm {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: none;
+
+    background: #c94c4c;
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-confirm:hover {
+
+    background: #b63d3d;
+
+}
+/* =========================================================
+   NEW ORDER MODAL
+========================================================= */
+
+.new-order-overlay {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(41, 36, 33, 0.55);
+
+    z-index: 9999;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.new-order-overlay.show {
+
+    display: flex;
+
+}
+
+
+/* =========================================================
+   MODAL CONTAINER
+========================================================= */
+
+.new-order-modal {
+
+    width: 100%;
+
+    max-width: 850px;
+
+    max-height: 90vh;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 50px rgba(41, 36, 33, 0.20);
+
+    animation: newOrderModalShow 0.2s ease;
+
+}
+
+
+@keyframes newOrderModalShow {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-10px) scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.new-order-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #eee7e2;
+
+}
+
+
+.new-order-header h2 {
+
+    font-size: 20px;
+
+    color: #292421;
+
+}
+
+
+.new-order-header p {
+
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #8b817b;
+
+}
+
+
+.new-order-close {
+
+    width: 35px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f6f1ed;
+
+    color: #665c56;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition: 0.2s;
+
+}
+
+
+.new-order-close:hover {
+
+    background: #eadfd7;
+
+}
+
+
+/* =========================================================
+   FORM BODY
+========================================================= */
+
+.new-order-body {
+
+    padding: 25px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    max-height: 60vh;
+
+    overflow-y: auto;
+
+}
+
+
+/* =========================================================
+   FORM FIELDS
+========================================================= */
+
+.new-order-field {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.new-order-field.full-width {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.new-order-field label {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+    margin-bottom: 7px;
+
+}
+
+
+.new-order-field label span {
+
+    color: #c05a45;
+
+}
+
+
+.new-order-field input,
+.new-order-field select,
+.new-order-field textarea {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: white;
+
+    color: #292421;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+
+}
+
+
+.new-order-field textarea {
+
+    resize: vertical;
+
+    min-height: 80px;
+
+}
+
+
+.new-order-field input:focus,
+.new-order-field select:focus,
+.new-order-field textarea:focus {
+
+    border-color: #c48a5a;
+
+    box-shadow:
+        0 0 0 3px rgba(196, 138, 90, 0.10);
+
+}
+
+
+/* =========================================================
+   PRICE INPUT
+========================================================= */
+
+.order-price-input {
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    background: #faf7f4;
+
+}
+
+
+.order-price-input span {
+
+    padding-left: 12px;
+
+    font-size: 13px;
+
+    color: #8b817b;
+
+    font-weight: 600;
+
+}
+
+
+.order-price-input input {
+
+    border: none;
+
+    border-radius: 0;
+
+    background: #faf7f4;
+
+}
+
+
+.order-price-input input:focus {
+
+    box-shadow: none;
+
+}
+
+
+/* =========================================================
+   ORDER STATUS
+========================================================= */
+
+.new-order-status {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 12px 14px;
+
+    background: #faf7f4;
+
+    border-radius: 10px;
+
+}
+
+
+.new-order-status span {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+}
+
+
+.new-order-status strong {
+
+    font-size: 12px;
+
+    color: #c48a5a;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.new-order-footer {
+
+    padding: 18px 25px;
+
+    border-top: 1px solid #eee7e2;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+}
+
+
+.new-order-cancel,
+.new-order-save {
+
+    padding: 11px 20px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.new-order-cancel {
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+}
+
+
+.new-order-cancel:hover {
+
+    background: #faf7f4;
+
+}
+
+
+.new-order-save {
+
+    border: none;
+
+    background: #c48a5a;
+
+    color: white;
+
+}
+
+
+.new-order-save:hover {
+
+    background: #a66b3f;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .new-order-modal {
+
+        max-height: 95vh;
+
+    }
+
+
+    .new-order-body {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .new-order-field.full-width {
+
+        grid-column: auto;
+
+    }
+
+
+    .new-order-header {
+
+        padding: 18px;
+
+    }
+
+
+    .new-order-body {
+
+        padding: 18px;
+
+    }
+
+
+    .new-order-footer {
+
+        padding: 15px 18px;
+
+    }
+
+}
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- =================================
+         SIDEBAR
+    ================================== -->
+
+   <aside class="sidebar" id="sidebar">
+
+    <!-- =========================
+         SIDEBAR LOGO
+    ========================== -->
+    <div class="logo">
+
+        <div class="logo-icon">
+            ☕
+        </div>
+
+        <div class="logo-text">
+            <h2>CaféHub</h2>
+            <span>Management System</span>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN MENU
+    ========================== -->
+
+    <div class="menu-title">
+        Main
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="dashboard.php">
+                <span class="icon">📊</span>
+                <span class="menu-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="orders.php" class="active">
+                <span class="icon">🛒</span>
+                <span class="menu-text">Orders</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="menu.php">
+                <span class="icon">🍔</span>
+                <span class="menu-text">Menu</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="tables.php">
+                <span class="icon">🪑</span>
+                <span class="menu-text">Tables</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="reservations.php">
+                <span class="icon">📅</span>
+                <span class="menu-text">Reservations</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         MANAGEMENT
+    ========================== -->
+
+    <div class="menu-title">
+        Management
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="inventory.php">
+                <span class="icon">📦</span>
+                <span class="menu-text">Inventory</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="customers.php">
+                <span class="icon">👥</span>
+                <span class="menu-text">Customers</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="staff.php">
+                <span class="icon">👨‍💼</span>
+                <span class="menu-text">Staff</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="payments.php">
+                <span class="icon">💳</span>
+                <span class="menu-text">Payments</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         REPORTS
+    ========================== -->
+
+    <div class="menu-title">
+        Reports
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="sales-reports.php">
+                <span class="icon">📈</span>
+                <span class="menu-text">Sales Reports</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="analytics.php">
+                <span class="icon">📊</span>
+                <span class="menu-text">Analytics</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="settings.php">
+                <span class="icon">⚙️</span>
+                <span class="menu-text">Settings</span>
+            </a>
+        </li>
+
+    </ul>
+
+</aside>
+
+
+    <!-- =================================
+         MAIN CONTENT
+    ================================== -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div style="display:flex; align-items:center; gap:15px;">
+
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    ☰
+                </button>
+
+                <div class="page-title">
+                    <h1>Orders</h1>
+                    <p>Track and manage all customer orders</p>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="notification">
+                    🔔
+                    <span class="notification-badge">4</span>
+                </div>
+
+                <div class="user-dropdown">
+
+    <!-- USER PROFILE BUTTON -->
+    <button class="user-profile-btn" onclick="toggleUserDropdown(event)">
+
+        <div class="user-avatar">
+            KB
+        </div>
+
+        <div class="user-info">
+
+            <strong>
+                King Binay
+            </strong>
+
+            <small>
+                Administrator
+            </small>
+
+        </div>
+
+        <span class="dropdown-arrow">
+            ▾
+        </span>
+
+    </button>
+
+
+    <!-- USER DROPDOWN -->
+    <div class="profile-dropdown" id="profileDropdown">
+
+        <div class="dropdown-header">
+
+            <div class="dropdown-avatar">
+                KB
+            </div>
+
+            <div>
+
+                <strong>
+                    King Binay
+                </strong>
+
+                <small>
+                    Administrator
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a href="settings.php#my-profile" class="dropdown-item">
+
+            <span>
+                👤
+            </span>
+
+            <div>
+                <strong>My Profile</strong>
+                <small>View your account</small>
+            </div>
+
+        </a>
+
+
+        <a href="settings.php" class="dropdown-item">
+
+            <span>
+                ⚙️
+            </span>
+
+            <div>
+                <strong>Settings</strong>
+                <small>Manage system settings</small>
+            </div>
+
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <button
+            type="button"
+            class="dropdown-item logout-item"
+            onclick="openLogoutModal()"
+        >
+
+            <span>
+                🚪
+            </span>
+
+            <div>
+                <strong>Logout</strong>
+                <small>Sign out of your account</small>
+            </div>
+
+        </button>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+            <!-- =================================
+                 STATISTICS
+            ================================== -->
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Total Orders Today</h4>
+                        <h2>148</h2>
+                        <div class="stat-change positive">
+                            ↑ 8.2% from yesterday
+                        </div>
+                    </div>
+
+                    <div class="stat-icon brown">
+                        🛒
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Pending</h4>
+                        <h2>12</h2>
+                        <div class="stat-change negative">
+                            3 require attention
+                        </div>
+                    </div>
+
+                    <div class="stat-icon orange">
+                        ⏳
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Preparing</h4>
+                        <h2>8</h2>
+                        <div class="stat-change positive">
+                            All on schedule
+                        </div>
+                    </div>
+
+                    <div class="stat-icon blue">
+                        👨‍🍳
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Completed Today</h4>
+                        <h2>128</h2>
+                        <div class="stat-change positive">
+                            Avg time: 12 min
+                        </div>
+                    </div>
+
+                    <div class="stat-icon green">
+                        ✅
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 FILTER / SEARCH CARD
+            ================================== -->
+
+            <div class="card filter-card">
+
+                <form class="filter-form" method="get">
+
+                    <div class="filter-group">
+                        <label for="from-date">From Date</label>
+                        <input type="date" id="from-date" name="from_date" value="<?php echo date('Y-m-d'); ?>">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="to-date">To Date</label>
+                        <input type="date" id="to-date" name="to_date" value="<?php echo date('Y-m-d'); ?>">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="status">Order Status</label>
+                        <select id="status" name="status">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="preparing">Preparing</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="payment">Payment Method</label>
+                        <select id="payment" name="payment">
+                            <option value="">All Payments</option>
+                            <option value="gcash">GCash</option>
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="maya">Maya</option>
+                        </select>
+                    </div>
+
+                    <div style="display:flex; gap:10px;">
+                        <button type="submit" class="btn btn-secondary">
+                            🔍 Search
+                        </button>
+                        <a href="orders.php" class="btn btn-secondary">
+                            Reset
+                        </a>
+                       <button type="button" class="btn btn-primary" onclick="openNewOrderModal()">
+                        ➕ New Order
+                    </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================
+                 ORDERS TABLE
+            ================================== -->
+
+            <div class="card table-card">
+
+                <div class="card-header">
+
+                    <h3>All Orders</h3>
+
+                    <span style="font-size:12px; color:#8b817b;">
+                        Showing 10 of 148 orders today
+                    </span>
+
+                </div>
+
+
+                <table class="orders-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total (₱)</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th>Table</th>
+                            <th>Time</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+                            <td><strong>#ORD-1048</strong></td>
+                            <td>Maria Santos</td>
+                            <td>2x Spanish Latte, 1x Butter Croissant</td>
+                            <td>₱410</td>
+                            <td>GCash</td>
+                            <td>
+                                <span class="status completed">
+                                    Completed
+                                </span>
+                            </td>
+                            <td>T-4</td>
+                            <td>8:42 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1047</strong></td>
+                            <td>John Cruz</td>
+                            <td>1x Matcha Latte, 1x Cheesecake</td>
+                            <td>₱340</td>
+                            <td>Cash</td>
+                            <td>
+                                <span class="status preparing">
+                                    Preparing
+                                </span>
+                            </td>
+                            <td>T-2</td>
+                            <td>8:38 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1046</strong></td>
+                            <td>Anna Reyes</td>
+                            <td>3x Americano, 2x Chocolate Cake</td>
+                            <td>₱645</td>
+                            <td>Card</td>
+                            <td>
+                                <span class="status completed">
+                                    Completed
+                                </span>
+                            </td>
+                            <td>T-8</td>
+                            <td>8:31 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1045</strong></td>
+                            <td>Mark Garcia</td>
+                            <td>1x Spanish Latte</td>
+                            <td>₱145</td>
+                            <td>GCash</td>
+                            <td>
+                                <span class="status pending">
+                                    Pending
+                                </span>
+                            </td>
+                            <td>T-1</td>
+                            <td>8:27 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1044</strong></td>
+                            <td>Lisa Tan</td>
+                            <td>1x Caramel Macchiato, 2x Ensaymada</td>
+                            <td>₱385</td>
+                            <td>Maya</td>
+                            <td>
+                                <span class="status completed">
+                                    Completed
+                                </span>
+                            </td>
+                            <td>T-5</td>
+                            <td>8:19 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1043</strong></td>
+                            <td>Paolo Mendoza</td>
+                            <td>4x Cappuccino, 1x Tiramisu</td>
+                            <td>₱690</td>
+                            <td>Cash</td>
+                            <td>
+                                <span class="status pending">
+                                    Pending
+                                </span>
+                            </td>
+                            <td>T-7</td>
+                            <td>8:12 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1042</strong></td>
+                            <td>Sofia Bautista</td>
+                            <td>2x Cafe Mocha, 1x Ube Cake</td>
+                            <td>₱470</td>
+                            <td>GCash</td>
+                            <td>
+                                <span class="status cancelled">
+                                    Cancelled
+                                </span>
+                            </td>
+                            <td>T-3</td>
+                            <td>8:05 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1041</strong></td>
+                            <td>Carlo de Jesus</td>
+                            <td>1x Hazelnut Latte, 2x Pandesal</td>
+                            <td>₱250</td>
+                            <td>Cash</td>
+                            <td>
+                                <span class="status preparing">
+                                    Preparing
+                                </span>
+                            </td>
+                            <td>T-6</td>
+                            <td>7:58 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1040</strong></td>
+                            <td>Jennifer Villanueva</td>
+                            <td>1x Cold Brew, 1x Muffin, 1x Cookie</td>
+                            <td>₱295</td>
+                            <td>Card</td>
+                            <td>
+                                <span class="status completed">
+                                    Completed
+                                </span>
+                            </td>
+                            <td>T-9</td>
+                            <td>7:50 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>#ORD-1039</strong></td>
+                            <td>Richard Flores</td>
+                            <td>3x White Chocolate Mocha, 2x Brownies</td>
+                            <td>₱720</td>
+                            <td>Maya</td>
+                            <td>
+                                <span class="status completed">
+                                    Completed
+                                </span>
+                            </td>
+                            <td>T-12</td>
+                            <td>7:42 PM</td>
+                            <td class="actions">
+                                <a href="#" class="action-link view-link">View</a>
+                                <a href="#" class="action-link edit-link">Edit</a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       MOBILE SIDEBAR
+    ========================= */
+
+    function toggleSidebar() {
+
+    const sidebar = document.getElementById("sidebar");
+    const main = document.querySelector(".main");
+
+    if (window.innerWidth <= 768) {
+
+        // MOBILE
+        // Slide sidebar in and out
+        sidebar.classList.toggle("open");
+
+    } else {
+
+        // DESKTOP
+        // Make sidebar small
+        sidebar.classList.toggle("collapsed");
+
+        // Move main content
+        main.classList.toggle("sidebar-collapsed");
+
+    }
+}
+
+    /* =========================
+       CLOSE SIDEBAR WHEN
+       CLICKING OUTSIDE
+    ========================= */
+
+    document.addEventListener("click", function(event) {
+
+        const sidebar = document.getElementById("sidebar");
+
+        const toggle = document.querySelector(".menu-toggle");
+
+        if (
+            window.innerWidth <= 768 &&
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(event.target) &&
+            !toggle.contains(event.target)
+        ) {
+
+            sidebar.classList.remove("open");
+
+        }
+
+    });
+    /* =========================================================
+   OPEN NEW ORDER MODAL
+========================================================= */
+
+function openNewOrderModal() {
+
+    const modal =
+        document.getElementById("newOrderModal");
+
+
+    if (!modal) {
+
+        console.error(
+            "New Order modal was not found."
+        );
+
+        return;
+
+    }
+
+
+    modal.classList.add("show");
+
+
+    // Prevent background scrolling
+    document.body.style.overflow = "hidden";
+
+
+    // Focus customer field
+    setTimeout(function() {
+
+        const customer =
+            document.getElementById("orderCustomer");
+
+
+        if (customer) {
+
+            customer.focus();
+
+        }
+
+    }, 100);
+
+}
+
+
+/* =========================================================
+   CLOSE NEW ORDER MODAL
+========================================================= */
+
+function closeNewOrderModal() {
+
+    const modal =
+        document.getElementById("newOrderModal");
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+        document.body.style.overflow = "";
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE ORDER PRICE
+========================================================= */
+
+function updateOrderPrice() {
+
+    const menuItem =
+        document.getElementById("orderMenuItem");
+
+    const selectedOption =
+        menuItem.options[menuItem.selectedIndex];
+
+    const price =
+        selectedOption.getAttribute("data-price") || 0;
+
+
+    document.getElementById("orderPrice").value =
+        parseFloat(price).toFixed(2);
+
+
+    calculateOrderTotal();
+
+}
+
+
+/* =========================================================
+   CALCULATE ORDER TOTAL
+========================================================= */
+
+function calculateOrderTotal() {
+
+    const price =
+        parseFloat(
+            document.getElementById("orderPrice").value
+        ) || 0;
+
+
+    const quantity =
+        parseInt(
+            document.getElementById("orderQuantity").value
+        ) || 1;
+
+
+    const total =
+        price * quantity;
+
+
+    document.getElementById("orderTotal").value =
+        total.toFixed(2);
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const modal =
+        document.getElementById("newOrderModal");
+
+
+    if (
+        modal &&
+        event.target === modal
+    ) {
+
+        closeNewOrderModal();
+
+    }
+
+});
+/* =========================================================
+   OPEN MODAL FROM URL HASH
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    if (window.location.hash === "#newOrderModal") {
+
+        openNewOrderModal();
+
+        // Optional: remove #addMenuModal from the URL
+        history.replaceState(
+            null,
+            "",
+            window.location.pathname + window.location.search
+        );
+
+    }
+
+});
+/* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+function toggleUserDropdown(event) {
+
+    // Prevent the document click event from immediately
+    // closing the dropdown.
+    event.stopPropagation();
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    dropdown.classList.toggle("show");
+
+}
+
+
+/* =========================================================
+   CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    const userDropdown =
+        document.querySelector(".user-dropdown");
+
+    if (
+        dropdown &&
+        userDropdown &&
+        !userDropdown.contains(event.target)
+    ) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+});
+/* =========================================================
+   OPEN LOGOUT MODAL
+========================================================= */
+
+function openLogoutModal() {
+
+    // Close profile dropdown first
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    if (dropdown) {
+        dropdown.classList.remove("show");
+    }
+
+
+    // Show logout modal
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE LOGOUT MODAL
+========================================================= */
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================================
+   CONFIRM LOGOUT
+========================================================= */
+
+function confirmLogout() {
+
+    /*
+     * Change this to your actual logout PHP file.
+     */
+
+    window.location.href = "login.php";
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+</script>
+<!-- =========================================================
+     LOGOUT CONFIRMATION MODAL
+========================================================= -->
+
+<div class="logout-modal-overlay" id="logoutModal">
+
+    <div class="logout-modal">
+
+        <!-- Icon -->
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <!-- Title -->
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <!-- Message -->
+
+        <p>
+            Are you sure you want to log out of your CaféHub account?
+        </p>
+
+
+        <!-- Buttons -->
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="logout-confirm"
+                onclick="confirmLogout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     NEW ORDER MODAL
+========================================================= -->
+
+<div class="new-order-overlay" id="newOrderModal">
+
+    <div class="new-order-modal">
+
+        <!-- HEADER -->
+        <div class="new-order-header">
+
+            <div>
+                <h2>New Order</h2>
+
+                <p>
+                    Create a new café order
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="new-order-close"
+                onclick="closeNewOrderModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- FORM BODY -->
+        <form id="newOrderForm">
+
+            <div class="new-order-body">
+
+                <!-- CUSTOMER -->
+                <div class="new-order-field">
+
+                    <label for="orderCustomer">
+                        Customer
+                    </label>
+
+                    <input
+                        type="text"
+                        id="orderCustomer"
+                        name="customer"
+                        placeholder="Enter customer name"
+                    >
+
+                </div>
+
+
+                <!-- ORDER TYPE -->
+                <div class="new-order-field">
+
+                    <label for="orderType">
+                        Order Type <span>*</span>
+                    </label>
+
+                    <select
+                        id="orderType"
+                        name="order_type"
+                        required
+                    >
+
+                        <option value="">
+                            Select order type
+                        </option>
+
+                        <option value="Dine In">
+                            Dine In
+                        </option>
+
+                        <option value="Take Out">
+                            Take Out
+                        </option>
+
+                        <option value="Delivery">
+                            Delivery
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MENU ITEM -->
+                <div class="new-order-field">
+
+                    <label for="orderMenuItem">
+                        Menu Item <span>*</span>
+                    </label>
+
+                    <select
+                        id="orderMenuItem"
+                        name="menu_item"
+                        onchange="updateOrderPrice()"
+                        required
+                    >
+
+                        <option value="">
+                            Select menu item
+                        </option>
+
+                        <option value="Cappuccino" data-price="120">
+                            Cappuccino — ₱120.00
+                        </option>
+
+                        <option value="Iced Vanilla Latte" data-price="135">
+                            Iced Vanilla Latte — ₱135.00
+                        </option>
+
+                        <option value="Hot Chocolate" data-price="110">
+                            Hot Chocolate — ₱110.00
+                        </option>
+
+                        <option value="Butter Croissant" data-price="95">
+                            Butter Croissant — ₱95.00
+                        </option>
+
+                        <option value="Cheesecake" data-price="150">
+                            Cheesecake — ₱150.00
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUANTITY -->
+                <div class="new-order-field">
+
+                    <label for="orderQuantity">
+                        Quantity <span>*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="orderQuantity"
+                        name="quantity"
+                        min="1"
+                        value="1"
+                        onchange="calculateOrderTotal()"
+                        oninput="calculateOrderTotal()"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PRICE -->
+                <div class="new-order-field">
+
+                    <label>
+                        Unit Price
+                    </label>
+
+                    <div class="order-price-input">
+
+                        <span>₱</span>
+
+                        <input
+                            type="text"
+                            id="orderPrice"
+                            value="0.00"
+                            readonly
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL -->
+                <div class="new-order-field">
+
+                    <label>
+                        Order Total
+                    </label>
+
+                    <div class="order-price-input">
+
+                        <span>₱</span>
+
+                        <input
+                            type="text"
+                            id="orderTotal"
+                            value="0.00"
+                            readonly
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+                <div class="new-order-field">
+
+                    <label for="paymentMethod">
+                        Payment Method <span>*</span>
+                    </label>
+
+                    <select
+                        id="paymentMethod"
+                        name="payment_method"
+                        required
+                    >
+
+                        <option value="">
+                            Select payment method
+                        </option>
+
+                        <option value="Cash">
+                            Cash
+                        </option>
+
+                        <option value="GCash">
+                            GCash
+                        </option>
+
+                        <option value="Card">
+                            Card
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- NOTES -->
+                <div class="new-order-field full-width">
+
+                    <label for="orderNotes">
+                        Order Notes
+                    </label>
+
+                    <textarea
+                        id="orderNotes"
+                        name="notes"
+                        placeholder="Add special instructions..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ORDER STATUS -->
+                <div class="new-order-status">
+
+                    <span>
+                        Order Status
+                    </span>
+
+                    <strong id="orderStatusText">
+                        Pending
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+            <div class="new-order-footer">
+
+                <button
+                    type="button"
+                    class="new-order-cancel"
+                    onclick="closeNewOrderModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="new-order-save"
+                >
+                    Create Order
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>

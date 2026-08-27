@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers — CaféHub Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f4f1;
+            color: #292421;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+       .sidebar {
+    width: 250px;
+    background: #2c211c;
+    color: white;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    padding: 20px 15px;
+
+    z-index: 1000;
+
+    /* Smoothly resize the sidebar */
+    transition: width 0.3s ease;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #5a453d transparent;
+}
+/* =========================================================
+   COLLAPSED SIDEBAR
+========================================================= */
+
+.sidebar.collapsed {
+    width: 75px;
+}
+
+
+/* =========================================================
+   COLLAPSED LOGO
+========================================================= */
+
+/* Hide CaféHub and Management System */
+.sidebar.collapsed .logo h2,
+.sidebar.collapsed .logo span,
+.sidebar.collapsed .logo-text {
+    display: none;
+}
+
+
+/* Center the coffee logo */
+.sidebar.collapsed .logo {
+
+    justify-content: center;
+    align-items: center;
+
+    padding-left: 0;
+    padding-right: 0;
+
+    gap: 0;
+}
+
+
+/* Keep coffee icon visible */
+.sidebar.collapsed .logo-icon {
+
+    display: flex;
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+/* =========================================================
+   COLLAPSED MENU
+========================================================= */
+
+/* Hide Main / Management / Reports */
+.sidebar.collapsed .menu-title {
+    display: none;
+}
+
+
+/* Hide navigation text */
+.sidebar.collapsed .sidebar-menu a span:not(.icon) {
+    display: none;
+}
+
+
+/* Center navigation links */
+.sidebar.collapsed .sidebar-menu a {
+
+    justify-content: center;
+
+    padding-left: 0;
+    padding-right: 0;
+
+}
+
+
+/* Keep icons visible and centered */
+.sidebar.collapsed .sidebar-menu .icon {
+
+    display: block;
+
+    width: 25px;
+
+    margin: 0;
+
+    text-align: center;
+
+    flex-shrink: 0;
+
+}
+
+/* Custom Scrollbar for Chrome, Edge, Safari */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #5a453d; /* Matches your warm brown theme */
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #7c5f54; /* Highlight color on hover */
+}
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: #c48a5a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .logo h2 {
+            font-size: 20px;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 11px;
+            color: #cdbeb5;
+            margin-top: 2px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #9d8d83;
+            margin: 25px 12px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: #d8ccc5;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #4a362c;
+            color: white;
+        }
+
+        .sidebar-menu .icon {
+            width: 25px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        /* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main {
+
+    margin-left: 250px;
+
+    width: calc(100% - 250px);
+
+    min-height: 100vh;
+
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
+
+}
+
+
+/* When sidebar is collapsed */
+
+.main.sidebar-collapsed {
+
+    margin-left: 75px;
+
+    width: calc(100% - 75px);
+
+}
+
+        .topbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e9e3df;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .page-title h1 {
+            font-size: 22px;
+        }
+
+        .page-title p {
+            color: #8b817b;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -7px;
+            width: 17px;
+            height: 17px;
+            background: #d9534f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #c48a5a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info small {
+            color: #8b817b;
+            font-size: 11px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #eee7e2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .stat-card h4 {
+            color: #8b817b;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .stat-card h2 {
+            margin-top: 8px;
+            font-size: 25px;
+        }
+
+        .stat-change {
+            margin-top: 7px;
+            font-size: 11px;
+        }
+
+        .positive {
+            color: #3c8c58;
+        }
+
+        .negative {
+            color: #c94c4c;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .brown {
+            background: #f4e9df;
+        }
+
+        .green {
+            background: #e5f2e8;
+        }
+
+        .orange {
+            background: #fff0dc;
+        }
+
+        .blue {
+            background: #e7eef8;
+        }
+
+        .purple {
+            background: #efeaf9;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .action-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 10px 14px;
+            border: 1px solid #e0d7d0;
+            border-radius: 9px;
+            font-size: 13px;
+            width: 280px;
+            background: #faf8f6;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #c48a5a;
+            background: white;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #a66b3f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #8b5832;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #403631;
+            border: 1px solid #e0d7d0;
+        }
+
+        .btn-secondary:hover {
+            background: #faf8f6;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 20px 0;
+        }
+
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .customers-table th {
+            text-align: left;
+            font-size: 11px;
+            color: #8b817b;
+            padding: 14px 20px;
+            background: #faf8f6;
+            border-bottom: 1px solid #eee7e2;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .customers-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0ebe7;
+            font-size: 13px;
+        }
+
+        .customers-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .customers-table tr:hover td {
+            background: #fdfbfa;
+        }
+
+        .customer-id {
+            font-weight: 600;
+            color: #a66b3f;
+            font-family: "Courier New", monospace;
+        }
+
+        .customer-name {
+            font-weight: 500;
+        }
+
+        .customer-phone {
+            color: #6b615a;
+            font-family: "Courier New", monospace;
+        }
+
+        .customer-email {
+            color: #6b615a;
+        }
+
+        .total-visits {
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .total-spent {
+            font-weight: 600;
+            color: #398052;
+        }
+
+        .last-visit {
+            color: #8b817b;
+        }
+
+        .membership {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .membership-vip {
+            background: #efeaf9;
+            color: #6b4eb0;
+        }
+
+        .membership-regular {
+            background: #e7eef8;
+            color: #466a9f;
+        }
+
+        .membership-new {
+            background: #fff0dc;
+            color: #a86b16;
+        }
+
+        .action-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-link {
+            color: #a66b3f;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 9px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .action-link:hover {
+            background: #f4e9df;
+        }
+
+        .action-link.view {
+            background: #e7eef8;
+            color: #466a9f;
+        }
+
+        .action-link.view:hover {
+            background: #d6e0f1;
+        }
+
+        .action-link.promo {
+            background: #fff0dc;
+            color: #a86b16;
+        }
+
+        .action-link.promo:hover {
+            background: #f7e0c2;
+        }
+
+       /* =========================
+   MENU TOGGLE
+========================= */
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 23px;
+    cursor: pointer;
+
+    color: #292421;
+}
+
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .customers-table {
+                min-width: 950px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                height: 65px;
+            }
+
+            .page-title p {
+                display: none;
+            }
+        }
+        /* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+.user-dropdown {
+    position: relative;
+}
+
+
+/* Profile button */
+
+.user-profile-btn {
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    padding: 5px 8px;
+
+    border-radius: 10px;
+
+    transition: 0.2s;
+}
+
+.user-profile-btn:hover {
+    background: #f6f1ed;
+}
+
+
+/* Arrow */
+
+.dropdown-arrow {
+    color: #8b817b;
+
+    font-size: 14px;
+
+    margin-left: 3px;
+
+    transition: 0.2s;
+}
+
+
+/* Dropdown */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 270px;
+
+    background: white;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 10px 30px rgba(44, 33, 28, 0.12);
+
+    padding: 10px;
+
+    z-index: 2000;
+
+    /* Hidden by default */
+    display: none;
+
+    animation: dropdownAnimation 0.18s ease;
+}
+
+
+/* Show dropdown */
+
+.profile-dropdown.show {
+    display: block;
+}
+
+
+/* Dropdown animation */
+
+@keyframes dropdownAnimation {
+
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Dropdown header */
+
+.dropdown-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px;
+}
+
+
+/* Large dropdown avatar */
+
+.dropdown-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #c48a5a;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 13px;
+
+    color: #332b27;
+}
+
+
+.dropdown-header small {
+    display: block;
+
+    color: #8b817b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+
+/* Divider */
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #eee7e2;
+
+    margin: 7px 0;
+}
+
+
+/* Dropdown item */
+
+.dropdown-item {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: #403631;
+
+    background: transparent;
+
+    border: none;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.dropdown-item:hover {
+    background: #f8f2ed;
+}
+
+
+/* Icon */
+
+.dropdown-item > span {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 8px;
+
+    background: #f4e9df;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+
+/* Text */
+
+.dropdown-item strong {
+    display: block;
+
+    font-size: 12px;
+
+    color: #403631;
+}
+
+
+.dropdown-item small {
+    display: block;
+
+    color: #91857d;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* Logout */
+
+.logout-item:hover {
+    background: #fff1ef;
+}
+
+
+.logout-item:hover > span {
+    background: #f9dddd;
+}
+
+
+.logout-item:hover strong {
+    color: #c94c4c;
+}
+
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .profile-dropdown {
+        width: 250px;
+
+        right: -5px;
+    }
+
+    .dropdown-arrow {
+        display: none;
+    }
+
+}
+/* =========================================================
+   LOGOUT CONFIRMATION MODAL
+========================================================= */
+
+.logout-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5000;
+
+    padding: 20px;
+}
+
+
+/* Show modal */
+
+.logout-modal-overlay.show {
+    display: flex;
+}
+
+
+/* Modal */
+
+.logout-modal {
+
+    width: 100%;
+    max-width: 400px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.2);
+
+    animation: logoutModalAnimation 0.2s ease;
+}
+
+
+/* Animation */
+
+@keyframes logoutModalAnimation {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+/* Logout icon */
+
+.logout-modal-icon {
+
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    background: #fff0ed;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+/* Title */
+
+.logout-modal h2 {
+
+    font-size: 20px;
+
+    color: #332b27;
+
+    margin-bottom: 8px;
+}
+
+
+/* Message */
+
+.logout-modal p {
+
+    color: #8b817b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+}
+
+
+/* Buttons */
+
+.logout-modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* Cancel */
+
+.logout-cancel {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-cancel:hover {
+
+    background: #f7f3f0;
+}
+
+
+/* Confirm */
+
+.logout-confirm {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: none;
+
+    background: #c94c4c;
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-confirm:hover {
+
+    background: #b63d3d;
+
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+   <aside class="sidebar" id="sidebar">
+
+    <!-- =========================
+         LOGO
+    ========================== -->
+    <div class="logo">
+
+        <div class="logo-icon">
+            ☕
+        </div>
+
+        <div class="logo-text">
+            <h2>CaféHub</h2>
+            <span>Management System</span>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <div class="menu-title">
+        Main
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="dashboard.php">
+
+                <span class="icon">📊</span>
+
+                <span class="menu-text">
+                    Dashboard
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="orders.php">
+
+                <span class="icon">🛒</span>
+
+                <span class="menu-text">
+                    Orders
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="menu.php">
+
+                <span class="icon">🍔</span>
+
+                <span class="menu-text">
+                    Menu
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="tables.php">
+
+                <span class="icon">🪑</span>
+
+                <span class="menu-text">
+                    Tables
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="reservations.php">
+
+                <span class="icon">📅</span>
+
+                <span class="menu-text">
+                    Reservations
+                </span>
+
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         MANAGEMENT
+    ========================== -->
+
+    <div class="menu-title">
+        Management
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="inventory.php">
+
+                <span class="icon">📦</span>
+
+                <span class="menu-text">
+                    Inventory
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="customers.php" class="active">
+
+                <span class="icon">👥</span>
+
+                <span class="menu-text">
+                    Customers
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="staff.php">
+
+                <span class="icon">👨‍💼</span>
+
+                <span class="menu-text">
+                    Staff
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="payments.php">
+
+                <span class="icon">💳</span>
+
+                <span class="menu-text">
+                    Payments
+                </span>
+
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         REPORTS
+    ========================== -->
+
+    <div class="menu-title">
+        Reports
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="sales-reports.php">
+
+                <span class="icon">📈</span>
+
+                <span class="menu-text">
+                    Sales Reports
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="analytics.php" class="active">
+
+                <span class="icon">📊</span>
+
+                <span class="menu-text">
+                    Analytics
+                </span>
+
+            </a>
+        </li>
+
+
+        <li>
+            <a href="settings.php">
+
+                <span class="icon">⚙️</span>
+
+                <span class="menu-text">
+                    Settings
+                </span>
+
+            </a>
+        </li>
+
+    </ul>
+
+</aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div style="display:flex; align-items:center; gap:15px;">
+
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    ☰
+                </button>
+
+                <div class="page-title">
+                    <h1>Customers</h1>
+                    <p>Customer profiles and loyalty</p>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="notification">
+                    🔔
+                    <span class="notification-badge">4</span>
+                </div>
+
+                <div class="user-dropdown">
+
+    <!-- USER PROFILE BUTTON -->
+    <button class="user-profile-btn" onclick="toggleUserDropdown(event)">
+
+        <div class="user-avatar">
+            KB
+        </div>
+
+        <div class="user-info">
+
+            <strong>
+                King Binay
+            </strong>
+
+            <small>
+                Administrator
+            </small>
+
+        </div>
+
+        <span class="dropdown-arrow">
+            ▾
+        </span>
+
+    </button>
+
+
+    <!-- USER DROPDOWN -->
+    <div class="profile-dropdown" id="profileDropdown">
+
+        <div class="dropdown-header">
+
+            <div class="dropdown-avatar">
+                KB
+            </div>
+
+            <div>
+
+                <strong>
+                    King Binay
+                </strong>
+
+                <small>
+                    Administrator
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a href="settings.php#my-profile" class="dropdown-item">
+
+            <span>
+                👤
+            </span>
+
+            <div>
+                <strong>My Profile</strong>
+                <small>View your account</small>
+            </div>
+
+        </a>
+
+
+        <a href="settings.php" class="dropdown-item">
+
+            <span>
+                ⚙️
+            </span>
+
+            <div>
+                <strong>Settings</strong>
+                <small>Manage system settings</small>
+            </div>
+
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <button
+            type="button"
+            class="dropdown-item logout-item"
+            onclick="openLogoutModal()"
+        >
+
+            <span>
+                🚪
+            </span>
+
+            <div>
+                <strong>Logout</strong>
+                <small>Sign out of your account</small>
+            </div>
+
+        </button>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </header>
+
+        <div class="content">
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div>
+                        <h4>Total Customers</h4>
+                        <h2>2,185</h2>
+                        <div class="stat-change positive">
+                            ↑ 4.1% from last month
+                        </div>
+                    </div>
+                    <div class="stat-icon brown">
+                        👥
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div>
+                        <h4>Active</h4>
+                        <h2>1,240</h2>
+                        <div class="stat-change positive">
+                            56.7% of total
+                        </div>
+                    </div>
+                    <div class="stat-icon green">
+                        ✅
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div>
+                        <h4>New This Month</h4>
+                        <h2>87</h2>
+                        <div class="stat-change positive">
+                            ↑ 12 new this week
+                        </div>
+                    </div>
+                    <div class="stat-icon blue">
+                        🆕
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div>
+                        <h4>VIP Members</h4>
+                        <h2>46</h2>
+                        <div class="stat-change positive">
+                            ↑ 3 new VIPs
+                        </div>
+                    </div>
+                    <div class="stat-icon purple">
+                        👑
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="table-card">
+
+                <div class="table-header">
+                    <div class="action-bar">
+
+                        <div class="action-bar-left">
+                            <input type="text" class="search-input" placeholder="Search by name, phone, or email..." />
+                        </div>
+
+                        <div class="action-bar-right">
+                            <button class="btn btn-secondary">
+                                <span>📤</span> Export
+                            </button>
+                            <button class="btn btn-primary">
+                                <span>➕</span> New Customer
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <table class="customers-table">
+
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Total Visits</th>
+                            <th>Total Spent (₱)</th>
+                            <th>Last Visit</th>
+                            <th>Membership</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1001</span></td>
+                            <td><span class="customer-name">Maria Santos</span></td>
+                            <td><span class="customer-phone">0917-123-4567</span></td>
+                            <td><span class="customer-email">maria.santos@email.com</span></td>
+                            <td><span class="total-visits">142</span></td>
+                            <td><span class="total-spent">₱68,420</span></td>
+                            <td><span class="last-visit">Today, 7:15 PM</span></td>
+                            <td><span class="membership membership-vip">VIP</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1002</span></td>
+                            <td><span class="customer-name">John Cruz</span></td>
+                            <td><span class="customer-phone">0918-987-6543</span></td>
+                            <td><span class="customer-email">john.cruz@email.com</span></td>
+                            <td><span class="total-visits">87</span></td>
+                            <td><span class="total-spent">₱41,250</span></td>
+                            <td><span class="last-visit">Yesterday, 6:30 PM</span></td>
+                            <td><span class="membership membership-regular">Regular</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1003</span></td>
+                            <td><span class="customer-name">Anna Reyes</span></td>
+                            <td><span class="customer-phone">0920-456-7890</span></td>
+                            <td><span class="customer-email">anna.reyes@email.com</span></td>
+                            <td><span class="total-visits">215</span></td>
+                            <td><span class="total-spent">₱98,680</span></td>
+                            <td><span class="last-visit">Today, 5:42 PM</span></td>
+                            <td><span class="membership membership-vip">VIP</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1004</span></td>
+                            <td><span class="customer-name">Mark Garcia</span></td>
+                            <td><span class="customer-phone">0922-321-0987</span></td>
+                            <td><span class="customer-email">mark.garcia@email.com</span></td>
+                            <td><span class="total-visits">12</span></td>
+                            <td><span class="total-spent">₱4,320</span></td>
+                            <td><span class="last-visit">Aug 8, 2026</span></td>
+                            <td><span class="membership membership-new">New</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1005</span></td>
+                            <td><span class="customer-name">Lisa Tan</span></td>
+                            <td><span class="customer-phone">0925-111-2222</span></td>
+                            <td><span class="customer-email">lisa.tan@email.com</span></td>
+                            <td><span class="total-visits">98</span></td>
+                            <td><span class="total-spent">₱52,140</span></td>
+                            <td><span class="last-visit">Aug 10, 2026</span></td>
+                            <td><span class="membership membership-regular">Regular</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1006</span></td>
+                            <td><span class="customer-name">Joseph Dela Cruz</span></td>
+                            <td><span class="customer-phone">0926-333-4444</span></td>
+                            <td><span class="customer-email">joseph.delacruz@email.com</span></td>
+                            <td><span class="total-visits">5</span></td>
+                            <td><span class="total-spent">₱1,890</span></td>
+                            <td><span class="last-visit">Today, 3:10 PM</span></td>
+                            <td><span class="membership membership-new">New</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1007</span></td>
+                            <td><span class="customer-name">Patricia Mendoza</span></td>
+                            <td><span class="customer-phone">0927-555-6666</span></td>
+                            <td><span class="customer-email">patricia.mendoza@email.com</span></td>
+                            <td><span class="total-visits">176</span></td>
+                            <td><span class="total-spent">₱82,960</span></td>
+                            <td><span class="last-visit">Aug 9, 2026</span></td>
+                            <td><span class="membership membership-vip">VIP</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1008</span></td>
+                            <td><span class="customer-name">Christopher Lim</span></td>
+                            <td><span class="customer-phone">0928-777-8888</span></td>
+                            <td><span class="customer-email">christopher.lim@email.com</span></td>
+                            <td><span class="total-visits">63</span></td>
+                            <td><span class="total-spent">₱28,750</span></td>
+                            <td><span class="last-visit">Yesterday, 8:20 PM</span></td>
+                            <td><span class="membership membership-regular">Regular</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1009</span></td>
+                            <td><span class="customer-name">Sofia Bautista</span></td>
+                            <td><span class="customer-phone">0929-999-0000</span></td>
+                            <td><span class="customer-email">sofia.bautista@email.com</span></td>
+                            <td><span class="total-visits">31</span></td>
+                            <td><span class="total-spent">₱14,280</span></td>
+                            <td><span class="last-visit">Aug 7, 2026</span></td>
+                            <td><span class="membership membership-regular">Regular</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="customer-id">CUS-1010</span></td>
+                            <td><span class="customer-name">Daniel Villanueva</span></td>
+                            <td><span class="customer-phone">0930-222-3333</span></td>
+                            <td><span class="customer-email">daniel.villanueva@email.com</span></td>
+                            <td><span class="total-visits">2</span></td>
+                            <td><span class="total-spent">₱680</span></td>
+                            <td><span class="last-visit">Today, 6:55 PM</span></td>
+                            <td><span class="membership membership-new">New</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link view">View</a>
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link promo">Send Promo</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+    function toggleSidebar() {
+
+    const sidebar = document.getElementById("sidebar");
+    const main = document.querySelector(".main");
+
+    if (window.innerWidth <= 768) {
+
+        // MOBILE
+        // Slide sidebar in and out
+        sidebar.classList.toggle("open");
+
+    } else {
+
+        // DESKTOP
+        // Make sidebar small
+        sidebar.classList.toggle("collapsed");
+
+        // Move main content
+        main.classList.toggle("sidebar-collapsed");
+
+    }
+}
+
+    document.addEventListener("click", function(event) {
+        const sidebar = document.getElementById("sidebar");
+        const toggle = document.querySelector(".menu-toggle");
+        if (
+            window.innerWidth <= 768 &&
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(event.target) &&
+            !toggle.contains(event.target)
+        ) {
+            sidebar.classList.remove("open");
+        }
+    });
+/* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+function toggleUserDropdown(event) {
+
+    // Prevent the document click event from immediately
+    // closing the dropdown.
+    event.stopPropagation();
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    dropdown.classList.toggle("show");
+
+}
+
+
+/* =========================================================
+   CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    const userDropdown =
+        document.querySelector(".user-dropdown");
+
+    if (
+        dropdown &&
+        userDropdown &&
+        !userDropdown.contains(event.target)
+    ) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+});
+/* =========================================================
+   OPEN LOGOUT MODAL
+========================================================= */
+
+function openLogoutModal() {
+
+    // Close profile dropdown first
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    if (dropdown) {
+        dropdown.classList.remove("show");
+    }
+
+
+    // Show logout modal
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE LOGOUT MODAL
+========================================================= */
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================================
+   CONFIRM LOGOUT
+========================================================= */
+
+function confirmLogout() {
+
+    /*
+     * Change this to your actual logout PHP file.
+     */
+
+    window.location.href = "login.php";
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+</script>
+<!-- =========================================================
+     LOGOUT CONFIRMATION MODAL
+========================================================= -->
+
+<div class="logout-modal-overlay" id="logoutModal">
+
+    <div class="logout-modal">
+
+        <!-- Icon -->
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <!-- Title -->
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <!-- Message -->
+
+        <p>
+            Are you sure you want to log out of your CaféHub account?
+        </p>
+
+
+        <!-- Buttons -->
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="logout-confirm"
+                onclick="confirmLogout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

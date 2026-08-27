@@ -1,0 +1,4139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory — CaféHub Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f4f1;
+            color: #292421;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+    width: 250px;
+    background: #2c211c;
+    color: white;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    padding: 20px 15px;
+
+    z-index: 1000;
+
+    transition:
+        width 0.3s ease,
+        transform 0.3s ease;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #5a453d transparent;
+}
+/* =========================
+   COLLAPSED SIDEBAR
+========================= */
+
+.sidebar.collapsed {
+    width: 75px;
+}
+
+/* Custom Scrollbar for Chrome, Edge, Safari */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #5a453d; /* Matches your warm brown theme */
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #7c5f54; /* Highlight color on hover */
+}
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: #c48a5a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .logo h2 {
+            font-size: 20px;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 11px;
+            color: #cdbeb5;
+            margin-top: 2px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #9d8d83;
+            margin: 25px 12px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: #d8ccc5;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #4a362c;
+            color: white;
+        }
+
+        .sidebar-menu .icon {
+            width: 25px;
+            text-align: center;
+            font-size: 17px;
+        }
+        /* =========================
+   COLLAPSED SIDEBAR CONTENT
+========================= */
+
+/* Hide CaféHub and Management System text */
+.sidebar.collapsed .logo > div:not(.logo-icon) {
+    display: none;
+}
+
+/* Center logo */
+.sidebar.collapsed .logo {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+    gap: 0;
+}
+
+/* Keep logo icon visible */
+.sidebar.collapsed .logo-icon {
+    flex-shrink: 0;
+}
+
+/* Hide section titles */
+.sidebar.collapsed .menu-title {
+    display: none;
+}
+
+/* Center menu links */
+.sidebar.collapsed .sidebar-menu a {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+    gap: 0;
+    font-size: 0;
+}
+
+/* Keep icons visible */
+.sidebar.collapsed .sidebar-menu .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 25px;
+    height: 25px;
+
+    font-size: 17px;
+    margin: 0;
+}
+
+       .main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
+}
+
+/* Main content when sidebar is collapsed */
+.main.sidebar-collapsed {
+    margin-left: 75px;
+    width: calc(100% - 75px);
+}
+
+        /* =========================
+   TOPBAR
+========================= */
+
+.topbar {
+    height: 70px;
+
+    background: white;
+    border-bottom: 1px solid #e9e3df;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 30px;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 900;
+
+    transition: 0.3s ease;
+}
+
+        .page-title h1 {
+            font-size: 22px;
+        }
+
+        .page-title p {
+            color: #8b817b;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -7px;
+            width: 17px;
+            height: 17px;
+            background: #d9534f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #c48a5a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info small {
+            color: #8b817b;
+            font-size: 11px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #eee7e2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .stat-card h4 {
+            color: #8b817b;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .stat-card h2 {
+            margin-top: 8px;
+            font-size: 25px;
+        }
+
+        .stat-change {
+            margin-top: 7px;
+            font-size: 11px;
+        }
+
+        .positive {
+            color: #3c8c58;
+        }
+
+        .negative {
+            color: #c94c4c;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .brown {
+            background: #f4e9df;
+        }
+
+        .green {
+            background: #e5f2e8;
+        }
+
+        .orange {
+            background: #fff0dc;
+        }
+
+        .blue {
+            background: #e7eef8;
+        }
+
+        .red {
+            background: #fbe6e4;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .action-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 10px 14px;
+            border: 1px solid #e0d7d0;
+            border-radius: 9px;
+            font-size: 13px;
+            width: 240px;
+            background: #faf8f6;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #c48a5a;
+            background: white;
+        }
+
+        .category-dropdown {
+            padding: 10px 14px;
+            border: 1px solid #e0d7d0;
+            border-radius: 9px;
+            font-size: 13px;
+            background: white;
+            color: #403631;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .category-dropdown:focus {
+            border-color: #c48a5a;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #a66b3f;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #8b5832;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #403631;
+            border: 1px solid #e0d7d0;
+        }
+
+        .btn-secondary:hover {
+            background: #faf8f6;
+        }
+
+        .btn-export {
+            background: white;
+            color: #403631;
+            border: 1px solid #e0d7d0;
+        }
+
+        .btn-export:hover {
+            background: #faf8f6;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 20px 0;
+        }
+
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .inventory-table th {
+            text-align: left;
+            font-size: 11px;
+            color: #8b817b;
+            padding: 14px 20px;
+            background: #faf8f6;
+            border-bottom: 1px solid #eee7e2;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .inventory-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0ebe7;
+            font-size: 13px;
+        }
+
+        .inventory-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .inventory-table tr:hover td {
+            background: #fdfbfa;
+        }
+
+        .item-id {
+            font-weight: 600;
+            color: #a66b3f;
+            font-family: "Courier New", monospace;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+
+        .qty {
+            font-weight: 600;
+        }
+
+        .reorder {
+            color: #8b817b;
+            font-family: "Courier New", monospace;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-good {
+            background: #e4f3e8;
+            color: #398052;
+        }
+
+        .status-low {
+            background: #fff1d9;
+            color: #a86b16;
+        }
+
+        .status-out {
+            background: #fbe6e4;
+            color: #b5403a;
+        }
+
+        .action-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-link {
+            color: #a66b3f;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 9px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .action-link:hover {
+            background: #f4e9df;
+        }
+
+        .action-link.restock {
+            background: #e5f2e8;
+            color: #398052;
+        }
+
+        .action-link.restock:hover {
+            background: #d3e9d9;
+        }
+
+        /* =========================
+   MENU TOGGLE
+========================= */
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 23px;
+    cursor: pointer;
+
+    color: #292421;
+}
+
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .inventory-table {
+                min-width: 800px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .category-dropdown {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                height: 65px;
+            }
+
+            .page-title p {
+                display: none;
+            }
+        }
+        /* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+.user-dropdown {
+    position: relative;
+}
+
+
+/* Profile button */
+
+.user-profile-btn {
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    padding: 5px 8px;
+
+    border-radius: 10px;
+
+    transition: 0.2s;
+}
+
+.user-profile-btn:hover {
+    background: #f6f1ed;
+}
+
+
+/* Arrow */
+
+.dropdown-arrow {
+    color: #8b817b;
+
+    font-size: 14px;
+
+    margin-left: 3px;
+
+    transition: 0.2s;
+}
+
+
+/* Dropdown */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 270px;
+
+    background: white;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 10px 30px rgba(44, 33, 28, 0.12);
+
+    padding: 10px;
+
+    z-index: 2000;
+
+    /* Hidden by default */
+    display: none;
+
+    animation: dropdownAnimation 0.18s ease;
+}
+
+
+/* Show dropdown */
+
+.profile-dropdown.show {
+    display: block;
+}
+
+
+/* Dropdown animation */
+
+@keyframes dropdownAnimation {
+
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Dropdown header */
+
+.dropdown-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px;
+}
+
+
+/* Large dropdown avatar */
+
+.dropdown-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #c48a5a;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 13px;
+
+    color: #332b27;
+}
+
+
+.dropdown-header small {
+    display: block;
+
+    color: #8b817b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+
+/* Divider */
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #eee7e2;
+
+    margin: 7px 0;
+}
+
+
+/* Dropdown item */
+
+.dropdown-item {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: #403631;
+
+    background: transparent;
+
+    border: none;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.dropdown-item:hover {
+    background: #f8f2ed;
+}
+
+
+/* Icon */
+
+.dropdown-item > span {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 8px;
+
+    background: #f4e9df;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+
+/* Text */
+
+.dropdown-item strong {
+    display: block;
+
+    font-size: 12px;
+
+    color: #403631;
+}
+
+
+.dropdown-item small {
+    display: block;
+
+    color: #91857d;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* Logout */
+
+.logout-item:hover {
+    background: #fff1ef;
+}
+
+
+.logout-item:hover > span {
+    background: #f9dddd;
+}
+
+
+.logout-item:hover strong {
+    color: #c94c4c;
+}
+
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .profile-dropdown {
+        width: 250px;
+
+        right: -5px;
+    }
+
+    .dropdown-arrow {
+        display: none;
+    }
+
+}
+/* =========================================================
+   LOGOUT CONFIRMATION MODAL
+========================================================= */
+
+.logout-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5000;
+
+    padding: 20px;
+}
+
+
+/* Show modal */
+
+.logout-modal-overlay.show {
+    display: flex;
+}
+
+
+/* Modal */
+
+.logout-modal {
+
+    width: 100%;
+    max-width: 400px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.2);
+
+    animation: logoutModalAnimation 0.2s ease;
+}
+
+
+/* Animation */
+
+@keyframes logoutModalAnimation {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+/* Logout icon */
+
+.logout-modal-icon {
+
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    background: #fff0ed;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+/* Title */
+
+.logout-modal h2 {
+
+    font-size: 20px;
+
+    color: #332b27;
+
+    margin-bottom: 8px;
+}
+
+
+/* Message */
+
+.logout-modal p {
+
+    color: #8b817b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+}
+
+
+/* Buttons */
+
+.logout-modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* Cancel */
+
+.logout-cancel {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-cancel:hover {
+
+    background: #f7f3f0;
+}
+
+
+/* Confirm */
+
+.logout-confirm {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: none;
+
+    background: #c94c4c;
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-confirm:hover {
+
+    background: #b63d3d;
+
+}
+/* =========================================================
+   STOCK MOVEMENT OVERLAY
+========================================================= */
+
+.stock-movement-overlay {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(41, 36, 33, 0.55);
+
+    z-index: 9999;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.stock-movement-overlay.show {
+
+    display: flex;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.stock-movement-modal {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    max-height: 90vh;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 50px rgba(41, 36, 33, 0.20);
+
+    animation: stockMovementShow 0.2s ease;
+
+}
+
+
+@keyframes stockMovementShow {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-10px) scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.stock-movement-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #eee7e2;
+
+}
+
+
+.stock-movement-header h2 {
+
+    font-size: 20px;
+
+    color: #292421;
+
+}
+
+
+.stock-movement-header p {
+
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #8b817b;
+
+}
+
+
+.stock-movement-close {
+
+    width: 35px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f6f1ed;
+
+    color: #665c56;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition: 0.2s;
+
+}
+
+
+.stock-movement-close:hover {
+
+    background: #eadfd7;
+
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.stock-movement-filters {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 18px 25px;
+
+    border-bottom: 1px solid #eee7e2;
+
+    background: #fff;
+
+}
+
+
+.stock-search {
+
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0 12px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    background: white;
+
+}
+
+
+.stock-search span {
+
+    font-size: 13px;
+
+}
+
+
+.stock-search input {
+
+    width: 100%;
+
+    padding: 10px 0;
+
+    border: none;
+
+    outline: none;
+
+    font-size: 13px;
+
+    color: #292421;
+
+}
+
+
+.stock-movement-filters select {
+
+    min-width: 150px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #665c56;
+
+    font-size: 13px;
+
+    outline: none;
+
+}
+
+
+.stock-movement-filters select:focus {
+
+    border-color: #c48a5a;
+
+    box-shadow:
+        0 0 0 3px rgba(196, 138, 90, 0.10);
+
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.stock-movement-table-wrapper {
+
+    max-height: 50vh;
+
+    overflow-x: auto;
+
+    overflow-y: auto;
+
+}
+
+
+.stock-movement-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 850px;
+
+}
+
+
+.stock-movement-table thead {
+
+    background: #faf7f4;
+
+}
+
+
+.stock-movement-table th {
+
+    padding: 13px 15px;
+
+    text-align: left;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    color: #8b817b;
+
+    border-bottom: 1px solid #eee7e2;
+
+    white-space: nowrap;
+
+}
+
+
+.stock-movement-table td {
+
+    padding: 14px 15px;
+
+    font-size: 12px;
+
+    color: #292421;
+
+    border-bottom: 1px solid #f0ebe7;
+
+    white-space: nowrap;
+
+}
+
+
+.stock-movement-table tbody tr:hover {
+
+    background: #fdfaf8;
+
+}
+
+
+.stock-movement-table td strong {
+
+    font-weight: 600;
+
+    color: #292421;
+
+}
+
+
+/* =========================================================
+   MOVEMENT BADGES
+========================================================= */
+
+.movement-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+.movement-badge.stock-in {
+
+    background: #e3f2e8;
+
+    color: #398052;
+
+}
+
+
+.movement-badge.stock-out {
+
+    background: #fce9e5;
+
+    color: #b64c3a;
+
+}
+
+
+.movement-badge.waste {
+
+    background: #f9e5e5;
+
+    color: #a94442;
+
+}
+
+
+.movement-badge.adjustment {
+
+    background: #fff0d8;
+
+    color: #a86b19;
+
+}
+
+
+/* =========================================================
+   QUANTITY
+========================================================= */
+
+.quantity {
+
+    font-weight: 600;
+
+}
+
+
+.quantity.positive {
+
+    color: #398052;
+
+}
+
+
+.quantity.negative {
+
+    color: #b64c3a;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.stock-movement-footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 16px 25px;
+
+    border-top: 1px solid #eee7e2;
+
+}
+
+
+.stock-movement-footer span {
+
+    font-size: 12px;
+
+    color: #8b817b;
+
+}
+
+
+.stock-movement-cancel {
+
+    padding: 10px 20px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #665c56;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.stock-movement-cancel:hover {
+
+    background: #faf7f4;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .stock-movement-overlay {
+
+        padding: 10px;
+
+    }
+
+
+    .stock-movement-header {
+
+        padding: 18px;
+
+    }
+
+
+    .stock-movement-filters {
+
+        padding: 15px 18px;
+
+        flex-direction: column;
+
+    }
+
+
+    .stock-movement-filters select {
+
+        width: 100%;
+
+    }
+
+
+    .stock-movement-footer {
+
+        padding: 15px 18px;
+
+    }
+
+}
+/* =========================================================
+   ADD STOCK OVERLAY
+========================================================= */
+
+.add-stock-overlay {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(41, 36, 33, 0.55);
+
+    z-index: 9999;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.add-stock-overlay.show {
+
+    display: flex;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.add-stock-modal {
+
+    width: 100%;
+
+    max-width: 850px;
+
+    max-height: 90vh;
+
+    background: white;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 50px rgba(41, 36, 33, 0.20);
+
+    animation: addStockModalShow 0.2s ease;
+
+}
+
+
+@keyframes addStockModalShow {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-10px) scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.add-stock-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #eee7e2;
+
+}
+
+
+.add-stock-header h2 {
+
+    font-size: 20px;
+
+    color: #292421;
+
+}
+
+
+.add-stock-header p {
+
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #8b817b;
+
+}
+
+
+.add-stock-close {
+
+    width: 35px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f6f1ed;
+
+    color: #665c56;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition: 0.2s;
+
+}
+
+
+.add-stock-close:hover {
+
+    background: #eadfd7;
+
+}
+
+
+/* =========================================================
+   FORM BODY
+========================================================= */
+
+.add-stock-body {
+
+    padding: 25px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    max-height: 60vh;
+
+    overflow-y: auto;
+
+}
+
+
+/* =========================================================
+   FORM FIELD
+========================================================= */
+
+.add-stock-field {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.add-stock-field.full-width {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.add-stock-field label {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+    margin-bottom: 7px;
+
+}
+
+
+.add-stock-field label span {
+
+    color: #c05a45;
+
+}
+
+
+/* =========================================================
+   INPUT / SELECT / TEXTAREA
+========================================================= */
+
+.add-stock-field input,
+.add-stock-field select,
+.add-stock-field textarea {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: white;
+
+    color: #292421;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+
+}
+
+
+.add-stock-field textarea {
+
+    resize: vertical;
+
+    min-height: 80px;
+
+}
+
+
+.add-stock-field input:focus,
+.add-stock-field select:focus,
+.add-stock-field textarea:focus {
+
+    border-color: #c48a5a;
+
+    box-shadow:
+        0 0 0 3px rgba(196, 138, 90, 0.10);
+
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.stock-price-input {
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+}
+
+
+.stock-price-input span {
+
+    padding-left: 12px;
+
+    font-size: 13px;
+
+    color: #8b817b;
+
+    font-weight: 600;
+
+}
+
+
+.stock-price-input input {
+
+    border: none;
+
+    border-radius: 0;
+
+}
+
+
+.stock-price-input input:focus {
+
+    box-shadow: none;
+
+}
+
+
+/* =========================================================
+   STOCK STATUS
+========================================================= */
+
+.add-stock-availability {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    background: #faf7f4;
+
+    border-radius: 10px;
+
+}
+
+
+.add-stock-availability > label:first-child {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+}
+
+
+#stockStatusText {
+
+    font-size: 12px;
+
+    color: #398052;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.stock-status-switch {
+
+    position: relative;
+
+    width: 40px;
+
+    height: 22px;
+
+    display: inline-block;
+
+    margin-left: auto;
+
+}
+
+
+.stock-status-switch input {
+
+    opacity: 0;
+
+    width: 0;
+
+    height: 0;
+
+}
+
+
+.stock-switch-slider {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: #d8d0ca;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.stock-switch-slider::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 16px;
+
+    height: 16px;
+
+    left: 3px;
+
+    top: 3px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    transition: 0.2s;
+
+}
+
+
+.stock-status-switch input:checked
++ .stock-switch-slider {
+
+    background: #398052;
+
+}
+
+
+.stock-status-switch input:checked
++ .stock-switch-slider::before {
+
+    transform: translateX(18px);
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.add-stock-footer {
+
+    padding: 18px 25px;
+
+    border-top: 1px solid #eee7e2;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+}
+
+
+.add-stock-cancel,
+.add-stock-save {
+
+    padding: 11px 20px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.add-stock-cancel {
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+}
+
+
+.add-stock-cancel:hover {
+
+    background: #faf7f4;
+
+}
+
+
+.add-stock-save {
+
+    border: none;
+
+    background: #c48a5a;
+
+    color: white;
+
+}
+
+
+.add-stock-save:hover {
+
+    background: #a66b3f;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .add-stock-modal {
+
+        max-height: 95vh;
+
+    }
+
+
+    .add-stock-body {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .add-stock-field.full-width {
+
+        grid-column: auto;
+
+    }
+
+
+    .add-stock-header {
+
+        padding: 18px;
+
+    }
+
+
+    .add-stock-body {
+
+        padding: 18px;
+
+    }
+
+
+    .add-stock-footer {
+
+        padding: 15px 18px;
+
+    }
+
+}
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar" id="sidebar">
+
+    <!-- =========================
+         SIDEBAR LOGO
+    ========================== -->
+    <div class="logo">
+
+        <div class="logo-icon">
+            ☕
+        </div>
+
+        <div class="logo-text">
+            <h2>CaféHub</h2>
+            <span>Management System</span>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN MENU
+    ========================== -->
+
+    <div class="menu-title">
+        Main
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="dashboard.php">
+                <span class="icon">📊</span>
+                <span class="menu-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="orders.php">
+                <span class="icon">🛒</span>
+                <span class="menu-text">Orders</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="menu.php">
+                <span class="icon">🍔</span>
+                <span class="menu-text">Menu</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="tables.php">
+                <span class="icon">🪑</span>
+                <span class="menu-text">Tables</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="reservations.php">
+                <span class="icon">📅</span>
+                <span class="menu-text">Reservations</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         MANAGEMENT
+    ========================== -->
+
+    <div class="menu-title">
+        Management
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="inventory.php" class="active">
+                <span class="icon">📦</span>
+                <span class="menu-text">Inventory</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="customers.php">
+                <span class="icon">👥</span>
+                <span class="menu-text">Customers</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="staff.php">
+                <span class="icon">👨‍💼</span>
+                <span class="menu-text">Staff</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="payments.php">
+                <span class="icon">💳</span>
+                <span class="menu-text">Payments</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         REPORTS
+    ========================== -->
+
+    <div class="menu-title">
+        Reports
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="sales-reports.php">
+                <span class="icon">📈</span>
+                <span class="menu-text">Sales Reports</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="analytics.php">
+                <span class="icon">📊</span>
+                <span class="menu-text">Analytics</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="settings.php">
+                <span class="icon">⚙️</span>
+                <span class="menu-text">Settings</span>
+            </a>
+        </li>
+
+    </ul>
+
+</aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div style="display:flex; align-items:center; gap:15px;">
+
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    ☰
+                </button>
+
+                <div class="page-title">
+                    <h1>Inventory</h1>
+                    <p>Stock levels and ingredient management</p>
+                </div>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="notification">
+                    🔔
+                    <span class="notification-badge">4</span>
+                </div>
+
+                <div class="user-dropdown">
+
+    <!-- USER PROFILE BUTTON -->
+    <button class="user-profile-btn" onclick="toggleUserDropdown(event)">
+
+        <div class="user-avatar">
+            KB
+        </div>
+
+        <div class="user-info">
+
+            <strong>
+                King Binay
+            </strong>
+
+            <small>
+                Administrator
+            </small>
+
+        </div>
+
+        <span class="dropdown-arrow">
+            ▾
+        </span>
+
+    </button>
+
+
+    <!-- USER DROPDOWN -->
+    <div class="profile-dropdown" id="profileDropdown">
+
+        <div class="dropdown-header">
+
+            <div class="dropdown-avatar">
+                KB
+            </div>
+
+            <div>
+
+                <strong>
+                    King Binay
+                </strong>
+
+                <small>
+                    Administrator
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a href="settings.php#my-profile" class="dropdown-item">
+
+            <span>
+                👤
+            </span>
+
+            <div>
+                <strong>My Profile</strong>
+                <small>View your account</small>
+            </div>
+
+        </a>
+
+
+        <a href="settings.php" class="dropdown-item">
+
+            <span>
+                ⚙️
+            </span>
+
+            <div>
+                <strong>Settings</strong>
+                <small>Manage system settings</small>
+            </div>
+
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <button
+            type="button"
+            class="dropdown-item logout-item"
+            onclick="openLogoutModal()"
+        >
+
+            <span>
+                🚪
+            </span>
+
+            <div>
+                <strong>Logout</strong>
+                <small>Sign out of your account</small>
+            </div>
+
+        </button>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </header>
+
+        <div class="content">
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div>
+                        <h4>SKUs</h4>
+                        <h2>32</h2>
+                        <div class="stat-change positive">
+                            ↑ 3 new this week
+                        </div>
+                    </div>
+                    <div class="stat-icon brown">
+                        📦
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div>
+                        <h4>Low Stock</h4>
+                        <h2>5</h2>
+                        <div class="stat-change negative">
+                            3 require attention
+                        </div>
+                    </div>
+                    <div class="stat-icon orange">
+                        ⚠️
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div>
+                        <h4>Out of Stock</h4>
+                        <h2>2</h2>
+                        <div class="stat-change negative">
+                            1 awaiting delivery
+                        </div>
+                    </div>
+                    <div class="stat-icon red">
+                        ❌
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div>
+                        <h4>Stock Value</h4>
+                        <h2>₱84,350</h2>
+                        <div class="stat-change positive">
+                            ↑ 6.2% from last month
+                        </div>
+                    </div>
+                    <div class="stat-icon blue">
+                        💰
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="table-card">
+
+                <div class="table-header">
+                    <div class="action-bar">
+
+                        <div class="action-bar-left">
+                            <input type="text" class="search-input" placeholder="Search items..." />
+                            <select class="category-dropdown">
+                                <option value="">All Categories</option>
+                                <option value="beans">Beans</option>
+                                <option value="dairy">Dairy</option>
+                                <option value="syrups">Syrups</option>
+                                <option value="pastries">Pastries</option>
+                                <option value="packaging">Packaging</option>
+                            </select>
+                        </div>
+
+                        <div class="action-bar-right">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                onclick="openStockMovementModal()"
+                            >
+                                📋 Stock Movement
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                onclick="openAddStockModal()"
+                            >
+                                <span>➕</span> Add Stock Item
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <table class="inventory-table">
+
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Qty on Hand</th>
+                            <th>Unit</th>
+                            <th>Reorder Level</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><span class="item-id">INV-001</span></td>
+                            <td><span class="item-name">Coffee Beans</span></td>
+                            <td>Beans</td>
+                            <td><span class="qty">18 kg</span></td>
+                            <td>kg</td>
+                            <td><span class="reorder">10 kg</span></td>
+                            <td><span class="status status-good">Good</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-002</span></td>
+                            <td><span class="item-name">Fresh Milk</span></td>
+                            <td>Dairy</td>
+                            <td><span class="qty">8 L</span></td>
+                            <td>L</td>
+                            <td><span class="reorder">15 L</span></td>
+                            <td><span class="status status-low">Low</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-003</span></td>
+                            <td><span class="item-name">Chocolate Syrup</span></td>
+                            <td>Syrups</td>
+                            <td><span class="qty">12 bottles</span></td>
+                            <td>bottle</td>
+                            <td><span class="reorder">8 bottles</span></td>
+                            <td><span class="status status-good">Good</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-004</span></td>
+                            <td><span class="item-name">Matcha Powder</span></td>
+                            <td>Beans</td>
+                            <td><span class="qty">2 kg</span></td>
+                            <td>kg</td>
+                            <td><span class="reorder">5 kg</span></td>
+                            <td><span class="status status-low">Low</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-005</span></td>
+                            <td><span class="item-name">Croissant</span></td>
+                            <td>Pastries</td>
+                            <td><span class="qty">9 pcs</span></td>
+                            <td>pcs</td>
+                            <td><span class="reorder">20 pcs</span></td>
+                            <td><span class="status status-low">Low</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-006</span></td>
+                            <td><span class="item-name">Sugar</span></td>
+                            <td>Beans</td>
+                            <td><span class="qty">25 kg</span></td>
+                            <td>kg</td>
+                            <td><span class="reorder">15 kg</span></td>
+                            <td><span class="status status-good">Good</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-007</span></td>
+                            <td><span class="item-name">Vanilla Syrup</span></td>
+                            <td>Syrups</td>
+                            <td><span class="qty">9 bottles</span></td>
+                            <td>bottle</td>
+                            <td><span class="reorder">8 bottles</span></td>
+                            <td><span class="status status-good">Good</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-008</span></td>
+                            <td><span class="item-name">Paper Cups</span></td>
+                            <td>Packaging</td>
+                            <td><span class="qty">500 pcs</span></td>
+                            <td>pcs</td>
+                            <td><span class="reorder">300 pcs</span></td>
+                            <td><span class="status status-good">Good</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="item-id">INV-009</span></td>
+                            <td><span class="item-name">Oat Milk</span></td>
+                            <td>Dairy</td>
+                            <td><span class="qty">0 L</span></td>
+                            <td>L</td>
+                            <td><span class="reorder">10 L</span></td>
+                            <td><span class="status status-out">Out</span></td>
+                            <td>
+                                <div class="action-links">
+                                    <a href="#" class="action-link">Edit</a>
+                                    <a href="#" class="action-link restock">Restock</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+    function toggleSidebar() {
+
+    const sidebar = document.getElementById("sidebar");
+    const main = document.querySelector(".main");
+
+    if (window.innerWidth <= 768) {
+
+        // MOBILE
+        // Slide sidebar in and out
+        sidebar.classList.toggle("open");
+
+    } else {
+
+        // DESKTOP
+        // Make sidebar small
+        sidebar.classList.toggle("collapsed");
+
+        // Move main content
+        main.classList.toggle("sidebar-collapsed");
+
+    }
+}
+
+    document.addEventListener("click", function(event) {
+        const sidebar = document.getElementById("sidebar");
+        const toggle = document.querySelector(".menu-toggle");
+        if (
+            window.innerWidth <= 768 &&
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(event.target) &&
+            !toggle.contains(event.target)
+        ) {
+            sidebar.classList.remove("open");
+        }
+    });
+/* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+function toggleUserDropdown(event) {
+
+    // Prevent the document click event from immediately
+    // closing the dropdown.
+    event.stopPropagation();
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    dropdown.classList.toggle("show");
+
+}
+
+
+/* =========================================================
+   CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    const userDropdown =
+        document.querySelector(".user-dropdown");
+
+    if (
+        dropdown &&
+        userDropdown &&
+        !userDropdown.contains(event.target)
+    ) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+});
+/* =========================================================
+   OPEN LOGOUT MODAL
+========================================================= */
+
+function openLogoutModal() {
+
+    // Close profile dropdown first
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    if (dropdown) {
+        dropdown.classList.remove("show");
+    }
+
+
+    // Show logout modal
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE LOGOUT MODAL
+========================================================= */
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================================
+   CONFIRM LOGOUT
+========================================================= */
+
+function confirmLogout() {
+
+    /*
+     * Change this to your actual logout PHP file.
+     */
+
+    window.location.href = "login.php";
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+    /* =========================================================
+   OPEN STOCK MOVEMENT MODAL
+========================================================= */
+
+function openStockMovementModal() {
+
+    const modal =
+        document.getElementById("stockMovementModal");
+
+
+    if (!modal) {
+
+        console.error(
+            "Stock Movement modal was not found."
+        );
+
+        return;
+
+    }
+
+
+    modal.classList.add("show");
+
+
+    // Prevent page from scrolling behind modal
+    document.body.style.overflow = "hidden";
+
+}
+
+
+/* =========================================================
+   CLOSE STOCK MOVEMENT MODAL
+========================================================= */
+
+function closeStockMovementModal() {
+
+    const modal =
+        document.getElementById("stockMovementModal");
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+        document.body.style.overflow = "";
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE WHEN CLICKING OUTSIDE MODAL
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const modal =
+        document.getElementById("stockMovementModal");
+
+
+    if (
+        modal &&
+        event.target === modal
+    ) {
+
+        closeStockMovementModal();
+
+    }
+
+});
+
+
+/* =========================================================
+   FILTER STOCK MOVEMENTS
+========================================================= */
+
+function filterStockMovements() {
+
+    const search =
+        document
+            .getElementById("stockMovementSearch")
+            .value
+            .toLowerCase();
+
+
+    const type =
+        document
+            .getElementById("movementTypeFilter")
+            .value;
+
+
+    const category =
+        document
+            .getElementById("movementCategoryFilter")
+            .value;
+
+
+    const rows =
+        document.querySelectorAll(
+            "#stockMovementTableBody tr"
+        );
+
+
+    let visibleCount = 0;
+
+
+    rows.forEach(function(row) {
+
+        const item =
+            row
+                .getAttribute("data-item")
+                .toLowerCase();
+
+
+        const rowCategory =
+            row.getAttribute("data-category");
+
+
+        const rowType =
+            row.getAttribute("data-type");
+
+
+        const matchesSearch =
+            item.includes(search);
+
+
+        const matchesType =
+            type === "all" ||
+            rowType === type;
+
+
+        const matchesCategory =
+            category === "all" ||
+            rowCategory === category;
+
+
+        if (
+            matchesSearch &&
+            matchesType &&
+            matchesCategory
+        ) {
+
+            row.style.display = "";
+
+            visibleCount++;
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+
+    document.getElementById(
+        "stockMovementCount"
+    ).textContent =
+        "Showing " +
+        visibleCount +
+        " movements";
+
+}
+/* =========================================================
+   OPEN ADD STOCK MODAL
+========================================================= */
+
+function openAddStockModal() {
+
+    const modal =
+        document.getElementById("addStockModal");
+
+
+    if (!modal) {
+
+        console.error(
+            "Add Stock modal was not found."
+        );
+
+        return;
+
+    }
+
+
+    modal.classList.add("show");
+
+
+    // Prevent inventory page from scrolling
+    document.body.style.overflow = "hidden";
+
+
+    // Automatically focus Item Name
+    setTimeout(function() {
+
+        const itemName =
+            document.getElementById("stockItemName");
+
+
+        if (itemName) {
+
+            itemName.focus();
+
+        }
+
+    }, 100);
+
+}
+
+
+/* =========================================================
+   CLOSE ADD STOCK MODAL
+========================================================= */
+
+function closeAddStockModal() {
+
+    const modal =
+        document.getElementById("addStockModal");
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+        document.body.style.overflow = "";
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE STOCK STATUS
+========================================================= */
+
+function updateStockStatus() {
+
+    const checkbox =
+        document.getElementById("stockStatus");
+
+    const statusText =
+        document.getElementById("stockStatusText");
+
+
+    if (checkbox.checked) {
+
+        statusText.textContent = "Good";
+
+        statusText.style.color = "#398052";
+
+    } else {
+
+        statusText.textContent = "Inactive";
+
+        statusText.style.color = "#b64c3a";
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const modal =
+        document.getElementById("addStockModal");
+
+
+    if (
+        modal &&
+        event.target === modal
+    ) {
+
+        closeAddStockModal();
+
+    }
+
+});
+
+
+/* =========================================================
+   ADD STOCK FORM
+========================================================= */
+
+document
+    .getElementById("addStockForm")
+    ?.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        /*
+         * For now this only demonstrates the modal
+         * functionality.
+         *
+         * Later this section can send the form
+         * data to PHP/MySQL using fetch().
+         */
+
+        const itemName =
+            document.getElementById("stockItemName").value;
+
+
+        const quantity =
+            document.getElementById("stockQuantity").value;
+
+
+        const unit =
+            document.getElementById("stockUnit").value;
+
+
+        if (!itemName || !quantity || !unit) {
+
+            alert(
+                "Please complete all required fields."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Stock item is ready to be saved."
+        );
+
+
+        closeAddStockModal();
+
+    });
+</script>
+<!-- =========================================================
+     LOGOUT CONFIRMATION MODAL
+========================================================= -->
+
+<div class="logout-modal-overlay" id="logoutModal">
+
+    <div class="logout-modal">
+
+        <!-- Icon -->
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <!-- Title -->
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <!-- Message -->
+
+        <p>
+            Are you sure you want to log out of your CaféHub account?
+        </p>
+
+
+        <!-- Buttons -->
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="logout-confirm"
+                onclick="confirmLogout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     STOCK MOVEMENT MODAL
+========================================================= -->
+
+<div
+    class="stock-movement-overlay"
+    id="stockMovementModal"
+>
+
+    <div class="stock-movement-modal">
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <div class="stock-movement-header">
+
+            <div>
+
+                <h2>
+                    Stock Movement
+                </h2>
+
+                <p>
+                    Track inventory changes and stock history
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="stock-movement-close"
+                onclick="closeStockMovementModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             FILTERS
+        ================================================== -->
+
+        <div class="stock-movement-filters">
+
+            <!-- SEARCH -->
+
+            <div class="stock-search">
+
+                <span>🔍</span>
+
+                <input
+                    type="text"
+                    id="stockMovementSearch"
+                    placeholder="Search items..."
+                    onkeyup="filterStockMovements()"
+                >
+
+            </div>
+
+
+            <!-- MOVEMENT TYPE -->
+
+            <select
+                id="movementTypeFilter"
+                onchange="filterStockMovements()"
+            >
+
+                <option value="all">
+                    All Types
+                </option>
+
+                <option value="Stock In">
+                    Stock In
+                </option>
+
+                <option value="Stock Out">
+                    Stock Out
+                </option>
+
+                <option value="Waste">
+                    Waste
+                </option>
+
+                <option value="Adjustment">
+                    Adjustment
+                </option>
+
+                <option value="Return">
+                    Return
+                </option>
+
+            </select>
+
+
+            <!-- CATEGORY -->
+
+            <select
+                id="movementCategoryFilter"
+                onchange="filterStockMovements()"
+            >
+
+                <option value="all">
+                    All Categories
+                </option>
+
+                <option value="Beans">
+                    Beans
+                </option>
+
+                <option value="Dairy">
+                    Dairy
+                </option>
+
+                <option value="Syrups">
+                    Syrups
+                </option>
+
+                <option value="Pastries">
+                    Pastries
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- =================================================
+             TABLE
+        ================================================== -->
+
+        <div class="stock-movement-table-wrapper">
+
+            <table class="stock-movement-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            DATE
+                        </th>
+
+                        <th>
+                            ITEM
+                        </th>
+
+                        <th>
+                            CATEGORY
+                        </th>
+
+                        <th>
+                            MOVEMENT
+                        </th>
+
+                        <th>
+                            QUANTITY
+                        </th>
+
+                        <th>
+                            BALANCE
+                        </th>
+
+                        <th>
+                            REASON
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="stockMovementTableBody">
+
+                    <!-- ROW 1 -->
+
+                    <tr
+                        data-item="Fresh Milk"
+                        data-category="Dairy"
+                        data-type="Stock In"
+                    >
+
+                        <td>
+                            Aug 25, 2026
+                        </td>
+
+                        <td>
+                            <strong>
+                                Fresh Milk
+                            </strong>
+                        </td>
+
+                        <td>
+                            Dairy
+                        </td>
+
+                        <td>
+
+                            <span class="movement-badge stock-in">
+                                Stock In
+                            </span>
+
+                        </td>
+
+                        <td class="quantity positive">
+                            +20 L
+                        </td>
+
+                        <td>
+                            28 L
+                        </td>
+
+                        <td>
+                            Supplier delivery
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 2 -->
+
+                    <tr
+                        data-item="Sugar"
+                        data-category="Beans"
+                        data-type="Stock Out"
+                    >
+
+                        <td>
+                            Aug 25, 2026
+                        </td>
+
+                        <td>
+                            <strong>
+                                Sugar
+                            </strong>
+                        </td>
+
+                        <td>
+                            Beans
+                        </td>
+
+                        <td>
+
+                            <span class="movement-badge stock-out">
+                                Stock Out
+                            </span>
+
+                        </td>
+
+                        <td class="quantity negative">
+                            -2 kg
+                        </td>
+
+                        <td>
+                            23 kg
+                        </td>
+
+                        <td>
+                            Menu preparation
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 3 -->
+
+                    <tr
+                        data-item="Croissant"
+                        data-category="Pastries"
+                        data-type="Waste"
+                    >
+
+                        <td>
+                            Aug 24, 2026
+                        </td>
+
+                        <td>
+                            <strong>
+                                Croissant
+                            </strong>
+                        </td>
+
+                        <td>
+                            Pastries
+                        </td>
+
+                        <td>
+
+                            <span class="movement-badge waste">
+                                Waste
+                            </span>
+
+                        </td>
+
+                        <td class="quantity negative">
+                            -3 pcs
+                        </td>
+
+                        <td>
+                            9 pcs
+                        </td>
+
+                        <td>
+                            Expired
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 4 -->
+
+                    <tr
+                        data-item="Coffee Beans"
+                        data-category="Beans"
+                        data-type="Stock In"
+                    >
+
+                        <td>
+                            Aug 24, 2026
+                        </td>
+
+                        <td>
+                            <strong>
+                                Coffee Beans
+                            </strong>
+                        </td>
+
+                        <td>
+                            Beans
+                        </td>
+
+                        <td>
+
+                            <span class="movement-badge stock-in">
+                                Stock In
+                            </span>
+
+                        </td>
+
+                        <td class="quantity positive">
+                            +10 kg
+                        </td>
+
+                        <td>
+                            18 kg
+                        </td>
+
+                        <td>
+                            Supplier delivery
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 5 -->
+
+                    <tr
+                        data-item="Matcha Powder"
+                        data-category="Beans"
+                        data-type="Adjustment"
+                    >
+
+                        <td>
+                            Aug 23, 2026
+                        </td>
+
+                        <td>
+                            <strong>
+                                Matcha Powder
+                            </strong>
+                        </td>
+
+                        <td>
+                            Beans
+                        </td>
+
+                        <td>
+
+                            <span class="movement-badge adjustment">
+                                Adjustment
+                            </span>
+
+                        </td>
+
+                        <td class="quantity negative">
+                            -1 kg
+                        </td>
+
+                        <td>
+                            2 kg
+                        </td>
+
+                        <td>
+                            Physical count
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <div class="stock-movement-footer">
+
+            <span id="stockMovementCount">
+                Showing 5 movements
+            </span>
+
+
+            <button
+                type="button"
+                class="stock-movement-cancel"
+                onclick="closeStockMovementModal()"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     ADD STOCK ITEM MODAL
+========================================================= -->
+
+<div
+    class="add-stock-overlay"
+    id="addStockModal"
+>
+
+    <div class="add-stock-modal">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <div class="add-stock-header">
+
+            <div>
+
+                <h2>
+                    Add Stock Item
+                </h2>
+
+                <p>
+                    Add a new item to your inventory
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="add-stock-close"
+                onclick="closeAddStockModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <form id="addStockForm">
+
+            <div class="add-stock-body">
+
+
+                <!-- =================================================
+                     ITEM NAME
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="stockItemName">
+
+                        Item Name
+                        <span>*</span>
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="stockItemName"
+                        name="item_name"
+                        placeholder="e.g. Fresh Milk"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CATEGORY
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="stockCategory">
+
+                        Category
+                        <span>*</span>
+
+                    </label>
+
+                    <select
+                        id="stockCategory"
+                        name="category"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="Beans">
+                            Beans
+                        </option>
+
+                        <option value="Dairy">
+                            Dairy
+                        </option>
+
+                        <option value="Syrups">
+                            Syrups
+                        </option>
+
+                        <option value="Pastries">
+                            Pastries
+                        </option>
+
+                        <option value="Sweeteners">
+                            Sweeteners
+                        </option>
+
+                        <option value="Powders">
+                            Powders
+                        </option>
+
+                        <option value="Others">
+                            Others
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     QUANTITY
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="stockQuantity">
+
+                        Quantity
+                        <span>*</span>
+
+                    </label>
+
+                    <input
+                        type="number"
+                        id="stockQuantity"
+                        name="quantity"
+                        min="0"
+                        step="0.01"
+                        placeholder="e.g. 20"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- =================================================
+                     UNIT
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="stockUnit">
+
+                        Unit
+                        <span>*</span>
+
+                    </label>
+
+                    <select
+                        id="stockUnit"
+                        name="unit"
+                        required
+                    >
+
+                        <option value="">
+                            Select unit
+                        </option>
+
+                        <option value="kg">
+                            Kilogram (kg)
+                        </option>
+
+                        <option value="g">
+                            Gram (g)
+                        </option>
+
+                        <option value="L">
+                            Liter (L)
+                        </option>
+
+                        <option value="ml">
+                            Milliliter (ml)
+                        </option>
+
+                        <option value="pcs">
+                            Pieces (pcs)
+                        </option>
+
+                        <option value="bottle">
+                            Bottle
+                        </option>
+
+                        <option value="box">
+                            Box
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     REORDER LEVEL
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="reorderLevel">
+
+                        Reorder Level
+                        <span>*</span>
+
+                    </label>
+
+                    <input
+                        type="number"
+                        id="reorderLevel"
+                        name="reorder_level"
+                        min="0"
+                        step="0.01"
+                        placeholder="e.g. 10"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- =================================================
+                     SUPPLIER
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="stockSupplier">
+
+                        Supplier
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="stockSupplier"
+                        name="supplier"
+                        placeholder="Enter supplier name"
+                    >
+
+                </div>
+
+
+
+                <!-- =================================================
+                     UNIT COST
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="stockCost">
+
+                        Unit Cost
+
+                    </label>
+
+
+                    <div class="stock-price-input">
+
+                        <span>
+                            ₱
+                        </span>
+
+                        <input
+                            type="number"
+                            id="stockCost"
+                            name="unit_cost"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     EXPIRY DATE
+                ================================================== -->
+
+                <div class="add-stock-field">
+
+                    <label for="stockExpiry">
+
+                        Expiry Date
+
+                    </label>
+
+                    <input
+                        type="date"
+                        id="stockExpiry"
+                        name="expiry_date"
+                    >
+
+                </div>
+
+
+
+                <!-- =================================================
+                     STOCK STATUS
+                ================================================== -->
+
+                <div class="add-stock-availability">
+
+                    <label>
+                        Stock Status
+                    </label>
+
+
+                    <span id="stockStatusText">
+                        Good
+                    </span>
+
+
+                    <label class="stock-status-switch">
+
+                        <input
+                            type="checkbox"
+                            id="stockStatus"
+                            checked
+                            onchange="updateStockStatus()"
+                        >
+
+                        <span class="stock-switch-slider"></span>
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     NOTES
+                ================================================== -->
+
+                <div class="add-stock-field full-width">
+
+                    <label for="stockNotes">
+
+                        Notes
+
+                    </label>
+
+                    <textarea
+                        id="stockNotes"
+                        name="notes"
+                        placeholder="Add additional information about this stock item..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="add-stock-footer">
+
+                <button
+                    type="button"
+                    class="add-stock-cancel"
+                    onclick="closeAddStockModal()"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="add-stock-save"
+                >
+                    Add Stock Item
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Cafe</title>
+    <link rel="stylesheet" href="homepage.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <span class="brand-logo">
+                    
+                        <div class="logo-icon">☕</div>
+                    
+                </span>
+               Local Cafe
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+          <button type="button" class="nav-cta" onclick="openLoginModal()">
+                Login
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-content">
+                    <span class="hero-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                        Serving Since 2018
+                    </span>
+                    <h1 class="hero-title">Where Every Cup<br>Tells a Story</h1>
+                    <p class="hero-subtitle">Artisan coffee, freshly baked pastries, and a warm space to slow down. Visit us and taste the difference of handcrafted quality.</p>
+                    <div class="hero-actions">
+                        <a href="#menu" class="btn btn-primary">
+                            View Our Menu
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            Find Us
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <h3>25+</h3>
+                            <p>Coffee Varieties</p>
+                        </div>
+                        <div class="hero-stat">
+                            <h3>12k+</h3>
+                            <p>Happy Customers</p>
+                        </div>
+                        <div class="hero-stat">
+                            <h3>4.9</h3>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-card hero-card-main">
+                        <div class="hero-card-image">
+                            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <ellipse cx="60" cy="110" rx="40" ry="5" fill="rgba(74,44,26,0.1)"></ellipse>
+                                <path d="M35 45C35 38 40 30 60 30C80 30 85 38 85 45V75C85 88 75 100 60 100C45 100 35 88 35 75V45Z" fill="url(#cup-gradient)"></path>
+                                <path d="M35 50H85V75C85 88 75 100 60 100C45 100 35 88 35 75V50Z" fill="#F5EFE8" opacity="0.1"></path>
+                                <path d="M85 50H95C100 50 102 58 102 65C102 72 100 80 95 80H85V50Z" fill="#D4B896" opacity="0.6"></path>
+                                <path d="M48 20C49 23 47 26 48 29" stroke="#D4B896" stroke-width="2" stroke-linecap="round"></path>
+                                <path d="M60 18C61 21 59 24 60 27" stroke="#D4B896" stroke-width="2" stroke-linecap="round"></path>
+                                <path d="M72 20C73 23 71 26 72 29" stroke="#D4B896" stroke-width="2" stroke-linecap="round"></path>
+                                <defs>
+                                    <linearGradient id="cup-gradient" x1="35" y1="30" x2="85" y2="100" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#8B5A2B"></stop>
+                                        <stop offset="1" stop-color="#5D3A1A"></stop>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h3>Signature Blend</h3>
+                        <p>Rich, bold, perfectly balanced.</p>
+                        <span class="hero-card-price">₱145</span>
+                    </div>
+                    <div class="hero-card hero-card-side">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        <div>
+                            <strong>100%</strong>
+                            <small>Premium Beans</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">About Us</span>
+                <h2 class="section-title">Crafted with Care,<br>Served with Heart</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="about-image-inner">
+                        <svg width="100%" height="320" viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="20" y="30" width="360" height="260" rx="16" fill="#EFE7DD"></rect>
+                            <rect x="40" y="60" width="140" height="200" rx="12" fill="#F5EFE8"></rect>
+                            <rect x="200" y="60" width="160" height="95" rx="12" fill="#F5EFE8"></rect>
+                            <rect x="200" y="165" width="160" height="95" rx="12" fill="#F5EFE8"></rect>
+                            <circle cx="110" cy="110" r="35" fill="#6F4E37" opacity="0.85"></circle>
+                            <path d="M100 105H120V135H100V105Z" fill="#D4B896"></path>
+                            <rect x="215" y="80" width="80" height="10" rx="5" fill="#6F4E37" opacity="0.6"></rect>
+                            <rect x="215" y="100" width="120" height="8" rx="4" fill="#6F4E37" opacity="0.4"></rect>
+                            <rect x="215" y="116" width="100" height="8" rx="4" fill="#6F4E37" opacity="0.3"></rect>
+                            <rect x="215" y="185" width="120" height="8" rx="4" fill="#6F4E37" opacity="0.4"></rect>
+                            <rect x="215" y="201" width="90" height="8" rx="4" fill="#6F4E37" opacity="0.3"></rect>
+                            <rect x="215" y="217" width="110" height="8" rx="4" fill="#6F4E37" opacity="0.25"></rect>
+                        </svg>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 6v6l4 2"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Freshly Roasted Daily</h4>
+                                <p>Our beans are small-batch roasted every morning to ensure peak flavor in every pour.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Made with Love</h4>
+                                <p>Every drink is handcrafted by trained baristas who treat coffee as an art form.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                    <path d="M2 17l10 5 10-5"></path>
+                                    <path d="M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Local &amp; Sustainable</h4>
+                                <p>We source ethically from local farmers and use eco-friendly packaging whenever possible.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Open Daily</h4>
+                                <p>6:00 AM – 10:00 PM on weekdays and 7:00 AM – 11:00 PM on weekends.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="menu">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag">Our Menu</span>
+                <h2 class="section-title">Customer Favorites</h2>
+                <p class="section-subtitle">A curated selection of our most-loved drinks and pastries.</p>
+            </div>
+            <div class="menu-grid">
+                <article class="menu-card">
+                    <div class="menu-card-icon">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
+                            <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"></path>
+                            <line x1="6" y1="2" x2="6" y2="4"></line>
+                            <line x1="10" y1="2" x2="10" y2="4"></line>
+                            <line x1="14" y1="2" x2="14" y2="4"></line>
+                        </svg>
+                    </div>
+                    <div class="menu-card-body">
+                        <div class="menu-card-head">
+                            <h3>Spanish Latte</h3>
+                            <span class="menu-price">₱145</span>
+                        </div>
+                        <p>Bold espresso with condensed milk and steamed milk. Smooth, sweet, and aromatic.</p>
+                    </div>
+                </article>
+
+                <article class="menu-card">
+                    <div class="menu-card-icon alt">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M3 12h18"></path>
+                            <path d="M12 3a14.5 14.5 0 0 1 0 18M12 3a14.5 14.5 0 0 0 0 18"></path>
+                        </svg>
+                    </div>
+                    <div class="menu-card-body">
+                        <div class="menu-card-head">
+                            <h3>Matcha Latte</h3>
+                            <span class="menu-price">₱160</span>
+                        </div>
+                        <p>Premium stone-ground matcha whisked with silky oat milk and a touch of vanilla.</p>
+                    </div>
+                </article>
+
+                <article class="menu-card">
+                    <div class="menu-card-icon alt2">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"></path>
+                        </svg>
+                    </div>
+                    <div class="menu-card-body">
+                        <div class="menu-card-head">
+                            <h3>Caramel Macchiato</h3>
+                            <span class="menu-price">₱155</span>
+                        </div>
+                        <p>Espresso marked with vanilla foam and finished with a buttery caramel drizzle.</p>
+                    </div>
+                </article>
+
+                <article class="menu-card">
+                    <div class="menu-card-icon alt3">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <div class="menu-card-body">
+                        <div class="menu-card-head">
+                            <h3>Classic Hot Chocolate</h3>
+                            <span class="menu-price">₱135</span>
+                        </div>
+                        <p>Velvety dark chocolate melted into warm milk with a marshmallow crown.</p>
+                    </div>
+                </article>
+
+                <article class="menu-card">
+                    <div class="menu-card-icon alt4">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7v10c0 5.5 4.5 5 10 7 5.5-2 10-1.5 10-7V7L12 2z"></path>
+                            <path d="M2 7l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <div class="menu-card-body">
+                        <div class="menu-card-head">
+                            <h3>Butter Croissant</h3>
+                            <span class="menu-price">₱120</span>
+                        </div>
+                        <p>Flaky, golden layers of French butter, baked fresh every morning until crisp.</p>
+                    </div>
+                </article>
+
+                <article class="menu-card">
+                    <div class="menu-card-icon alt5">
+                        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M8 12h.01M16 12h.01"></path>
+                        </svg>
+                    </div>
+                    <div class="menu-card-body">
+                        <div class="menu-card-head">
+                            <h3>New York Cheesecake</h3>
+                            <span class="menu-price">₱180</span>
+                        </div>
+                        <p>Creamy, dense cheesecake on a buttery graham crust, topped with seasonal fruit.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="menu-cta">
+                <a href="#" class="btn btn-secondary">
+                    See Full Menu
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Premium Quality</h3>
+                    <p>Single-origin beans and locally sourced ingredients for uncompromised taste.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon alt">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3>Cozy Ambiance</h3>
+                    <p>Warm lighting, soft music, and comfortable seating perfect for work or a catch-up.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon alt2">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3>Expert Baristas</h3>
+                    <p>Certified baristas who bring skill and passion to every cup they craft.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon alt3">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                    </div>
+                    <h3>Free Wi-Fi</h3>
+                    <p>Stay connected with high-speed internet throughout the café.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-tag">Visit Us</span>
+                    <h2 class="section-title left">Drop by for Your<br>Next Favorite Cup</h2>
+                    <p class="contact-desc">We'd love to see you. Here's how to find us and get in touch.</p>
+                    <div class="contact-items">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Address</h4>
+                                <p>123 Coffee Lane, Barangay Mapagkalinga, Manila, Philippines</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Hours</h4>
+                                <p>Mon – Fri: 6:00 AM – 10:00 PM<br>Sat – Sun: 7:00 AM – 11:00 PM</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+63 917 123 4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Email</h4>
+                                <p>hello@localcoffee.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-map">
+                    <div class="map-box">
+                        <svg width="100%" height="100%" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+                            <rect width="400" height="400" fill="#F5EFE8"></rect>
+                            <line x1="0" y1="120" x2="400" y2="140" stroke="#D7C9B8" stroke-width="18" stroke-linecap="round"></line>
+                            <line x1="180" y1="0" x2="200" y2="400" stroke="#D7C9B8" stroke-width="18" stroke-linecap="round"></line>
+                            <line x1="0" y1="260" x2="400" y2="250" stroke="#E8DDCE" stroke-width="10" stroke-linecap="round"></line>
+                            <line x1="80" y1="0" x2="90" y2="400" stroke="#E8DDCE" stroke-width="10" stroke-linecap="round"></line>
+                            <line x1="300" y1="0" x2="310" y2="400" stroke="#E8DDCE" stroke-width="10" stroke-linecap="round"></line>
+                            <circle cx="200" cy="200" r="48" fill="#6F4E37" opacity="0.12"></circle>
+                            <circle cx="200" cy="200" r="32" fill="#6F4E37" opacity="0.18"></circle>
+                            <circle cx="200" cy="200" r="18" fill="#6F4E37"></circle>
+                            <circle cx="200" cy="195" r="7" fill="#F5EFE8"></circle>
+                            <rect x="190" y="200" width="20" height="14" rx="2" fill="#F5EFE8"></rect>
+                            <rect x="40" y="50" width="60" height="40" rx="6" fill="#FFFFFF" stroke="#D7C9B8" stroke-width="2"></rect>
+                            <rect x="280" y="60" width="80" height="48" rx="6" fill="#FFFFFF" stroke="#D7C9B8" stroke-width="2"></rect>
+                            <rect x="40" y="290" width="80" height="60" rx="6" fill="#FFFFFF" stroke="#D7C9B8" stroke-width="2"></rect>
+                            <rect x="290" y="300" width="70" height="50" rx="6" fill="#FFFFFF" stroke="#D7C9B8" stroke-width="2"></rect>
+                        </svg>
+                        <div class="map-pin-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                            </svg>
+                            Local Cafe
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- LOGIN SELECTION MODAL -->
+<div id="loginModal" class="login-modal">
+
+    <div class="login-modal-content">
+
+        <!-- Close Button -->
+        <button class="login-modal-close" onclick="closeLoginModal()">
+            &times;
+        </button>
+
+        <!-- Header -->
+        <div class="login-modal-header">
+            <h2>Welcome Back</h2>
+            <p>Select your account type to continue</p>
+        </div>
+
+        <!-- Account Options -->
+        <div class="login-options">
+
+            <!-- ADMIN -->
+            <a href="admin/login.php" class="login-option">
+                <div class="login-icon admin-icon">
+                    👨‍💼
+                </div>
+
+                <div class="login-option-text">
+                    <h3>Admin</h3>
+                    <p>Manage the entire system</p>
+                </div>
+
+                <span class="login-arrow">→</span>
+            </a>
+
+            <!-- STAFF -->
+            <a href="staff/login.php" class="login-option">
+                <div class="login-icon staff-icon">
+                    👨‍💻
+                </div>
+
+                <div class="login-option-text">
+                    <h3>Staff</h3>
+                    <p>Access staff operations</p>
+                </div>
+
+                <span class="login-arrow">→</span>
+            </a>
+
+            <!-- CUSTOMER -->
+            <a href="customer/login.php" class="login-option">
+                <div class="login-icon customer-icon">
+                    👤
+                </div>
+
+                <div class="login-option-text">
+                    <h3>Customer</h3>
+                    <p>Access your customer account</p>
+                </div>
+
+                <span class="login-arrow">→</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo logo-light">
+                        <span class="brand-logo">
+                            <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="36" height="36" rx="8" fill="url(#footer-gradient)"></rect>
+                                <path d="M10 26V10H18C21.3137 10 24 12.6863 24 16C24 19.3137 21.3137 22 18 22H14V26H10ZM14 14H18C19.1046 14 20 14.8954 20 16C20 17.1046 19.1046 18 18 18H14V14Z" fill="white"></path>
+                                <defs>
+                                    <linearGradient id="footer-gradient" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#8B5A2B"></stop>
+                                        <stop offset="1" stop-color="#6F4E37"></stop>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </span>
+                        Ayzen's Coffee
+                    </a>
+                    <p>Brewing memorable moments, one cup at a time. Thank you for choosing local.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Admin</h4>
+                    <ul>
+                        <li><a href="dashboard.php">Dashboard</a></li>
+                        <li><a href="dashboard.php">Orders</a></li>
+                        <li><a href="dashboard.php">Inventory</a></li>
+                        <li><a href="dashboard.php">Reports</a></li>
+                    </ul>
+                </div>
+                <div class="footer-socials">
+                    <h4>Follow Us</h4>
+                    <div class="socials">
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Messenger">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 5.94 2 10.82c0 2.81 1.4 5.32 3.62 6.96V22l3.3-1.83c.9.25 1.84.39 2.82.4 5.52 0 10-3.94 10-8.82S17.52 2 12 2zm1.5 11.5l-3.5-2-3.5 2 6-7 1 7z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Ayzen's Coffee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        // =========================================
+// LOGIN MODAL
+// =========================================
+
+function openLoginModal() {
+
+    const modal = document.getElementById("loginModal");
+
+    modal.classList.add("active");
+
+    // Prevent background scrolling
+    document.body.style.overflow = "hidden";
+}
+
+
+function closeLoginModal() {
+
+    const modal = document.getElementById("loginModal");
+
+    modal.classList.remove("active");
+
+    // Allow background scrolling again
+    document.body.style.overflow = "";
+}
+
+
+// Close modal when clicking outside the modal box
+document.getElementById("loginModal").addEventListener("click", function(event) {
+
+    if (event.target === this) {
+        closeLoginModal();
+    }
+
+});
+
+
+// Close modal when pressing ESC
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+        closeLoginModal();
+    }
+
+});
+    </script>
+    
+</body>
+</html>
