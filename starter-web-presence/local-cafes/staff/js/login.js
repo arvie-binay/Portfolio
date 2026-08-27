@@ -230,7 +230,7 @@ loginForm.addEventListener("submit", function(event) {
         // Wait 5 seconds, then redirect
         setTimeout(function() {
 
-            window.location.href = "dashboard.php";
+            window.location.href = "dashboard.html";
 
         }, 1000);
 

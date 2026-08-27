@@ -1,0 +1,2977 @@
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CaféHub - Settings</title>
+
+    <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f4f1;
+            color: #292421;
+        }
+
+        /* =========================================================
+           LAYOUT
+        ========================================================= */
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================================================
+           SIDEBAR
+        ========================================================= */
+
+        .sidebar {
+            width: 250px;
+            background: #2c211c;
+            color: white;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            padding: 20px 15px;
+            z-index: 1000;
+
+            transition: 0.3s;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            scrollbar-width: thin;
+            scrollbar-color: #5a453d transparent;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #5a453d;
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background-color: #7c5f54;
+        }
+
+        /* =========================================================
+           LOGO
+        ========================================================= */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 10px 12px 25px;
+
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+
+            background: #c48a5a;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .logo h2 {
+            font-size: 20px;
+        }
+
+        .logo span {
+            display: block;
+
+            font-size: 11px;
+            color: #cdbeb5;
+
+            margin-top: 2px;
+        }
+
+        /* =========================================================
+           SIDEBAR MENU
+        ========================================================= */
+
+        .menu-title {
+            font-size: 11px;
+            color: #9d8d83;
+
+            margin: 25px 12px 10px;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: #d8ccc5;
+            text-decoration: none;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #4a362c;
+            color: white;
+        }
+
+        .sidebar-menu .icon {
+            width: 25px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        /* =========================================================
+           TOPBAR
+        ========================================================= */
+
+        .topbar {
+            height: 70px;
+
+            background: white;
+            border-bottom: 1px solid #e9e3df;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 250px;
+
+            z-index: 900;
+        }
+
+        .page-title h1 {
+            font-size: 22px;
+        }
+
+        .page-title p {
+            color: #8b817b;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+
+            top: -6px;
+            right: -7px;
+
+            width: 17px;
+            height: 17px;
+
+            background: #d9534f;
+            color: white;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 10px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #c48a5a;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info small {
+            color: #8b817b;
+            font-size: 11px;
+        }
+
+        /* =========================================================
+           CONTENT
+        ========================================================= */
+
+        .content {
+            padding: 30px;
+            padding-top: 100px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h2 {
+            font-size: 25px;
+        }
+
+        .page-heading p {
+            color: #81766f;
+            margin-top: 5px;
+        }
+
+        /* =========================================================
+           SETTINGS LAYOUT
+        ========================================================= */
+
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 230px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* =========================================================
+           SETTINGS NAVIGATION
+        ========================================================= */
+
+        .settings-nav {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 10px;
+        }
+
+        .settings-nav-title {
+            font-size: 11px;
+            color: #9a8d85;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+
+            padding: 12px;
+        }
+
+        .settings-nav a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            text-decoration: none;
+            color: #655b55;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            margin-bottom: 4px;
+
+            transition: 0.2s;
+        }
+
+        .settings-nav a:hover,
+        .settings-nav a.active {
+            background: #f4e9df;
+            color: #8f5b38;
+            font-weight: 600;
+        }
+
+        .settings-nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* =========================================================
+           SETTINGS CONTENT
+        ========================================================= */
+
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .settings-card {
+            background: white;
+
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+
+            padding: 22px;
+        }
+
+        .settings-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 22px;
+
+            padding-bottom: 15px;
+
+            border-bottom: 1px solid #eee7e2;
+        }
+
+        .settings-card-header h3 {
+            font-size: 17px;
+        }
+
+        .settings-card-header p {
+            color: #8b817b;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #554b46;
+
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            border: 1px solid #e1d9d3;
+            border-radius: 9px;
+
+            padding: 11px 12px;
+
+            font-size: 13px;
+            color: #403631;
+
+            background: #fff;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #c48a5a;
+
+            box-shadow: 0 0 0 3px rgba(196,138,90,0.12);
+        }
+
+        .form-help {
+            color: #9a8d85;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        /* =========================================================
+           PROFILE
+        ========================================================= */
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            margin-bottom: 22px;
+        }
+
+        .large-avatar {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 50%;
+
+            background: #c48a5a;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .profile-info h4 {
+            font-size: 16px;
+        }
+
+        .profile-info p {
+            color: #8b817b;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .change-avatar {
+            display: inline-block;
+
+            margin-top: 8px;
+
+            color: #a66b3f;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .change-avatar:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================================================
+           TOGGLE SETTINGS
+        ========================================================= */
+
+        .setting-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 15px 0;
+
+            border-bottom: 1px solid #eee7e2;
+        }
+
+        .setting-option:first-child {
+            padding-top: 0;
+        }
+
+        .setting-option:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .setting-option-info {
+            padding-right: 20px;
+        }
+
+        .setting-option-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .setting-option-info small {
+            display: block;
+
+            color: #8b817b;
+
+            font-size: 11px;
+
+            margin-top: 4px;
+        }
+
+        /* =========================================================
+           TOGGLE SWITCH
+        ========================================================= */
+
+        .switch {
+            position: relative;
+
+            width: 44px;
+            height: 24px;
+
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+
+            cursor: pointer;
+
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            background: #d7cec8;
+
+            border-radius: 20px;
+
+            transition: 0.3s;
+        }
+
+        .slider:before {
+            content: "";
+
+            position: absolute;
+
+            width: 18px;
+            height: 18px;
+
+            left: 3px;
+            top: 3px;
+
+            background: white;
+
+            border-radius: 50%;
+
+            transition: 0.3s;
+
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .switch input:checked + .slider {
+            background: #c48a5a;
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* =========================================================
+           SECURITY
+        ========================================================= */
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 15px;
+
+            background: #faf8f6;
+
+            border: 1px solid #eee7e2;
+
+            border-radius: 10px;
+
+            margin-bottom: 10px;
+        }
+
+        .security-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .security-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .security-icon {
+            width: 40px;
+            height: 40px;
+
+            background: #f4e9df;
+
+            border-radius: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+        .security-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .security-info small {
+            display: block;
+
+            color: #8b817b;
+
+            font-size: 11px;
+
+            margin-top: 3px;
+        }
+
+        .security-button {
+            border: none;
+
+            background: #f0e4da;
+            color: #8f5b38;
+
+            padding: 8px 12px;
+
+            border-radius: 7px;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .security-button:hover {
+            background: #e6d5c7;
+        }
+
+        /* =========================================================
+           SAVE BUTTONS
+        ========================================================= */
+
+        .settings-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            padding-top: 5px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .btn-secondary {
+            background: #eee8e3;
+            color: #665c56;
+        }
+
+        .btn-secondary:hover {
+            background: #e2dad4;
+        }
+
+        .btn-primary {
+            background: #c48a5a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #a66b3f;
+            transform: translateY(-1px);
+        }
+
+        /* =========================================================
+           SUCCESS MESSAGE
+        ========================================================= */
+
+        .save-message {
+            display: none;
+
+            background: #e5f2e8;
+            color: #39794e;
+
+            border: 1px solid #cfe5d4;
+
+            padding: 12px 15px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .save-message.show {
+            display: block;
+        }
+
+        /* =========================
+   MENU TOGGLE
+========================= */
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 23px;
+    cursor: pointer;
+
+    color: #292421;
+}
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .settings-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-nav {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+            }
+
+            .settings-nav-title {
+                grid-column: 1 / -1;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+           
+
+            .topbar {
+                left: 0;
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+                padding-top: 90px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .settings-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .topbar {
+                height: 65px;
+            }
+
+            .content {
+                padding-top: 85px;
+            }
+
+            .page-title p {
+                display: none;
+            }
+
+            .page-title h1 {
+                font-size: 19px;
+            }
+
+            .page-heading h2 {
+                font-size: 21px;
+            }
+
+            .settings-card {
+                padding: 17px;
+            }
+
+            .settings-nav {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-actions {
+                flex-direction: column-reverse;
+            }
+
+            .settings-actions .btn {
+                width: 100%;
+            }
+
+            .security-item {
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+        }
+        /* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+.user-dropdown {
+    position: relative;
+}
+
+
+/* Profile button */
+
+.user-profile-btn {
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    padding: 5px 8px;
+
+    border-radius: 10px;
+
+    transition: 0.2s;
+}
+
+.user-profile-btn:hover {
+    background: #f6f1ed;
+}
+
+
+/* Arrow */
+
+.dropdown-arrow {
+    color: #8b817b;
+
+    font-size: 14px;
+
+    margin-left: 3px;
+
+    transition: 0.2s;
+}
+
+
+/* Dropdown */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 270px;
+
+    background: white;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 10px 30px rgba(44, 33, 28, 0.12);
+
+    padding: 10px;
+
+    z-index: 2000;
+
+    /* Hidden by default */
+    display: none;
+
+    animation: dropdownAnimation 0.18s ease;
+}
+
+
+/* Show dropdown */
+
+.profile-dropdown.show {
+    display: block;
+}
+
+
+/* Dropdown animation */
+
+@keyframes dropdownAnimation {
+
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Dropdown header */
+
+.dropdown-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px;
+}
+
+
+/* Large dropdown avatar */
+
+.dropdown-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #c48a5a;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 13px;
+
+    color: #332b27;
+}
+
+
+.dropdown-header small {
+    display: block;
+
+    color: #8b817b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+
+/* Divider */
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #eee7e2;
+
+    margin: 7px 0;
+}
+
+
+/* Dropdown item */
+
+.dropdown-item {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: #403631;
+
+    background: transparent;
+
+    border: none;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.dropdown-item:hover {
+    background: #f8f2ed;
+}
+
+
+/* Icon */
+
+.dropdown-item > span {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 8px;
+
+    background: #f4e9df;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+
+/* Text */
+
+.dropdown-item strong {
+    display: block;
+
+    font-size: 12px;
+
+    color: #403631;
+}
+
+
+.dropdown-item small {
+    display: block;
+
+    color: #91857d;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* Logout */
+
+.logout-item:hover {
+    background: #fff1ef;
+}
+
+
+.logout-item:hover > span {
+    background: #f9dddd;
+}
+
+
+.logout-item:hover strong {
+    color: #c94c4c;
+}
+
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .profile-dropdown {
+        width: 250px;
+
+        right: -5px;
+    }
+
+    .dropdown-arrow {
+        display: none;
+    }
+
+}
+/* =========================================================
+   LOGOUT CONFIRMATION MODAL
+========================================================= */
+
+.logout-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5000;
+
+    padding: 20px;
+}
+
+
+/* Show modal */
+
+.logout-modal-overlay.show {
+    display: flex;
+}
+
+
+/* Modal */
+
+.logout-modal {
+
+    width: 100%;
+    max-width: 400px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.2);
+
+    animation: logoutModalAnimation 0.2s ease;
+}
+
+
+/* Animation */
+
+@keyframes logoutModalAnimation {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+/* Logout icon */
+
+.logout-modal-icon {
+
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    background: #fff0ed;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+/* Title */
+
+.logout-modal h2 {
+
+    font-size: 20px;
+
+    color: #332b27;
+
+    margin-bottom: 8px;
+}
+
+
+/* Message */
+
+.logout-modal p {
+
+    color: #8b817b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+}
+
+
+/* Buttons */
+
+.logout-modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* Cancel */
+
+.logout-cancel {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-cancel:hover {
+
+    background: #f7f3f0;
+}
+
+
+/* Confirm */
+
+.logout-confirm {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: none;
+
+    background: #c94c4c;
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-confirm:hover {
+
+    background: #b63d3d;
+
+}
+#my-profile.profile-highlight {
+    animation: profileHighlight 1.5s ease;
+}
+
+@keyframes profileHighlight {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+#my-profile {
+    scroll-margin-top: 100px;
+}
+html {
+    scroll-behavior: smooth;
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ☕
+            </div>
+
+            <div>
+                <h2>CaféHub</h2>
+                <span>Management System</span>
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="dashboard.html">
+                    <span class="icon">📊</span>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="orders.html">
+                    <span class="icon">🛒</span>
+                    Orders
+                </a>
+            </li>
+
+            <li>
+                <a href="menu.html">
+                    <span class="icon">🍔</span>
+                    Menu
+                </a>
+            </li>
+
+            <li>
+                <a href="tables.html">
+                    <span class="icon">🪑</span>
+                    Tables
+                </a>
+            </li>
+
+            <li>
+                <a href="reservations.html">
+                    <span class="icon">📅</span>
+                    Reservations
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="menu-title">
+            Management
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="inventory.html">
+                    <span class="icon">📦</span>
+                    Inventory
+                </a>
+            </li>
+
+            <li>
+                <a href="customers.html">
+                    <span class="icon">👥</span>
+                    Customers
+                </a>
+            </li>
+
+            <li>
+                <a href="staff.html">
+                    <span class="icon">👨‍💼</span>
+                    Staff
+                </a>
+            </li>
+
+            <li>
+                <a href="payments.html">
+                    <span class="icon">💳</span>
+                    Payments
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="menu-title">
+            Reports
+        </div>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="sales-reports.html">
+                    <span class="icon">📈</span>
+                    Sales Reports
+                </a>
+            </li>
+
+            <li>
+                <a href="analytics.html">
+                    <span class="icon">📊</span>
+                    Analytics
+                </a>
+            </li>
+
+            <li>
+                <a href="settings.html" class="active">
+                    <span class="icon">⚙️</span>
+                    Settings
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+
+    <main class="main">
+
+        <!-- =====================================================
+             TOPBAR
+        ====================================================== -->
+
+        <header class="topbar">
+
+            <div style="display:flex; align-items:center; gap:15px;">
+
+                <button
+                    class="menu-toggle"
+                    onclick="toggleSidebar()"
+                >
+                    ☰
+                </button>
+
+                <div class="page-title">
+
+                    <h1>Settings</h1>
+
+                    <p>
+                        Manage your café system preferences
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="notification">
+
+                    🔔
+
+                    <span class="notification-badge">
+                        4
+                    </span>
+
+                </div>
+
+
+                <div class="user-dropdown">
+
+    <!-- USER PROFILE BUTTON -->
+    <button class="user-profile-btn" onclick="toggleUserDropdown(event)">
+
+        <div class="user-avatar">
+            KB
+        </div>
+
+        <div class="user-info">
+
+            <strong>
+                King Binay
+            </strong>
+
+            <small>
+                Administrator
+            </small>
+
+        </div>
+
+        <span class="dropdown-arrow">
+            ▾
+        </span>
+
+    </button>
+
+
+    <!-- USER DROPDOWN -->
+    <div class="profile-dropdown" id="profileDropdown">
+
+        <div class="dropdown-header">
+
+            <div class="dropdown-avatar">
+                KB
+            </div>
+
+            <div>
+
+                <strong>
+                    King Binay
+                </strong>
+
+                <small>
+                    Administrator
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a href="settings.html#my-profile" class="dropdown-item">
+
+            <span>
+                👤
+            </span>
+
+            <div>
+                <strong>My Profile</strong>
+                <small>View your account</small>
+            </div>
+
+        </a>
+
+
+        <a href="settings.html" class="dropdown-item">
+
+            <span>
+                ⚙️
+            </span>
+
+            <div>
+                <strong>Settings</strong>
+                <small>Manage system settings</small>
+            </div>
+
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <button
+            type="button"
+            class="dropdown-item logout-item"
+            onclick="openLogoutModal()"
+        >
+
+            <span>
+                🚪
+            </span>
+
+            <div>
+                <strong>Logout</strong>
+                <small>Sign out of your account</small>
+            </div>
+
+        </button>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             CONTENT
+        ====================================================== -->
+
+        <div class="content">
+
+            <div class="page-heading">
+
+                <h2>
+                    Settings ⚙️
+                </h2>
+
+                <p>
+                    Configure your CaféHub account and system preferences.
+                </p>
+
+            </div>
+
+
+            <div class="settings-layout">
+
+
+                <!-- =================================================
+                     SETTINGS NAVIGATION
+                ================================================== -->
+
+                <div class="settings-nav">
+
+                    <div class="settings-nav-title">
+                        Settings Menu
+                    </div>
+
+                    <a href="#cafe-settings" class="active">
+
+                        <span class="settings-nav-icon">
+                            ☕
+                        </span>
+
+                        Café Information
+
+                    </a>
+
+                    <a href="#profile-settings">
+
+                        <span class="settings-nav-icon">
+                            👤
+                        </span>
+
+                        My Profile
+
+                    </a>
+
+                    <a href="#notifications">
+
+                        <span class="settings-nav-icon">
+                            🔔
+                        </span>
+
+                        Notifications
+
+                    </a>
+
+                    <a href="#appearance">
+
+                        <span class="settings-nav-icon">
+                            🎨
+                        </span>
+
+                        Appearance
+
+                    </a>
+
+                    <a href="#security">
+
+                        <span class="settings-nav-icon">
+                            🔐
+                        </span>
+
+                        Security
+
+                    </a>
+
+                    <a href="#system">
+
+                        <span class="settings-nav-icon">
+                            🖥️
+                        </span>
+
+                        System
+
+                    </a>
+
+                </div>
+
+
+                <!-- =================================================
+                     SETTINGS CONTENT
+                ================================================== -->
+
+                <div class="settings-content">
+
+
+                    <!-- =================================================
+                         SAVE MESSAGE
+                    ================================================== -->
+
+                    <div
+                        class="save-message"
+                        id="saveMessage"
+                    >
+                        ✓ Settings saved successfully.
+                    </div>
+
+
+                    <!-- =================================================
+                         CAFÉ INFORMATION
+                    ================================================== -->
+
+                    <div
+                        class="settings-card"
+                        id="cafe-settings"
+                    >
+
+                        <div class="settings-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Café Information
+                                </h3>
+
+                                <p>
+                                    Basic information about your café.
+                                </p>
+
+                            </div>
+
+                            <span>
+                                ☕
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Café Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value="CaféHub"
+                                    placeholder="Enter café name"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Contact Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value="+63 912 345 6789"
+                                    placeholder="Enter contact number"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    value="cafehub@gmail.com"
+                                    placeholder="Enter email address"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Business Hours
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value="8:00 AM - 10:00 PM"
+                                    placeholder="Enter business hours"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Café Address
+                                </label>
+
+                                <textarea
+                                    placeholder="Enter café address"
+                                >Calapan City, Oriental Mindoro, Philippines</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PROFILE
+                    ================================================== -->
+
+                    <div
+                        class="settings-card"
+                        id="profile-settings"
+                    >
+
+                        <div class="settings-card-header" id="my-profile">
+
+                            <div>
+
+                                <h3>
+                                    My Profile
+                                </h3>
+
+                                <p>
+                                    Manage your administrator account information.
+                                </p>
+
+                            </div>
+
+                            <span>
+                                👤
+                            </span>
+
+                        </div>
+
+
+                        <div class="profile-header">
+
+                            <div class="large-avatar">
+                                KB
+                            </div>
+
+                            <div class="profile-info">
+
+                                <h4>
+                                    King Binay
+                                </h4>
+
+                                <p>
+                                    Administrator
+                                </p>
+
+                                <a
+                                    href="#"
+                                    class="change-avatar"
+                                    onclick="changeAvatar(event)"
+                                >
+                                    Change profile picture
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>
+                                    First Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value="King"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Last Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value="Binay"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Username
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value="admin"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    value="admin@cafehub.com"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         NOTIFICATIONS
+                    ================================================== -->
+
+                    <div
+                        class="settings-card"
+                        id="notifications"
+                    >
+
+                        <div class="settings-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Notifications
+                                </h3>
+
+                                <p>
+                                    Choose which notifications you want to receive.
+                                </p>
+
+                            </div>
+
+                            <span>
+                                🔔
+                            </span>
+
+                        </div>
+
+
+                        <div class="setting-option">
+
+                            <div class="setting-option-info">
+
+                                <strong>
+                                    New Order Notifications
+                                </strong>
+
+                                <small>
+                                    Receive an alert whenever a new order is placed.
+                                </small>
+
+                            </div>
+
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-option">
+
+                            <div class="setting-option-info">
+
+                                <strong>
+                                    Low Stock Alerts
+                                </strong>
+
+                                <small>
+                                    Notify you when an inventory item reaches its minimum stock level.
+                                </small>
+
+                            </div>
+
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-option">
+
+                            <div class="setting-option-info">
+
+                                <strong>
+                                    Reservation Notifications
+                                </strong>
+
+                                <small>
+                                    Receive notifications for new and upcoming reservations.
+                                </small>
+
+                            </div>
+
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-option">
+
+                            <div class="setting-option-info">
+
+                                <strong>
+                                    Daily Sales Summary
+                                </strong>
+
+                                <small>
+                                    Receive a daily summary of your café's sales and orders.
+                                </small>
+
+                            </div>
+
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         APPEARANCE
+                    ================================================== -->
+
+                    <div
+                        class="settings-card"
+                        id="appearance"
+                    >
+
+                        <div class="settings-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Appearance
+                                </h3>
+
+                                <p>
+                                    Customize how the management system looks.
+                                </p>
+
+                            </div>
+
+                            <span>
+                                🎨
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Theme
+                                </label>
+
+                                <select>
+
+                                    <option selected>
+                                        Light
+                                    </option>
+
+                                    <option>
+                                        Dark
+                                    </option>
+
+                                    <option>
+                                        System Default
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Dashboard Layout
+                                </label>
+
+                                <select>
+
+                                    <option selected>
+                                        Comfortable
+                                    </option>
+
+                                    <option>
+                                        Compact
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SECURITY
+                    ================================================== -->
+
+                    <div
+                        class="settings-card"
+                        id="security"
+                    >
+
+                        <div class="settings-card-header">
+
+                            <div>
+
+                                <h3>
+                                    Security
+                                </h3>
+
+                                <p>
+                                    Protect your administrator account.
+                                </p>
+
+                            </div>
+
+                            <span>
+                                🔐
+                            </span>
+
+                        </div>
+
+
+                        <div class="security-item">
+
+                            <div class="security-left">
+
+                                <div class="security-icon">
+                                    🔑
+                                </div>
+
+                                <div class="security-info">
+
+                                    <strong>
+                                        Password
+                                    </strong>
+
+                                    <small>
+                                        Last changed 30 days ago
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="security-button"
+                                onclick="changePassword()"
+                            >
+                                Change
+                            </button>
+
+                        </div>
+
+
+                        <div class="security-item">
+
+                            <div class="security-left">
+
+                                <div class="security-icon">
+                                    🛡️
+                                </div>
+
+                                <div class="security-info">
+
+                                    <strong>
+                                        Two-Factor Authentication
+                                    </strong>
+
+                                    <small>
+                                        Add an extra layer of account protection.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="security-item">
+
+                            <div class="security-left">
+
+                                <div class="security-icon">
+                                    💻
+                                </div>
+
+                                <div class="security-info">
+
+                                    <strong>
+                                        Login Activity
+                                    </strong>
+
+                                    <small>
+                                        Review recent account login activity.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="security-button"
+                                onclick="viewLoginActivity()"
+                            >
+                                View
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SYSTEM
+                    ================================================== -->
+
+                    <div
+                        class="settings-card"
+                        id="system"
+                    >
+
+                        <div class="settings-card-header">
+
+                            <div>
+
+                                <h3>
+                                    System Preferences
+                                </h3>
+
+                                <p>
+                                    Configure general system behavior.
+                                </p>
+
+                            </div>
+
+                            <span>
+                                🖥️
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Currency
+                                </label>
+
+                                <select>
+
+                                    <option selected>
+                                        Philippine Peso (₱)
+                                    </option>
+
+                                    <option>
+                                        US Dollar ($)
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Time Zone
+                                </label>
+
+                                <select>
+
+                                    <option selected>
+                                        Asia/Manila (GMT+8)
+                                    </option>
+
+                                    <option>
+                                        Asia/Tokyo (GMT+9)
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Date Format
+                                </label>
+
+                                <select>
+
+                                    <option selected>
+                                        MM/DD/YYYY
+                                    </option>
+
+                                    <option>
+                                        DD/MM/YYYY
+                                    </option>
+
+                                    <option>
+                                        YYYY-MM-DD
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Language
+                                </label>
+
+                                <select>
+
+                                    <option selected>
+                                        English
+                                    </option>
+
+                                    <option>
+                                        Filipino
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <br>
+
+
+                        <div class="setting-option">
+
+                            <div class="setting-option-info">
+
+                                <strong>
+                                    Automatic Data Backup
+                                </strong>
+
+                                <small>
+                                    Automatically back up café data regularly.
+                                </small>
+
+                            </div>
+
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-option">
+
+                            <div class="setting-option-info">
+
+                                <strong>
+                                    Confirm Before Deleting
+                                </strong>
+
+                                <small>
+                                    Ask for confirmation before permanently deleting records.
+                                </small>
+
+                            </div>
+
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTION BUTTONS
+                    ================================================== -->
+
+                    <div class="settings-actions">
+
+                        <button
+                            class="btn btn-secondary"
+                            onclick="resetSettings()"
+                        >
+                            Reset
+                        </button>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="saveSettings()"
+                        >
+                            Save Changes
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================================================
+       MOBILE SIDEBAR
+    ========================================================= */
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("open");
+
+    }
+
+
+    /* =========================================================
+       CLOSE SIDEBAR WHEN CLICKING OUTSIDE
+    ========================================================= */
+
+    document.addEventListener("click", function(event) {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const toggle =
+            document.querySelector(".menu-toggle");
+
+        if (
+            window.innerWidth <= 768 &&
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(event.target) &&
+            !toggle.contains(event.target)
+        ) {
+
+            sidebar.classList.remove("open");
+
+        }
+
+    });
+
+
+    /* =========================================================
+       SAVE SETTINGS
+    ========================================================= */
+
+    function saveSettings() {
+
+        const message =
+            document.getElementById("saveMessage");
+
+        message.classList.add("show");
+
+        /*
+         * Remove the message after 5 seconds.
+         */
+
+        setTimeout(function() {
+
+            message.classList.remove("show");
+
+        }, 5000);
+
+    }
+
+
+    /* =========================================================
+       RESET SETTINGS
+    ========================================================= */
+
+    function resetSettings() {
+
+        const confirmation =
+            confirm(
+                "Are you sure you want to reset the settings?"
+            );
+
+        if (confirmation) {
+
+            location.reload();
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CHANGE PASSWORD
+    ========================================================= */
+
+    function changePassword() {
+
+        alert(
+            "Password change functionality will be connected to PHP later."
+        );
+
+    }
+
+
+    /* =========================================================
+       LOGIN ACTIVITY
+    ========================================================= */
+
+    function viewLoginActivity() {
+
+        alert(
+            "Login activity functionality will be connected to the database later."
+        );
+
+    }
+
+
+    /* =========================================================
+       CHANGE PROFILE PICTURE
+    ========================================================= */
+
+    function changeAvatar(event) {
+
+        event.preventDefault();
+
+        alert(
+            "Profile picture upload functionality will be connected later."
+        );
+
+    }
+
+
+    /* =========================================================
+       SETTINGS NAVIGATION
+       Automatically highlight the selected section.
+    ========================================================= */
+
+    const settingsLinks =
+        document.querySelectorAll(".settings-nav a");
+
+    settingsLinks.forEach(function(link) {
+
+        link.addEventListener("click", function() {
+
+            settingsLinks.forEach(function(item) {
+
+                item.classList.remove("active");
+
+            });
+
+            this.classList.add("active");
+
+        });
+
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+
+    if (window.location.hash === "#my-profile") {
+
+        const profileSection =
+            document.getElementById("my-profile");
+
+        if (profileSection) {
+
+            setTimeout(function () {
+
+                profileSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }, 300);
+
+        }
+
+    }
+
+});
+/* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+function toggleUserDropdown(event) {
+
+    // Prevent the document click event from immediately
+    // closing the dropdown.
+    event.stopPropagation();
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    dropdown.classList.toggle("show");
+
+}
+
+
+/* =========================================================
+   CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    const userDropdown =
+        document.querySelector(".user-dropdown");
+
+    if (
+        dropdown &&
+        userDropdown &&
+        !userDropdown.contains(event.target)
+    ) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+});
+/* =========================================================
+   OPEN LOGOUT MODAL
+========================================================= */
+
+function openLogoutModal() {
+
+    // Close profile dropdown first
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    if (dropdown) {
+        dropdown.classList.remove("show");
+    }
+
+
+    // Show logout modal
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE LOGOUT MODAL
+========================================================= */
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================================
+   CONFIRM LOGOUT
+========================================================= */
+
+function confirmLogout() {
+
+    /*
+     * Change this to your actual logout PHP file.
+     */
+
+    window.location.href = "login.html";
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.getElementById("logoutModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeLogoutModal();
+
+        }
+
+    });
+
+
+
+</script>
+<!-- =========================================================
+     LOGOUT CONFIRMATION MODAL
+========================================================= -->
+
+<div class="logout-modal-overlay" id="logoutModal">
+
+    <div class="logout-modal">
+
+        <!-- Icon -->
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <!-- Title -->
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <!-- Message -->
+
+        <p>
+            Are you sure you want to log out of your CaféHub account?
+        </p>
+
+
+        <!-- Buttons -->
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="logout-confirm"
+                onclick="confirmLogout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
+

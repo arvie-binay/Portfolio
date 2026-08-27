@@ -1,0 +1,6394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Menu — CaféHub Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f4f1;
+            color: #292421;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+       .sidebar {
+    width: 250px;
+    background: #2c211c;
+    color: white;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    padding: 20px 15px;
+
+    z-index: 1000;
+
+    transition:
+        width 0.3s ease,
+        transform 0.3s ease;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #5a453d transparent;
+}
+/* =========================
+   COLLAPSED SIDEBAR
+========================= */
+
+.sidebar.collapsed {
+    width: 75px;
+}
+
+/* Custom Scrollbar for Chrome, Edge, Safari */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #5a453d; /* Matches your warm brown theme */
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #7c5f54; /* Highlight color on hover */
+}
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: #c48a5a;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .logo h2 {
+            font-size: 20px;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 11px;
+            color: #cdbeb5;
+            margin-top: 2px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #9d8d83;
+            margin: 25px 12px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: #d8ccc5;
+            text-decoration: none;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px;
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: #4a362c;
+            color: white;
+        }
+
+        .sidebar-menu .icon {
+            width: 25px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+         .main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
+}
+
+/* Main content when sidebar is collapsed */
+.main.sidebar-collapsed {
+    margin-left: 75px;
+    width: calc(100% - 75px);
+}
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+       .topbar {
+    height: 70px;
+
+    background: white;
+    border-bottom: 1px solid #e9e3df;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 30px;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 900;
+
+    transition: 0.3s ease;
+}
+
+        .page-title h1 {
+            font-size: 22px;
+        }
+
+        .page-title p {
+            color: #8b817b;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -7px;
+
+            width: 17px;
+            height: 17px;
+
+            background: #d9534f;
+            color: white;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 10px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #c48a5a;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info small {
+            color: #8b817b;
+            font-size: 11px;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+
+            border: 1px solid #eee7e2;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .stat-card h4 {
+            color: #8b817b;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .stat-card h2 {
+            margin-top: 8px;
+            font-size: 25px;
+        }
+
+        .stat-card .stat-sub {
+            margin-top: 7px;
+            font-size: 11px;
+            color: #8b817b;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .brown {
+            background: #f4e9df;
+        }
+
+        .green {
+            background: #e5f2e8;
+        }
+
+        .orange {
+            background: #fff0dc;
+        }
+
+        .blue {
+            background: #e7eef8;
+        }
+
+        /* =========================
+           CATEGORY FILTER BAR
+        ========================= */
+
+        .filter-bar {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .category-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid #e2d9d3;
+            background: white;
+            color: #6b5e56;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .chip:hover {
+            background: #f4ebe3;
+            border-color: #d4c4b6;
+        }
+
+        .chip.active {
+            background: #c48a5a;
+            color: white;
+            border-color: #c48a5a;
+        }
+
+        .btn-primary {
+            padding: 10px 22px;
+            background: #c48a5a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(196, 138, 90, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #a66b3f;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(196, 138, 90, 0.35);
+        }
+
+        /* =========================
+           MENU GRID
+        ========================= */
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .menu-card {
+            background: white;
+            border: 1px solid #eee7e2;
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(44, 33, 28, 0.08);
+            border-color: #e0d2c4;
+        }
+
+        .menu-card-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            background: #f4e9df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 14px;
+        }
+
+        .menu-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .menu-card-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #292421;
+            line-height: 1.3;
+        }
+
+        .category-pill {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .cat-coffee {
+            background: #f4e9df;
+            color: #8b5a2b;
+        }
+
+        .cat-tea {
+            background: #e6f2e8;
+            color: #398052;
+        }
+
+        .cat-pastries {
+            background: #fff0dc;
+            color: #a86b16;
+        }
+
+        .cat-desserts {
+            background: #fce4ec;
+            color: #ad3569;
+        }
+
+        .cat-cold {
+            background: #e7eef8;
+            color: #466a9f;
+        }
+
+        .cat-specials {
+            background: #f3e5f5;
+            color: #7b3fa0;
+        }
+
+        .menu-card-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #292421;
+            margin: 8px 0 12px;
+        }
+
+        .menu-card-price .currency {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .stock-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            align-self: flex-start;
+        }
+
+        .stock-badge::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .stock-in {
+            background: #e5f2e8;
+            color: #398052;
+        }
+
+        .stock-in::before {
+            background: #398052;
+        }
+
+        .stock-low {
+            background: #fff1d9;
+            color: #a86b16;
+        }
+
+        .stock-low::before {
+            background: #d4941a;
+        }
+
+        .stock-oos {
+            background: #fbe4e2;
+            color: #b43226;
+        }
+
+        .stock-oos::before {
+            background: #b43226;
+        }
+
+        .menu-card-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 8px;
+            padding-top: 14px;
+            border-top: 1px solid #f0ebe7;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: 0.2s;
+        }
+
+        .btn-edit {
+            background: #eef3fa;
+            color: #466a9f;
+        }
+
+        .btn-edit:hover {
+            background: #dbe7f5;
+        }
+
+        .btn-delete {
+            background: #fbe8e6;
+            color: #b43226;
+        }
+
+        .btn-delete:hover {
+            background: #f5d4d0;
+        }
+
+       
+
+       /* =========================
+   MENU TOGGLE
+========================= */
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    background: transparent;
+
+    font-size: 23px;
+    cursor: pointer;
+
+    color: #292421;
+}
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1300px) {
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+           
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .filter-bar {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .topbar {
+                height: 65px;
+            }
+
+            .page-title p {
+                display: none;
+            }
+
+            .category-chips {
+                gap: 7px;
+            }
+
+            .chip {
+                padding: 7px 14px;
+                font-size: 12px;
+            }
+        }
+        /* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+.user-dropdown {
+    position: relative;
+}
+
+
+/* Profile button */
+
+.user-profile-btn {
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    padding: 5px 8px;
+
+    border-radius: 10px;
+
+    transition: 0.2s;
+}
+
+.user-profile-btn:hover {
+    background: #f6f1ed;
+}
+
+
+/* Arrow */
+
+.dropdown-arrow {
+    color: #8b817b;
+
+    font-size: 14px;
+
+    margin-left: 3px;
+
+    transition: 0.2s;
+}
+
+
+/* Dropdown */
+
+.profile-dropdown {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 270px;
+
+    background: white;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 10px 30px rgba(44, 33, 28, 0.12);
+
+    padding: 10px;
+
+    z-index: 2000;
+
+    /* Hidden by default */
+    display: none;
+
+    animation: dropdownAnimation 0.18s ease;
+}
+
+
+/* Show dropdown */
+
+.profile-dropdown.show {
+    display: block;
+}
+
+
+/* Dropdown animation */
+
+@keyframes dropdownAnimation {
+
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Dropdown header */
+
+.dropdown-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px;
+}
+
+
+/* Large dropdown avatar */
+
+.dropdown-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #c48a5a;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+.dropdown-header strong {
+    display: block;
+
+    font-size: 13px;
+
+    color: #332b27;
+}
+
+
+.dropdown-header small {
+    display: block;
+
+    color: #8b817b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+
+/* Divider */
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #eee7e2;
+
+    margin: 7px 0;
+}
+
+
+/* Dropdown item */
+
+.dropdown-item {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: #403631;
+
+    background: transparent;
+
+    border: none;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.dropdown-item:hover {
+    background: #f8f2ed;
+}
+
+
+/* Icon */
+
+.dropdown-item > span {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 8px;
+
+    background: #f4e9df;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+
+/* Text */
+
+.dropdown-item strong {
+    display: block;
+
+    font-size: 12px;
+
+    color: #403631;
+}
+
+
+.dropdown-item small {
+    display: block;
+
+    color: #91857d;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* Logout */
+
+.logout-item:hover {
+    background: #fff1ef;
+}
+
+
+.logout-item:hover > span {
+    background: #f9dddd;
+}
+
+
+.logout-item:hover strong {
+    color: #c94c4c;
+}
+
+
+/* Mobile */
+
+@media (max-width: 480px) {
+
+    .profile-dropdown {
+        width: 250px;
+
+        right: -5px;
+    }
+
+    .dropdown-arrow {
+        display: none;
+    }
+
+}
+/* =========================================================
+   LOGOUT CONFIRMATION MODAL
+========================================================= */
+
+.logout-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5000;
+
+    padding: 20px;
+}
+
+
+/* Show modal */
+
+.logout-modal-overlay.show {
+    display: flex;
+}
+
+
+/* Modal */
+
+.logout-modal {
+
+    width: 100%;
+    max-width: 400px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.2);
+
+    animation: logoutModalAnimation 0.2s ease;
+}
+
+
+/* Animation */
+
+@keyframes logoutModalAnimation {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+/* Logout icon */
+
+.logout-modal-icon {
+
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    background: #fff0ed;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+
+/* Title */
+
+.logout-modal h2 {
+
+    font-size: 20px;
+
+    color: #332b27;
+
+    margin-bottom: 8px;
+}
+
+
+/* Message */
+
+.logout-modal p {
+
+    color: #8b817b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+}
+
+
+/* Buttons */
+
+.logout-modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* Cancel */
+
+.logout-cancel {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-cancel:hover {
+
+    background: #f7f3f0;
+}
+
+
+/* Confirm */
+
+.logout-confirm {
+
+    flex: 1;
+
+    padding: 11px;
+
+    border: none;
+
+    background: #c94c4c;
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.logout-confirm:hover {
+
+    background: #b63d3d;
+
+}
+/* =========================================================
+   WALK-IN ORDER
+========================================================= */
+
+.btn-order {
+    background: #f4e9df;
+    color: #8b5a2b;
+}
+
+.btn-order:hover {
+    background: #ead8c8;
+}
+
+
+/* =========================================================
+   WALK-IN ORDER MODAL
+========================================================= */
+
+.walkin-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 6000;
+}
+
+.walkin-overlay.show {
+    display: flex;
+}
+
+
+.walkin-modal {
+    width: 100%;
+    max-width: 900px;
+
+    max-height: 90vh;
+
+    background: white;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.20);
+
+    animation: walkinAnimation 0.2s ease;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+@keyframes walkinAnimation {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* Header */
+
+.walkin-header {
+    padding: 20px 25px;
+
+    border-bottom: 1px solid #eee7e2;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.walkin-header h2 {
+    font-size: 20px;
+    color: #292421;
+}
+
+.walkin-header p {
+    font-size: 12px;
+    color: #8b817b;
+    margin-top: 4px;
+}
+
+.walkin-close {
+    width: 35px;
+    height: 35px;
+
+    border: none;
+
+    background: #f6f1ed;
+
+    border-radius: 50%;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    color: #665c56;
+}
+
+.walkin-close:hover {
+    background: #eee4dc;
+}
+
+
+/* Body */
+
+.walkin-body {
+    padding: 25px;
+
+    overflow-y: auto;
+}
+
+
+/* Customer */
+
+.walkin-customer {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.walkin-field label {
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+    margin-bottom: 6px;
+}
+
+.walkin-field input,
+.walkin-field select {
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    background: white;
+}
+
+.walkin-field input:focus,
+.walkin-field select:focus {
+    border-color: #c48a5a;
+
+    box-shadow: 0 0 0 3px rgba(196,138,90,0.10);
+}
+
+
+/* Order table */
+
+.walkin-order-box {
+    border: 1px solid #eee7e2;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.walkin-order-title {
+    padding: 14px 16px;
+
+    background: #faf7f4;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.walkin-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.walkin-table th {
+    background: #fff;
+
+    color: #8b817b;
+
+    font-size: 11px;
+
+    text-align: left;
+
+    padding: 11px 15px;
+
+    border-bottom: 1px solid #eee7e2;
+}
+
+.walkin-table td {
+    padding: 12px 15px;
+
+    font-size: 12px;
+
+    border-bottom: 1px solid #f0ebe7;
+}
+
+.walkin-table tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* Quantity */
+
+.quantity-control {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+.quantity-control button {
+    width: 27px;
+    height: 27px;
+
+    border: none;
+
+    background: #f4e9df;
+
+    color: #8b5a2b;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.quantity-control span {
+    min-width: 25px;
+
+    text-align: center;
+
+    font-weight: 600;
+}
+
+
+/* Remove */
+
+.remove-order {
+    border: none;
+
+    background: #fbe8e6;
+
+    color: #b43226;
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+}
+
+
+/* Empty order */
+
+.empty-order {
+    text-align: center;
+
+    padding: 35px 20px;
+
+    color: #91857d;
+
+    font-size: 13px;
+}
+
+
+/* Footer */
+
+.walkin-footer {
+    padding: 20px 25px;
+
+    border-top: 1px solid #eee7e2;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+.walkin-total-label {
+    color: #8b817b;
+
+    font-size: 12px;
+}
+
+.walkin-total {
+    font-size: 25px;
+
+    font-weight: 700;
+
+    color: #292421;
+
+    margin-top: 3px;
+}
+
+.walkin-footer-actions {
+    display: flex;
+
+    gap: 10px;
+}
+
+.walkin-cancel {
+    padding: 11px 20px;
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+.walkin-confirm {
+    padding: 11px 20px;
+
+    border: none;
+
+    background: #c48a5a;
+
+    color: white;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+.walkin-confirm:hover {
+    background: #a66b3f;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .walkin-customer {
+        grid-template-columns: 1fr;
+    }
+
+    .walkin-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .walkin-footer-actions {
+        width: 100%;
+    }
+
+    .walkin-footer-actions button {
+        flex: 1;
+    }
+
+    .walkin-body {
+        padding: 15px;
+    }
+
+    .walkin-header {
+        padding: 15px;
+    }
+
+}
+/* =========================================================
+   ORDER VALIDATION MODAL
+========================================================= */
+
+.order-alert-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 7000;
+
+}
+
+.order-alert-overlay.show {
+
+    display: flex;
+
+}
+
+
+.order-alert-modal {
+
+    width: 100%;
+
+    max-width: 380px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 28px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.20);
+
+    animation: orderAlertAnimation 0.2s ease;
+
+}
+
+
+@keyframes orderAlertAnimation {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(0.95);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+.order-alert-icon {
+
+    width: 55px;
+
+    height: 55px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #fff1d9;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 26px;
+
+}
+
+
+.order-alert-content h3 {
+
+    margin: 0;
+
+    font-size: 18px;
+
+    color: #292421;
+
+}
+
+
+.order-alert-content p {
+
+    margin-top: 8px;
+
+    color: #7c7068;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+
+.order-alert-button {
+
+    width: 100%;
+
+    margin-top: 22px;
+
+    padding: 11px 20px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #c48a5a;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.order-alert-button:hover {
+
+    background: #a66b3f;
+
+    transform: translateY(-1px);
+
+}
+/* =========================================================
+   ADD MENU ITEM MODAL
+========================================================= */
+
+.add-menu-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 6500;
+
+}
+
+.add-menu-overlay.show {
+
+    display: flex;
+
+}
+
+
+.add-menu-modal {
+
+    width: 100%;
+
+    max-width: 620px;
+
+    max-height: 90vh;
+
+    background: white;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.20);
+
+    animation: addMenuAnimation 0.2s ease;
+
+}
+
+
+@keyframes addMenuAnimation {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.add-menu-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #eee7e2;
+
+}
+
+
+.add-menu-header h2 {
+
+    font-size: 20px;
+
+    color: #292421;
+
+}
+
+
+.add-menu-header p {
+
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #8b817b;
+
+}
+
+
+.add-menu-close {
+
+    width: 35px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f6f1ed;
+
+    color: #665c56;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+}
+
+
+.add-menu-close:hover {
+
+    background: #eadfd7;
+
+}
+
+
+/* =========================================================
+   FORM BODY
+========================================================= */
+
+.add-menu-body {
+
+    padding: 25px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    max-height: 60vh;
+
+    overflow-y: auto;
+
+}
+
+
+.add-menu-field {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.add-menu-field.full-width {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.add-menu-field label {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+    margin-bottom: 7px;
+
+}
+
+
+.add-menu-field label span {
+
+    color: #c05a45;
+
+}
+
+
+.add-menu-field input,
+.add-menu-field select,
+.add-menu-field textarea {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: white;
+
+    color: #292421;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+
+}
+
+
+.add-menu-field textarea {
+
+    resize: vertical;
+
+    min-height: 80px;
+
+}
+
+
+.add-menu-field input:focus,
+.add-menu-field select:focus,
+.add-menu-field textarea:focus {
+
+    border-color: #c48a5a;
+
+    box-shadow:
+        0 0 0 3px rgba(196, 138, 90, 0.10);
+
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.price-input {
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+}
+
+
+.price-input span {
+
+    padding-left: 12px;
+
+    font-size: 13px;
+
+    color: #8b817b;
+
+    font-weight: 600;
+
+}
+
+
+.price-input input {
+
+    border: none;
+
+    border-radius: 0;
+
+}
+
+
+.price-input input:focus {
+
+    box-shadow: none;
+
+}
+
+
+/* =========================================================
+   AVAILABILITY
+========================================================= */
+
+.add-menu-availability {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    background: #faf7f4;
+
+    border-radius: 10px;
+
+}
+
+
+.add-menu-availability > label:first-child {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+}
+
+
+#availabilityText {
+
+    font-size: 12px;
+
+    color: #398052;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.availability-switch {
+
+    position: relative;
+
+    width: 40px;
+
+    height: 22px;
+
+    display: inline-block;
+
+}
+
+
+.availability-switch input {
+
+    opacity: 0;
+
+    width: 0;
+
+    height: 0;
+
+}
+
+
+.switch-slider {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: #d8d0ca;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.switch-slider::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 16px;
+
+    height: 16px;
+
+    left: 3px;
+
+    top: 3px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    transition: 0.2s;
+
+}
+
+
+.availability-switch input:checked
++ .switch-slider {
+
+    background: #398052;
+
+}
+
+
+.availability-switch input:checked
++ .switch-slider::before {
+
+    transform: translateX(18px);
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.add-menu-footer {
+
+    padding: 18px 25px;
+
+    border-top: 1px solid #eee7e2;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+}
+
+
+.add-menu-cancel,
+.add-menu-save {
+
+    padding: 11px 20px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.add-menu-cancel {
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+}
+
+
+.add-menu-save {
+
+    border: none;
+
+    background: #c48a5a;
+
+    color: white;
+
+}
+
+
+.add-menu-save:hover {
+
+    background: #a66b3f;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .add-menu-body {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .add-menu-field.full-width {
+
+        grid-column: auto;
+
+    }
+
+
+    .add-menu-header {
+
+        padding: 18px;
+
+    }
+
+
+    .add-menu-body {
+
+        padding: 18px;
+
+    }
+
+
+    .add-menu-footer {
+
+        padding: 15px 18px;
+
+    }
+
+}
+/* =========================================================
+   INGREDIENT STOCK MODAL
+========================================================= */
+
+.ingredient-stock-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(44, 33, 28, 0.55);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 6800;
+
+}
+
+
+.ingredient-stock-overlay.show {
+
+    display: flex;
+
+}
+
+
+.ingredient-stock-modal {
+
+    width: 100%;
+
+    max-width: 550px;
+
+    max-height: 85vh;
+
+    background: white;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.20);
+
+    animation:
+        ingredientStockAnimation
+        0.2s ease;
+
+}
+
+
+@keyframes ingredientStockAnimation {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.ingredient-stock-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    padding: 22px 25px;
+
+    border-bottom:
+        1px solid #eee7e2;
+
+}
+
+
+.ingredient-stock-header h2 {
+
+    margin: 0;
+
+    color: #292421;
+
+    font-size: 19px;
+
+}
+
+
+.ingredient-stock-header p {
+
+    margin-top: 5px;
+
+    color: #8b817b;
+
+    font-size: 12px;
+
+}
+
+
+.ingredient-stock-close {
+
+    width: 35px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f6f1ed;
+
+    color: #665c56;
+
+    cursor: pointer;
+
+}
+
+
+.ingredient-stock-close:hover {
+
+    background: #eadfd7;
+
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.ingredient-stock-body {
+
+    padding: 20px 25px;
+
+    max-height: 55vh;
+
+    overflow-y: auto;
+
+}
+
+
+/* =========================================================
+   INGREDIENT ITEM
+========================================================= */
+
+.ingredient-item {
+
+    padding: 15px 0;
+
+    border-bottom:
+        1px solid #eee7e2;
+
+}
+
+
+.ingredient-item:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.ingredient-item-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 8px;
+
+}
+
+
+.ingredient-name {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #292421;
+
+}
+
+
+.ingredient-amount {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #665c56;
+
+}
+
+
+/* =========================================================
+   STOCK BAR
+========================================================= */
+
+.ingredient-stock-bar {
+
+    height: 8px;
+
+    background: #eee8e3;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+}
+
+
+.ingredient-stock-fill {
+
+    height: 100%;
+
+    border-radius: 10px;
+
+    transition: width 0.3s ease;
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.ingredient-status {
+
+    display: inline-block;
+
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+.ingredient-status.in {
+
+    color: #398052;
+
+}
+
+
+.ingredient-status.low {
+
+    color: #b47720;
+
+}
+
+
+.ingredient-status.oos {
+
+    color: #b43226;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.ingredient-stock-footer {
+
+    padding: 16px 25px;
+
+    border-top:
+        1px solid #eee7e2;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+}
+
+
+.ingredient-stock-close-btn {
+
+    border: 1px solid #e2d9d3;
+
+    background: white;
+
+    color: #665c56;
+
+    padding: 10px 20px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.ingredient-stock-close-btn:hover {
+
+    background: #f6f1ed;
+
+}
+
+
+/* =========================================================
+   CLICKABLE STOCK BADGE
+========================================================= */
+
+.stock-badge {
+
+    border: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+
+}
+
+
+.stock-badge:hover {
+
+    transform: translateY(-1px);
+
+    opacity: 0.85;
+
+}
+
+
+.stock-badge:active {
+
+    transform: scale(0.96);
+
+}
+.ingredient-stock-overlay.show {
+    display: flex !important;
+}
+/* =========================================================
+   INGREDIENT STOCK INPUT - ADD MENU ITEM MODAL
+========================================================= */
+
+/* Ingredient container */
+
+.ingredient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding: 14px;
+
+    background: #faf7f4;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 10px;
+
+    max-height: 260px;
+
+    overflow-y: auto;
+}
+
+
+/* Custom scrollbar */
+
+.ingredient-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.ingredient-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ingredient-list::-webkit-scrollbar-thumb {
+    background: #d8ccc5;
+    border-radius: 10px;
+}
+
+.ingredient-list::-webkit-scrollbar-thumb:hover {
+    background: #bca99d;
+}
+
+
+/* =========================================================
+   INGREDIENT ROW
+========================================================= */
+
+.ingredient-row {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(150px, 1.7fr)
+        minmax(80px, 0.8fr)
+        minmax(80px, 0.8fr)
+        minmax(75px, 0.7fr)
+        35px;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    background: white;
+
+    border: 1px solid #eee7e2;
+
+    border-radius: 9px;
+
+    transition: 0.2s ease;
+}
+
+
+.ingredient-row:hover {
+
+    border-color: #d9c8bb;
+
+    box-shadow:
+        0 2px 8px rgba(44, 33, 28, 0.05);
+}
+
+
+/* =========================================================
+   INGREDIENT INPUTS
+========================================================= */
+
+.ingredient-row input,
+.ingredient-row select {
+
+    width: 100%;
+
+    height: 38px;
+
+    padding: 8px 10px;
+
+    border: 1px solid #e2d9d3;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: white;
+
+    color: #292421;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    font-size: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.ingredient-row input::placeholder {
+
+    color: #aaa09a;
+
+}
+
+
+.ingredient-row input:focus,
+.ingredient-row select:focus {
+
+    border-color: #c48a5a;
+
+    box-shadow:
+        0 0 0 3px rgba(196, 138, 90, 0.10);
+}
+
+
+/* =========================================================
+   INGREDIENT NAME
+========================================================= */
+
+.ingredient-name {
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   CURRENT / MAXIMUM STOCK
+========================================================= */
+
+.ingredient-current,
+.ingredient-maximum {
+
+    text-align: center;
+
+}
+
+
+/* Remove number input arrows */
+
+.ingredient-row input[type="number"]::-webkit-inner-spin-button,
+.ingredient-row input[type="number"]::-webkit-outer-spin-button {
+
+    -webkit-appearance: none;
+
+    margin: 0;
+
+}
+
+.ingredient-row input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+
+/* =========================================================
+   UNIT SELECT
+========================================================= */
+
+.ingredient-unit-select {
+
+    cursor: pointer;
+
+    text-align: center;
+
+    appearance: auto;
+}
+
+
+/* =========================================================
+   REMOVE INGREDIENT BUTTON
+========================================================= */
+
+.remove-ingredient {
+
+    width: 32px;
+
+    height: 32px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #fbe8e6;
+
+    color: #b43226;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.remove-ingredient:hover {
+
+    background: #f5d4d0;
+
+    transform: translateY(-1px);
+
+}
+
+
+.remove-ingredient:active {
+
+    transform: scale(0.94);
+
+}
+
+
+/* =========================================================
+   ADD INGREDIENT BUTTON
+========================================================= */
+
+.add-ingredient-btn {
+
+    margin-top: 10px;
+
+    width: 100%;
+
+    padding: 10px 14px;
+
+    border: 1px dashed #cdbeb5;
+
+    border-radius: 9px;
+
+    background: #faf7f4;
+
+    color: #8b5a2b;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.add-ingredient-btn:hover {
+
+    background: #f4e9df;
+
+    border-color: #c48a5a;
+
+    color: #7b4d27;
+
+}
+
+
+/* =========================================================
+   INGREDIENT SECTION LABEL
+========================================================= */
+
+.add-menu-field.full-width > label {
+
+    margin-bottom: 8px;
+
+}
+
+
+/* =========================================================
+   INGREDIENT HEADER
+========================================================= */
+
+.ingredient-list::before {
+
+    content:
+        "Ingredient                         Current       Maximum       Unit";
+
+    display: block;
+
+    color: #8b817b;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    padding: 0 5px 3px;
+
+    white-space: pre;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .ingredient-list {
+
+        padding: 10px;
+
+    }
+
+
+    .ingredient-row {
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+
+    }
+
+
+    .ingredient-input {
+
+        grid-column: 1 / -1;
+
+    }
+
+
+    .ingredient-name {
+
+        width: 100%;
+
+    }
+
+
+    .ingredient-stock {
+
+        width: 100%;
+
+    }
+
+
+    .ingredient-unit {
+
+        width: 100%;
+
+    }
+
+
+    .remove-ingredient {
+
+        width: 100%;
+
+        height: 36px;
+
+    }
+
+
+    .ingredient-list::before {
+
+        display: none;
+
+    }
+
+}
+/* =========================================================
+   COLLAPSED SIDEBAR CONTENT
+========================================================= */
+
+/* Hide logo text */
+.sidebar.collapsed .logo h2,
+.sidebar.collapsed .logo span {
+    display: none;
+}
+
+/* Center logo */
+.sidebar.collapsed .logo {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Remove unnecessary gap */
+.sidebar.collapsed .logo {
+    gap: 0;
+}
+
+/* Center menu icons */
+.sidebar.collapsed .sidebar-menu a {
+    justify-content: center;
+    gap: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Hide menu text */
+.sidebar.collapsed .sidebar-menu a span:not(.icon) {
+    display: none;
+}
+
+/* Hide section titles */
+.sidebar.collapsed .menu-title {
+    display: none;
+}
+
+/* Center icons */
+.sidebar.collapsed .sidebar-menu .icon {
+    width: auto;
+    font-size: 18px;
+}
+
+/* Keep menu items properly sized */
+.sidebar.collapsed .sidebar-menu a {
+    width: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- =================================
+         SIDEBAR
+    ================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+    <!-- =========================
+         SIDEBAR LOGO
+    ========================== -->
+    <div class="logo">
+
+        <div class="logo-icon">
+            ☕
+        </div>
+
+        <div class="logo-text">
+            <h2>CaféHub</h2>
+            <span>Management System</span>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN MENU
+    ========================== -->
+
+    <div class="menu-title">
+        Main
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="dashboard.html">
+                <span class="icon">📊</span>
+                <span class="menu-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="orders.html">
+                <span class="icon">🛒</span>
+                <span class="menu-text">Orders</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="menu.html" class="active">
+                <span class="icon">🍔</span>
+                <span class="menu-text">Menu</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="tables.html">
+                <span class="icon">🪑</span>
+                <span class="menu-text">Tables</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="reservations.html">
+                <span class="icon">📅</span>
+                <span class="menu-text">Reservations</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         MANAGEMENT
+    ========================== -->
+
+    <div class="menu-title">
+        Management
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="inventory.html">
+                <span class="icon">📦</span>
+                <span class="menu-text">Inventory</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="customers.html">
+                <span class="icon">👥</span>
+                <span class="menu-text">Customers</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="staff.html">
+                <span class="icon">👨‍💼</span>
+                <span class="menu-text">Staff</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="payments.html">
+                <span class="icon">💳</span>
+                <span class="menu-text">Payments</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- =========================
+         REPORTS
+    ========================== -->
+
+    <div class="menu-title">
+        Reports
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <a href="sales-reports.html">
+                <span class="icon">📈</span>
+                <span class="menu-text">Sales Reports</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="analytics.html">
+                <span class="icon">📊</span>
+                <span class="menu-text">Analytics</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="settings.html">
+                <span class="icon">⚙️</span>
+                <span class="menu-text">Settings</span>
+            </a>
+        </li>
+
+    </ul>
+
+</aside>
+
+
+    <!-- =================================
+         MAIN CONTENT
+    ================================== -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div style="display:flex; align-items:center; gap:15px;">
+
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    ☰
+                </button>
+
+                <div class="page-title">
+                    <h1>Menu</h1>
+                    <p>Manage your café menu items and pricing</p>
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="notification">
+                    🔔
+                    <span class="notification-badge">4</span>
+                </div>
+
+                <div class="user-dropdown">
+
+    <!-- USER PROFILE BUTTON -->
+    <button class="user-profile-btn" onclick="toggleUserDropdown(event)">
+
+        <div class="user-avatar">
+            KB
+        </div>
+
+        <div class="user-info">
+
+            <strong>
+                King Binay
+            </strong>
+
+            <small>
+                Administrator
+            </small>
+
+        </div>
+
+        <span class="dropdown-arrow">
+            ▾
+        </span>
+
+    </button>
+
+
+    <!-- USER DROPDOWN -->
+    <div class="profile-dropdown" id="profileDropdown">
+
+        <div class="dropdown-header">
+
+            <div class="dropdown-avatar">
+                KB
+            </div>
+
+            <div>
+
+                <strong>
+                    King Binay
+                </strong>
+
+                <small>
+                    Administrator
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a href="settings.html#my-profile" class="dropdown-item">
+
+            <span>
+                👤
+            </span>
+
+            <div>
+                <strong>My Profile</strong>
+                <small>View your account</small>
+            </div>
+
+        </a>
+
+
+        <a href="settings.html" class="dropdown-item">
+
+            <span>
+                ⚙️
+            </span>
+
+            <div>
+                <strong>Settings</strong>
+                <small>Manage system settings</small>
+            </div>
+
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <button
+            type="button"
+            class="dropdown-item logout-item"
+            onclick="openLogoutModal()"
+        >
+
+            <span>
+                🚪
+            </span>
+
+            <div>
+                <strong>Logout</strong>
+                <small>Sign out of your account</small>
+            </div>
+
+        </button>
+
+    </div>
+
+</div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+            <!-- =================================
+                 STATISTICS
+            ================================== -->
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Total Items</h4>
+                        <h2>56</h2>
+                        <div class="stat-sub">
+                            Across all categories
+                        </div>
+                    </div>
+
+                    <div class="stat-icon brown">
+                        🍽️
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Categories</h4>
+                        <h2>7</h2>
+                        <div class="stat-sub">
+                            Active menu groups
+                        </div>
+                    </div>
+
+                    <div class="stat-icon green">
+                        🗂️
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Out of Stock</h4>
+                        <h2>4</h2>
+                        <div class="stat-sub" style="color:#b43226;">
+                            Requires restocking
+                        </div>
+                    </div>
+
+                    <div class="stat-icon orange">
+                        ⚠️
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h4>Best Seller Today</h4>
+                        <h2 style="font-size:20px;">Spanish Latte</h2>
+                        <div class="stat-sub">
+                            42 sold today
+                        </div>
+                    </div>
+
+                    <div class="stat-icon blue">
+                        🏆
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 CATEGORY FILTER BAR
+            ================================== -->
+
+            <div class="filter-bar">
+
+                <div class="category-chips">
+                    <button class="chip active">All</button>
+                    <button class="chip">Coffee</button>
+                    <button class="chip">Tea</button>
+                    <button class="chip">Pastries</button>
+                    <button class="chip">Desserts</button>
+                    <button class="chip">Cold Drinks</button>
+                    <button class="chip">Specials</button>
+                </div>
+
+               <div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+           
+            <button
+                type="button"
+                class="btn-primary"
+                onclick="openAddMenuModal()">
+                <span>➕</span>
+                Add Item
+            </button>
+
+        </div>
+
+            </div>
+
+
+            <!-- =================================
+                 MENU ITEMS GRID
+            ================================== -->
+
+            <div class="menu-grid">
+
+                <!-- 1. Spanish Latte -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">☕</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Spanish Latte</div>
+                        <span class="category-pill cat-coffee">Coffee</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>145</div>
+                    <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('spanish-latte')">In stock</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-spanish-latte"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Spanish Latte', 145)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 2. Matcha Latte -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🍵</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Matcha Latte</div>
+                        <span class="category-pill cat-tea">Tea</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>160</div>
+                    <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('matcha-latte')">In stock</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-matcha-latte"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Matcha Latte', 160)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 3. Caramel Macchiato -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">☕</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Caramel Macchiato</div>
+                        <span class="category-pill cat-coffee">Coffee</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>155</div>
+                    <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('caramel-macchiato')">In stock</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-caramel-macchiato"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Caramel Macchiato', 155)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 4. Hot Choco -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🍫</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Hot Choco</div>
+                        <span class="category-pill cat-desserts">Desserts</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>135</div>
+                    <button type="button" class="stock-badge stock-low" onclick="openIngredientStockModal('hot-choco')">Low</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-hot-choco"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Hot Choco', 135)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 5. Butter Croissant -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🥐</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Butter Croissant</div>
+                        <span class="category-pill cat-pastries">Pastries</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>120</div>
+                    <button type="button" class="stock-badge stock-low" onclick="openIngredientStockModal('butter-croissant')">Low</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-butter-croissant"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Butter Croissant', 120)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 6. Cheesecake -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🍰</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Cheesecake</div>
+                        <span class="category-pill cat-desserts">Desserts</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>180</div>
+                    <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('cheesecake')">In Stock</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-cheesecake"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Cheesecake', 180)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 7. Americano -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">☕</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Americano</div>
+                        <span class="category-pill cat-coffee">Coffee</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>110</div>
+                    <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('americano')">In Stock</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-americano"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Americano', 110)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 8. Cappuccino -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">☕</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Cappuccino</div>
+                        <span class="category-pill cat-coffee">Coffee</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>130</div>
+                    <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('cappuccino')">OOS</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-cappuccino"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Cappuccino', 130)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 9. Iced Vanilla Latte -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🧋</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Iced Vanilla Latte</div>
+                        <span class="category-pill cat-cold">Cold Drinks</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>155</div>
+                    <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('iced-vanilla-latte')">In Stock</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-iced-vanilla-latte"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Iced Vanilla Latte', 155)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 10. Blueberry Muffin -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🧁</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Blueberry Muffin</div>
+                        <span class="category-pill cat-pastries">Pastries</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>115</div>
+                    <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('blueberry-muffin')">OOS</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-blueberry-muffin"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Blueberry Muffin', 115)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 11. Tuna Sandwich -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🥪</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Tuna Sandwich</div>
+                        <span class="category-pill cat-specials">Specials</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>140</div>
+                    <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('tuna-sandwich')">OOS</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-tuna-sandwich"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Tuna Sandwich', 140)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+                <!-- 12. Iced Tea -->
+                <div class="menu-card">
+                    <div class="menu-card-icon">🧊</div>
+                    <div class="menu-card-header">
+                        <div class="menu-card-name">Iced Tea</div>
+                        <span class="category-pill cat-cold">Cold Drinks</span>
+                    </div>
+                    <div class="menu-card-price"><span class="currency">₱</span>100</div>
+                    <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('iced-tea')">OOS</button>
+                    <div class="menu-card-actions">
+                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        <button
+                        id="order-btn-iced-tea"
+                        class="btn-action btn-order"
+                        onclick="addToWalkInOrder('Iced Tea', 100)"
+                    >
+                        🛒 Order
+                    </button>
+                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     LOGOUT CONFIRMATION MODAL
+========================================================= -->
+
+<div class="logout-modal-overlay" id="logoutModal">
+
+    <div class="logout-modal">
+
+        <!-- Icon -->
+
+        <div class="logout-modal-icon">
+            🚪
+        </div>
+
+
+        <!-- Title -->
+
+        <h2>
+            Logout?
+        </h2>
+
+
+        <!-- Message -->
+
+        <p>
+            Are you sure you want to log out of your CaféHub account?
+        </p>
+
+
+        <!-- Buttons -->
+
+        <div class="logout-modal-actions">
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="logout-confirm"
+                onclick="confirmLogout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     INGREDIENT STOCK MODAL
+========================================================= -->
+
+<div
+    class="ingredient-stock-overlay"
+    id="ingredientStockModal"
+>
+
+    <div class="ingredient-stock-modal">
+
+        <!-- HEADER -->
+
+        <div class="ingredient-stock-header">
+
+            <div>
+
+                <h2>
+                    📦 Ingredient Stock
+                </h2>
+
+                <p id="ingredientMenuName">
+                    Menu Item
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="ingredient-stock-close"
+                onclick="closeIngredientStockModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- INGREDIENT LIST -->
+
+        <div
+            class="ingredient-stock-body"
+            id="ingredientStockList"
+        >
+
+            <!-- JavaScript will insert ingredients here -->
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="ingredient-stock-footer">
+
+            <button
+                type="button"
+                class="ingredient-stock-close-btn"
+                onclick="closeIngredientStockModal()"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     WALK-IN ORDER MODAL
+========================================================= -->
+
+<div class="walkin-overlay" id="walkInModal">
+
+    <div class="walkin-modal">
+
+        <!-- HEADER -->
+
+        <div class="walkin-header">
+
+            <div>
+                <h2>🛒 Walk-In Order</h2>
+
+                <p>
+                    Create a new order for a customer at the café
+                </p>
+            </div>
+
+            <button
+                class="walkin-close"
+                onclick="closeWalkInOrder()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="walkin-body">
+
+            <!-- CUSTOMER INFORMATION -->
+
+            <div class="walkin-customer">
+
+                <div class="walkin-field">
+
+                    <label>Customer Name</label>
+
+                    <input
+                        type="text"
+                        id="walkInCustomer"
+                        placeholder="Enter customer name"
+                    >
+
+                </div>
+
+
+                <div class="walkin-field">
+
+                    <label>Order Type</label>
+
+                    <select id="walkInType">
+
+                        <option value="Walk-In">
+                            Walk-In
+                        </option>
+
+                        <option value="Takeout">
+                            Takeout
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDER ITEMS -->
+
+            <div class="walkin-order-box">
+
+                <div class="walkin-order-title">
+                    Order Items
+                </div>
+
+                <div id="walkInItems">
+
+                    <div class="empty-order">
+                        No items added to this order yet.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="walkin-footer">
+
+            <div>
+
+                <div class="walkin-total-label">
+                    Total Amount
+                </div>
+
+                <div
+                    class="walkin-total"
+                    id="walkInTotal"
+                >
+                    ₱0.00
+                </div>
+
+            </div>
+
+
+            <div class="walkin-footer-actions">
+
+                <button
+                    class="walkin-cancel"
+                    onclick="closeWalkInOrder()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    class="walkin-confirm"
+                    onclick="confirmWalkInOrder()"
+                >
+                    ✓ Confirm Order
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     WALK-IN VALIDATION MODAL
+========================================================= -->
+
+<div class="order-alert-overlay" id="orderAlertModal">
+
+    <div class="order-alert-modal">
+
+        <div class="order-alert-icon">
+            ⚠️
+        </div>
+
+        <div class="order-alert-content">
+
+            <h3 id="orderAlertTitle">
+                Customer Name Required
+            </h3>
+
+            <p id="orderAlertMessage">
+                Please enter the customer name.
+            </p>
+
+        </div>
+
+        <button
+            type="button"
+            class="order-alert-button"
+            onclick="closeOrderAlert()"
+        >
+            OK
+        </button>
+
+    </div>
+
+</div>
+<!-- =========================================================
+     ADD NEW MENU ITEM MODAL
+========================================================= -->
+
+<div
+    class="add-menu-overlay"
+    id="addMenuModal"
+>
+
+    <div class="add-menu-modal">
+
+        <!-- HEADER -->
+
+        <div class="add-menu-header">
+
+            <div>
+
+                <h2>
+                    ➕ Add New Menu Item
+                </h2>
+
+                <p>
+                    Add a new product to your café menu
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="add-menu-close"
+                onclick="closeAddMenuModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            id="addMenuForm"
+            onsubmit="saveNewMenuItem(event)"
+        >
+
+            <div class="add-menu-body">
+
+                <!-- MENU NAME -->
+
+                <div class="add-menu-field">
+
+                    <label for="menuName">
+                        Menu Name
+                        <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="menuName"
+                        placeholder="e.g. Caramel Latte"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="add-menu-field">
+
+                    <label for="menuCategory">
+                        Category
+                        <span>*</span>
+                    </label>
+
+                    <select
+                        id="menuCategory"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="Coffee">
+                            Coffee
+                        </option>
+
+                        <option value="Tea">
+                            Tea
+                        </option>
+
+                        <option value="Pastries">
+                            Pastries
+                        </option>
+
+                        <option value="Desserts">
+                            Desserts
+                        </option>
+
+                        <option value="Cold Drinks">
+                            Cold Drinks
+                        </option>
+
+                        <option value="Specials">
+                            Specials
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PRICE -->
+
+                <div class="add-menu-field">
+
+                    <label for="menuPrice">
+                        Price
+                        <span>*</span>
+                    </label>
+
+                    <div class="price-input">
+
+                        <span>₱</span>
+
+                        <input
+                            type="number"
+                            id="menuPrice"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- STOCK -->
+
+                <!-- INGREDIENT STOCK -->
+
+<div class="add-menu-field full-width">
+
+    <label>
+        Ingredients & Initial Stock
+        <span>*</span>
+    </label>
+
+    <div id="ingredientList" class="ingredient-list">
+
+        <!-- INGREDIENT ROW -->
+
+        <div class="ingredient-row">
+
+            <div class="ingredient-input">
+
+                <input
+                    type="text"
+                    class="ingredient-name"
+                    placeholder="Ingredient name"
+                    required
+                >
+
+            </div>
+
+            <div class="ingredient-stock">
+
+                <input
+                    type="number"
+                    class="ingredient-current"
+                    placeholder="Current"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+            <div class="ingredient-stock">
+
+                <input
+                    type="number"
+                    class="ingredient-maximum"
+                    placeholder="Maximum"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+            <div class="ingredient-unit">
+
+                <select
+                    class="ingredient-unit-select"
+                    required
+                >
+
+                    <option value="">
+                        Unit
+                    </option>
+
+                    <option value="kg">
+                        kg
+                    </option>
+
+                    <option value="L">
+                        L
+                    </option>
+
+                    <option value="g">
+                        g
+                    </option>
+
+                    <option value="mL">
+                        mL
+                    </option>
+
+                    <option value="pcs">
+                        pcs
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                type="button"
+                class="remove-ingredient"
+                onclick="removeIngredient(this)"
+                title="Remove ingredient"
+            >
+                ✕
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ADD INGREDIENT BUTTON -->
+
+    <button
+        type="button"
+        class="add-ingredient-btn"
+        onclick="addIngredient()"
+    >
+        ➕ Add Ingredient
+    </button>
+
+</div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="add-menu-field full-width">
+
+                    <label for="menuDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="menuDescription"
+                        rows="3"
+                        placeholder="Enter a short description..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- AVAILABILITY -->
+
+                <div class="add-menu-availability">
+
+                    <label>
+                        Availability
+                    </label>
+
+                    <label class="availability-switch">
+
+                        <input
+                            type="checkbox"
+                            id="menuAvailable"
+                            checked
+                        >
+
+                        <span class="switch-slider"></span>
+
+                    </label>
+
+                    <span id="availabilityText">
+                        Available
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="add-menu-footer">
+
+                <button
+                    type="button"
+                    class="add-menu-cancel"
+                    onclick="closeAddMenuModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="add-menu-save"
+                >
+                    ✓ Add Menu Item
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<script>
+
+/* =========================================================
+   WALK-IN ORDER DATA
+========================================================= */
+
+let walkInOrder = [];
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+function toggleSidebar() {
+
+    const sidebar = document.getElementById("sidebar");
+    const main = document.querySelector(".main");
+
+    if (window.innerWidth <= 768) {
+
+        // MOBILE
+        // Slide sidebar in and out
+        sidebar.classList.toggle("open");
+
+    } else {
+
+        // DESKTOP
+        // Make sidebar small
+        sidebar.classList.toggle("collapsed");
+
+        // Move main content
+        main.classList.toggle("sidebar-collapsed");
+
+    }
+}
+
+/* =========================================================
+   CLOSE SIDEBAR WHEN CLICKING OUTSIDE
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const toggle =
+        document.querySelector(".menu-toggle");
+
+
+    if (
+        sidebar &&
+        toggle &&
+        window.innerWidth <= 768 &&
+        sidebar.classList.contains("open") &&
+        !sidebar.contains(event.target) &&
+        !toggle.contains(event.target)
+    ) {
+
+        sidebar.classList.remove("open");
+
+    }
+
+});
+
+
+/* =========================================================
+   USER PROFILE DROPDOWN
+========================================================= */
+
+function toggleUserDropdown(event) {
+
+    event.stopPropagation();
+
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+
+    if (dropdown) {
+
+        dropdown.classList.toggle("show");
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE PROFILE DROPDOWN
+========================================================= */
+
+document.addEventListener("click", function(event) {
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+    const userDropdown =
+        document.querySelector(".user-dropdown");
+
+
+    if (
+        dropdown &&
+        userDropdown &&
+        !userDropdown.contains(event.target)
+    ) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+});
+
+
+/* =========================================================
+   LOGOUT MODAL
+========================================================= */
+
+function openLogoutModal() {
+
+    const dropdown =
+        document.getElementById("profileDropdown");
+
+
+    if (dropdown) {
+
+        dropdown.classList.remove("show");
+
+    }
+
+
+    const modal =
+        document.getElementById("logoutModal");
+
+
+    if (modal) {
+
+        modal.classList.add("show");
+
+    }
+
+}
+
+
+function closeLogoutModal() {
+
+    const modal =
+        document.getElementById("logoutModal");
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+    }
+
+}
+
+
+function confirmLogout() {
+
+    window.location.href = "login.html";
+
+}
+
+
+/* =========================================================
+   LOGOUT MODAL OUTSIDE CLICK
+========================================================= */
+
+const logoutModal =
+    document.getElementById("logoutModal");
+
+
+if (logoutModal) {
+
+    logoutModal.addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === logoutModal) {
+
+                closeLogoutModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ADD ITEM TO WALK-IN ORDER
+========================================================= */
+
+function addToWalkInOrder(name, price) {
+
+    console.log(
+        "Order button clicked:",
+        name,
+        price
+    );
+
+
+    /*
+     * Check if the item is already
+     * inside the order.
+     */
+
+    const existingItem =
+        walkInOrder.find(
+            item => item.name === name
+        );
+
+
+    if (existingItem) {
+
+        existingItem.quantity++;
+
+    } else {
+
+        walkInOrder.push({
+
+            name: name,
+
+            price: Number(price),
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    /*
+     * Update the button quantity.
+     */
+
+    updateOrderButton(name);
+
+
+    /*
+     * Open the Walk-In Order modal.
+     */
+
+    openWalkInOrder();
+
+}
+
+
+/* =========================================================
+   UPDATE MENU ORDER BUTTON
+========================================================= */
+
+function updateOrderButton(name) {
+
+    const buttonId =
+        "order-btn-" +
+        name
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+
+
+    const button =
+        document.getElementById(buttonId);
+
+
+    if (!button) {
+
+        console.warn(
+            "Order button not found:",
+            buttonId
+        );
+
+        return;
+
+    }
+
+
+    const item =
+        walkInOrder.find(
+            item => item.name === name
+        );
+
+
+    if (!item) {
+
+        button.innerHTML =
+            "🛒 Order";
+
+        return;
+
+    }
+
+
+    button.innerHTML =
+        "🛒 Order (" +
+        item.quantity +
+        ")";
+
+}
+
+
+/* =========================================================
+   OPEN WALK-IN ORDER MODAL
+========================================================= */
+
+function openWalkInOrder() {
+
+    console.log(
+        "Opening Walk-In Order modal..."
+    );
+
+
+    const modal =
+        document.getElementById("walkInModal");
+
+
+    if (!modal) {
+
+        console.error(
+            "ERROR: walkInModal does not exist."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Show modal
+     */
+
+    modal.classList.add("show");
+
+
+    /*
+     * Display current order.
+     */
+
+    renderWalkInOrder();
+
+}
+
+
+/* =========================================================
+   CLOSE WALK-IN ORDER MODAL
+========================================================= */
+
+function closeWalkInOrder() {
+
+    const modal =
+        document.getElementById("walkInModal");
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+    }
+
+}
+
+
+/* =========================================================
+   CHANGE QUANTITY
+========================================================= */
+
+function changeWalkInQuantity(index, change) {
+
+    if (!walkInOrder[index]) {
+
+        return;
+
+    }
+
+
+    const itemName =
+        walkInOrder[index].name;
+
+
+    /*
+     * Change quantity.
+     */
+
+    walkInOrder[index].quantity += change;
+
+
+    /*
+     * If quantity becomes zero,
+     * remove the item.
+     */
+
+    if (walkInOrder[index].quantity <= 0) {
+
+        walkInOrder.splice(index, 1);
+
+
+        /*
+         * Reset menu button.
+         */
+
+        const buttonId =
+            "order-btn-" +
+            itemName
+                .toLowerCase()
+                .replace(/\s+/g, "-");
+
+
+        const button =
+            document.getElementById(buttonId);
+
+
+        if (button) {
+
+            button.innerHTML =
+                "🛒 Order";
+
+        }
+
+    } else {
+
+        /*
+         * Update quantity on menu button.
+         */
+
+        updateOrderButton(itemName);
+
+    }
+
+
+    /*
+     * Refresh modal.
+     */
+
+    renderWalkInOrder();
+
+}
+
+
+/* =========================================================
+   REMOVE ORDER ITEM
+========================================================= */
+
+function removeWalkInItem(index) {
+
+    if (!walkInOrder[index]) {
+
+        return;
+
+    }
+
+
+    const itemName =
+        walkInOrder[index].name;
+
+
+    /*
+     * Remove item.
+     */
+
+    walkInOrder.splice(index, 1);
+
+
+    /*
+     * Reset corresponding menu button.
+     */
+
+    const buttonId =
+        "order-btn-" +
+        itemName
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+
+
+    const button =
+        document.getElementById(buttonId);
+
+
+    if (button) {
+
+        button.innerHTML =
+            "🛒 Order";
+
+    }
+
+
+    renderWalkInOrder();
+
+}
+
+
+/* =========================================================
+   DISPLAY ORDER ITEMS
+========================================================= */
+
+function renderWalkInOrder() {
+
+    const container =
+        document.getElementById("walkInItems");
+
+
+    const totalElement =
+        document.getElementById("walkInTotal");
+
+
+    if (!container || !totalElement) {
+
+        console.error(
+            "Walk-In Order elements are missing."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Empty order
+     */
+
+    if (walkInOrder.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-order">
+
+                No items added to this order yet.
+
+            </div>
+
+        `;
+
+
+        totalElement.textContent =
+            "₱0.00";
+
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+
+    let html = `
+
+        <table class="walkin-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Item</th>
+
+                    <th>Price</th>
+
+                    <th>Quantity</th>
+
+                    <th>Subtotal</th>
+
+                    <th></th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    walkInOrder.forEach(
+        (item, index) => {
+
+            const subtotal =
+                item.price *
+                item.quantity;
+
+
+            total += subtotal;
+
+
+            html += `
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+                            ${item.name}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        ₱${item.price.toFixed(2)}
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="quantity-control">
+
+                            <button
+                                type="button"
+                                onclick="
+                                    changeWalkInQuantity(
+                                        ${index},
+                                        -1
+                                    )
+                                "
+                            >
+                                −
+                            </button>
+
+
+                            <span>
+                                ${item.quantity}
+                            </span>
+
+
+                            <button
+                                type="button"
+                                onclick="
+                                    changeWalkInQuantity(
+                                        ${index},
+                                        1
+                                    )
+                                "
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+                            ₱${subtotal.toFixed(2)}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="remove-order"
+                            onclick="
+                                removeWalkInItem(
+                                    ${index}
+                                )
+                            "
+                        >
+                            ✕
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    container.innerHTML =
+        html;
+
+
+    totalElement.textContent =
+        "₱" +
+        total.toFixed(2);
+
+}
+
+
+/* =========================================================
+   CONFIRM WALK-IN ORDER
+========================================================= */
+
+function confirmWalkInOrder() {
+
+    const customerInput =
+        document.getElementById(
+            "walkInCustomer"
+        );
+
+
+    const orderTypeInput =
+        document.getElementById(
+            "walkInType"
+        );
+
+
+    const customer =
+        customerInput
+            ? customerInput.value.trim()
+            : "";
+
+
+    const orderType =
+        orderTypeInput
+            ? orderTypeInput.value
+            : "Walk-In";
+
+
+    /*
+     * Check customer name.
+     */
+
+    if (customer === "") {
+
+    showOrderAlert(
+        "Please enter the customer name.",
+        "Customer Name Required"
+    );
+
+    return;
+
+}
+
+
+    /*
+     * Check if order contains items.
+     */
+
+    if (walkInOrder.length === 0) {
+
+    showOrderAlert(
+        "Please add at least one item to the order.",
+        "No Items Added"
+    );
+
+    return;
+
+}
+
+
+    /*
+     * Calculate total.
+     */
+
+    const total =
+        walkInOrder.reduce(
+            (sum, item) => {
+
+                return sum +
+                    (
+                        item.price *
+                        item.quantity
+                    );
+
+            },
+            0
+        );
+
+
+    /*
+     * Generate temporary order number.
+     */
+
+    const orderNumber =
+        "WI-" +
+        Date.now()
+            .toString()
+            .slice(-6);
+
+
+    alert(
+
+        "Order Confirmed!\n\n" +
+
+        "Order No: " +
+        orderNumber +
+        "\n" +
+
+        "Customer: " +
+        customer +
+        "\n" +
+
+        "Type: " +
+        orderType +
+        "\n" +
+
+        "Total: ₱" +
+        total.toFixed(2)
+
+    );
+
+
+    /*
+     * Reset order.
+     */
+
+    walkInOrder = [];
+
+
+    /*
+     * Reset customer.
+     */
+
+    if (customerInput) {
+
+        customerInput.value = "";
+
+    }
+
+
+    /*
+     * Reset all Order buttons.
+     */
+
+    document
+        .querySelectorAll(".btn-order")
+        .forEach(button => {
+
+            button.innerHTML =
+                "🛒 Order";
+
+        });
+
+
+    renderWalkInOrder();
+
+    closeWalkInOrder();
+
+}
+
+
+/* =========================================================
+   CLOSE WALK-IN MODAL WHEN CLICKING OVERLAY
+========================================================= */
+
+const walkInModal =
+    document.getElementById("walkInModal");
+
+
+if (walkInModal) {
+
+    walkInModal.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === walkInModal
+            ) {
+
+                closeWalkInOrder();
+
+            }
+
+        }
+    );
+
+}
+/* =========================================================
+   OPEN ORDER ALERT MODAL
+========================================================= */
+
+function showOrderAlert(
+    message,
+    title = "Customer Name Required"
+) {
+
+    const modal =
+        document.getElementById("orderAlertModal");
+
+    const titleElement =
+        document.getElementById("orderAlertTitle");
+
+    const messageElement =
+        document.getElementById("orderAlertMessage");
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    titleElement.textContent =
+        title;
+
+
+    messageElement.textContent =
+        message;
+
+
+    modal.classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE ORDER ALERT MODAL
+========================================================= */
+
+function closeOrderAlert() {
+
+    const modal =
+        document.getElementById("orderAlertModal");
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+    }
+
+
+    // Focus customer name field
+    const customerInput =
+        document.getElementById("walkInCustomer");
+
+
+    if (customerInput) {
+
+        setTimeout(function() {
+
+            customerInput.focus();
+
+        }, 100);
+
+    }
+
+}
+/* =========================================================
+   OPEN ADD MENU MODAL
+========================================================= */
+
+function openAddMenuModal() {
+
+    const modal =
+        document.getElementById("addMenuModal");
+
+
+    if (!modal) {
+
+        console.error(
+            "Add Menu modal was not found."
+        );
+
+        return;
+
+    }
+
+
+    modal.classList.add("show");
+
+
+    // Automatically focus Menu Name
+    setTimeout(function() {
+
+        const menuName =
+            document.getElementById("menuName");
+
+
+        if (menuName) {
+
+            menuName.focus();
+
+        }
+
+    }, 100);
+
+}
+
+
+/* =========================================================
+   CLOSE ADD MENU MODAL
+========================================================= */
+
+function closeAddMenuModal() {
+
+    const modal =
+        document.getElementById("addMenuModal");
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+    }
+
+}
+
+/* =========================================================
+   OPEN MODAL FROM URL HASH
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    if (window.location.hash === "#addMenuModal") {
+
+        openAddMenuModal();
+
+        // Optional: remove #addMenuModal from the URL
+        history.replaceState(
+            null,
+            "",
+            window.location.pathname + window.location.search
+        );
+
+    }
+
+});
+/* =========================================================
+   AVAILABILITY TEXT
+========================================================= */
+
+const menuAvailable =
+    document.getElementById("menuAvailable");
+
+
+if (menuAvailable) {
+
+    menuAvailable.addEventListener(
+        "change",
+        function() {
+
+            const text =
+                document.getElementById(
+                    "availabilityText"
+                );
+
+
+            if (this.checked) {
+
+                text.textContent =
+                    "Available";
+
+                text.style.color =
+                    "#398052";
+
+            } else {
+
+                text.textContent =
+                    "Unavailable";
+
+                text.style.color =
+                    "#b43226";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SAVE NEW MENU ITEM
+========================================================= */
+
+function saveNewMenuItem(event) {
+
+    event.preventDefault();
+
+
+    /*
+     * Get form values
+     */
+
+    const name =
+        document
+            .getElementById("menuName")
+            .value
+            .trim();
+
+
+    const category =
+        document
+            .getElementById("menuCategory")
+            .value;
+
+
+    const price =
+        parseFloat(
+            document
+                .getElementById("menuPrice")
+                .value
+        );
+
+
+    const stock =
+        parseInt(
+            document
+                .getElementById("menuStock")
+                .value
+        );
+
+
+    const description =
+        document
+            .getElementById("menuDescription")
+            .value
+            .trim();
+
+
+    const available =
+        document
+            .getElementById("menuAvailable")
+            .checked;
+
+
+    /* =====================================================
+       VALIDATION
+    ===================================================== */
+
+    if (name === "") {
+
+        alert(
+            "Please enter the menu name."
+        );
+
+        return;
+
+    }
+
+
+    if (category === "") {
+
+        alert(
+            "Please select a category."
+        );
+
+        return;
+
+    }
+
+
+    if (isNaN(price) || price < 0) {
+
+        alert(
+            "Please enter a valid price."
+        );
+
+        return;
+
+    }
+
+
+    if (isNaN(stock) || stock < 0) {
+
+        alert(
+            "Please enter a valid stock quantity."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ADD ITEM TO MENU
+    ===================================================== */
+
+    addMenuCard(
+        name,
+        category,
+        price,
+        stock,
+        description,
+        available
+    );
+
+
+    /* =====================================================
+       RESET FORM
+    ===================================================== */
+
+    document
+        .getElementById("addMenuForm")
+        .reset();
+
+
+    /*
+     * Reset availability
+     */
+
+    document
+        .getElementById("menuAvailable")
+        .checked = true;
+
+
+    document
+        .getElementById("availabilityText")
+        .textContent = "Available";
+
+
+    /* =====================================================
+       CLOSE MODAL
+    ===================================================== */
+
+    closeAddMenuModal();
+
+}
+
+
+/* =========================================================
+   ADD MENU CARD TO PAGE
+========================================================= */
+
+function addMenuCard(
+    name,
+    category,
+    price,
+    stock,
+    description,
+    available
+) {
+
+    const menuGrid =
+        document.querySelector(".menu-grid");
+
+
+    if (!menuGrid) {
+
+        console.error(
+            "Menu grid was not found."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Generate button ID
+     */
+
+    const itemId =
+        name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+
+
+    /*
+     * Determine stock status
+     */
+
+    let stockClass =
+        "stock-in";
+
+
+    let stockText =
+        stock + " in stock";
+
+
+    if (!available) {
+
+        stockClass =
+            "stock-oos";
+
+        stockText =
+            "Unavailable";
+
+    } else if (stock === 0) {
+
+        stockClass =
+            "stock-oos";
+
+        stockText =
+            "Out of stock";
+
+    } else if (stock <= 5) {
+
+        stockClass =
+            "stock-low";
+
+        stockText =
+            stock + " left";
+
+    }
+
+
+    /*
+     * Determine category CSS class
+     */
+
+    let categoryClass =
+        "cat-coffee";
+
+
+    switch (category) {
+
+        case "Coffee":
+            categoryClass = "cat-coffee";
+            break;
+
+        case "Tea":
+            categoryClass = "cat-tea";
+            break;
+
+        case "Pastries":
+            categoryClass = "cat-pastries";
+            break;
+
+        case "Desserts":
+            categoryClass = "cat-desserts";
+            break;
+
+        case "Cold Drinks":
+            categoryClass = "cat-cold";
+            break;
+
+        case "Specials":
+            categoryClass = "cat-specials";
+            break;
+
+    }
+
+
+    /*
+     * Create menu card
+     */
+
+    const card =
+        document.createElement("div");
+
+
+    card.className =
+        "menu-card";
+
+
+    card.setAttribute(
+        "data-category",
+        category
+    );
+
+
+    card.innerHTML = `
+
+        <div class="menu-card-icon">
+            ☕
+        </div>
+
+
+        <div class="menu-card-header">
+
+            <div class="menu-card-name">
+                ${name}
+            </div>
+
+            <span
+                class="category-pill ${categoryClass}"
+            >
+                ${category}
+            </span>
+
+        </div>
+
+
+        <div class="menu-card-price">
+
+            <span class="currency">
+                ₱
+            </span>${price.toFixed(2)}
+
+        </div>
+
+
+        <button
+            type="button"
+            class="stock-badge ${stockClass}"
+            onclick="openIngredientStockModal('${itemId}')"
+        >
+            ${stockText}
+        </button>
+
+
+        <div class="menu-card-actions">
+
+            <button
+                type="button"
+                class="btn-action btn-edit"
+            >
+                ✏️ Edit
+            </button>
+
+
+            <button
+                type="button"
+                id="order-btn-${itemId}"
+                class="btn-action btn-order"
+                onclick="
+                    addToWalkInOrder(
+                        '${name.replace(/'/g, "\\'")}',
+                        ${price}
+                    )
+                "
+                ${!available || stock === 0 ? "disabled" : ""}
+            >
+                🛒 Order
+            </button>
+
+
+            <button
+                type="button"
+                class="btn-action btn-delete"
+            >
+                🗑️ Delete
+            </button>
+
+        </div>
+
+    `;
+
+
+    /*
+     * Add card to the menu grid
+     */
+
+    menuGrid.prepend(card);
+
+}
+/* =========================================================
+   INGREDIENT STOCK DATA
+========================================================= */
+
+const ingredientStock = {
+
+    "spanish-latte": {
+
+        name: "Spanish Latte",
+
+        ingredients: [
+
+            {
+                name: "Coffee Beans",
+                current: 2.5,
+                maximum: 5,
+                unit: "kg"
+            },
+
+            {
+                name: "Fresh Milk",
+                current: 8,
+                maximum: 10,
+                unit: "L"
+            },
+
+            {
+                name: "Condensed Milk",
+                current: 3,
+                maximum: 5,
+                unit: "L"
+            },
+
+            {
+                name: "Sugar",
+                current: 4,
+                maximum: 5,
+                unit: "kg"
+            }
+
+        ]
+
+    },
+
+
+    "matcha-latte": {
+
+        name: "Matcha Latte",
+
+        ingredients: [
+
+            {
+                name: "Matcha Powder",
+                current: 1.2,
+                maximum: 3,
+                unit: "kg"
+            },
+
+            {
+                name: "Fresh Milk",
+                current: 8,
+                maximum: 10,
+                unit: "L"
+            },
+
+            {
+                name: "Sugar",
+                current: 4,
+                maximum: 5,
+                unit: "kg"
+            }
+
+        ]
+
+    },
+"caramel-macchiato": {
+
+        name: "Caramel Macchiato",
+
+        ingredients: [
+
+            {
+                name: "Coffee Beans",
+                current: 2.5,
+                maximum: 5,
+                unit: "kg"
+            },
+
+            {
+                name: "Fresh Milk",
+                current: 7.5,
+                maximum: 10,
+                unit: "L"
+            },
+
+            {
+                name: "Vanilla Syrup",
+                current: 2,
+                maximum: 4,
+                unit: "L"
+            },
+
+            {
+                name: "Caramel Drizzle",
+                current: 1.5,
+                maximum: 3,
+                unit: "kg"
+            }
+
+        ]
+
+    },
+
+    "hot-choco": {
+
+    name: "Hot Choco",
+
+    ingredients: [
+
+        {
+            name: "Chocolate Powder",
+            current: 1,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Fresh Milk",
+            current: 2,
+            maximum: 10,
+            unit: "L"
+        },
+
+        {
+            name: "Sugar",
+            current: 1,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Whipped Cream",
+            current: 0.5,
+            maximum: 3,
+            unit: "L"
+        }
+
+    ]
+
+},
+"butter-croissant": {
+
+    name: "Butter Croissant",
+
+    ingredients: [
+
+        {
+            name: "Croissant Dough",
+            current: 10,
+            maximum: 50,
+            unit: "pcs"
+        },
+
+        {
+            name: "Butter",
+            current: 1,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Flour",
+            current: 2,
+            maximum: 10,
+            unit: "kg"
+        },
+
+        {
+            name: "Sugar",
+            current: 1,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Eggs",
+            current: 15,
+            maximum: 60,
+            unit: "pcs"
+        }
+
+    ]
+
+},
+"cheesecake": {
+
+    name: "Cheesecake",
+
+    ingredients: [
+
+        {
+            name: "Cream Cheese",
+            current: 4,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Graham Crackers",
+            current: 3,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Sugar",
+            current: 4,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Eggs",
+            current: 45,
+            maximum: 60,
+            unit: "pcs"
+        },
+
+        {
+            name: "Fresh Cream",
+            current: 4,
+            maximum: 5,
+            unit: "L"
+        }
+
+    ]
+
+},
+    "americano": {
+
+        name: "Americano",
+
+        ingredients: [
+
+            {
+                name: "Coffee Beans",
+                current: 2.5,
+                maximum: 5,
+                unit: "kg"
+            },
+
+            {
+                name: "Filtered Water",
+                current: 20,
+                maximum: 20,
+                unit: "L"
+            }
+
+        ]
+
+    },
+    "cappuccino": {
+
+    name: "Cappuccino",
+
+    ingredients: [
+
+        {
+            name: "Coffee Beans",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Fresh Milk",
+            current: 0,
+            maximum: 10,
+            unit: "L"
+        },
+
+        {
+            name: "Milk Foam",
+            current: 0,
+            maximum: 10,
+            unit: "L"
+        },
+
+        {
+            name: "Sugar",
+            current: 4,
+            maximum: 5,
+            unit: "kg"
+        }
+
+    ]
+
+},
+"iced-vanilla-latte": {
+
+    name: "Iced Vanilla Latte",
+
+    ingredients: [
+
+        {
+            name: "Coffee Beans",
+            current: 4,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Fresh Milk",
+            current: 8,
+            maximum: 10,
+            unit: "L"
+        },
+
+        {
+            name: "Vanilla Syrup",
+            current: 3,
+            maximum: 5,
+            unit: "L"
+        },
+
+        {
+            name: "Ice",
+            current: 8,
+            maximum: 10,
+            unit: "kg"
+        },
+
+        {
+            name: "Sugar",
+            current: 4,
+            maximum: 5,
+            unit: "kg"
+        }
+
+    ]
+
+},
+"blueberry-muffin": {
+
+    name: "Blueberry Muffin",
+
+    ingredients: [
+
+        {
+            name: "All-Purpose Flour",
+            current: 0,
+            maximum: 10,
+            unit: "kg"
+        },
+
+        {
+            name: "Blueberries",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Butter",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Sugar",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Eggs",
+            current: 0,
+            maximum: 60,
+            unit: "pcs"
+        },
+
+        {
+            name: "Milk",
+            current: 0,
+            maximum: 10,
+            unit: "L"
+        }
+
+    ]
+
+},
+"tuna-sandwich": {
+
+    name: "Tuna Sandwich",
+
+    ingredients: [
+
+        {
+            name: "Tuna",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Bread",
+            current: 0,
+            maximum: 20,
+            unit: "pcs"
+        },
+
+        {
+            name: "Mayonnaise",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Lettuce",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Tomato",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Cheese",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        }
+
+    ]
+
+},
+"iced-tea": {
+
+    name: "Iced Tea",
+
+    ingredients: [
+
+        {
+            name: "Tea",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Water",
+            current: 0,
+            maximum: 10,
+            unit: "L"
+        },
+
+        {
+            name: "Sugar",
+            current: 0,
+            maximum: 5,
+            unit: "kg"
+        },
+
+        {
+            name: "Ice",
+            current: 0,
+            maximum: 10,
+            unit: "kg"
+        },
+
+        {
+            name: "Lemon Syrup",
+            current: 0,
+            maximum: 5,
+            unit: "L"
+        }
+
+    ]
+
+}
+
+};
+/* =========================================================
+   OPEN INGREDIENT STOCK MODAL
+========================================================= */
+function openIngredientStockModal(menuId) {
+    const modal = document.getElementById("ingredientStockModal");
+    const menuName = document.getElementById("ingredientMenuName");
+    const ingredientList = document.getElementById("ingredientStockList");
+
+    if (!modal) {
+        console.error("Ingredient stock modal not found.");
+        return;
+    }
+
+    const menu = ingredientStock[menuId];
+
+    if (!menu) {
+        console.warn("No ingredient data found for:", menuId);
+        menuName.textContent = "No ingredient data available";
+        ingredientList.innerHTML = `
+            <div class="empty-order">
+                No ingredient stock information has been configured for this menu item.
+            </div>
+        `;
+        modal.classList.add("show");
+        return;
+    }
+
+    // 1. Update Title Header
+    menuName.textContent = menu.name;
+
+    // 2. Render Ingredients List into Modal Body
+    ingredientList.innerHTML = menu.ingredients.map(item => {
+        const percentage = Math.round((item.current / item.maximum) * 100);
+        return `
+            <div class="ingredient-row" style="margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 500; margin-bottom: 4px;">
+                    <span>${item.name}</span>
+                    <span>${item.current} / ${item.maximum} ${item.unit}</span>
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    // 3. Display Modal
+    modal.classList.add("show");
+}
+
+/* =========================================================
+   CLOSE INGREDIENT STOCK MODAL
+========================================================= */
+function closeIngredientStockModal() {
+    const modal = document.getElementById("ingredientStockModal");
+    if (modal) {
+        modal.classList.remove("show");
+    }
+}
+
+function closeIngredientStockModal() {
+
+    const modal =
+        document.getElementById(
+            "ingredientStockModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.remove("show");
+
+    }
+
+}
+</script>
+</body>
+</html>
