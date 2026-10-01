@@ -1408,6 +1408,7 @@ html {
     scroll-behavior: smooth;
 }
 </style>
+<link rel="stylesheet" href="css/notification.css">
 </head>
 
 <body>
@@ -1583,15 +1584,77 @@ html {
 
             <div class="topbar-right">
 
-                <div class="notification">
-
-                    🔔
-
-                    <span class="notification-badge">
-                        4
-                    </span>
-
-                </div>
+                <div class="notification-container">
+                    <!-- Bell Icon Trigger -->
+                    <div class="notification" id="notifBtn">
+                      🔔
+                      <span class="notification-badge">4</span>
+                    </div>
+                  
+                    <!-- Dropdown Card -->
+                    <div class="notification-dropdown" id="notifDropdown">
+                      <div class="notif-header">
+                        <h3>Notifications</h3>
+                        <span class="mark-read-btn">Mark all read</span>
+                      </div>
+                  
+                      <div class="notif-list">
+                        <!-- Item 1 -->
+                        <div class="notif-item unread">
+                          <div class="notif-icon-box">☕</div>
+                          <div class="notif-content">
+                            <p class="notif-title">New Order #1042</p>
+                            <p class="notif-sub">Spanish Latte, Caramel Macchiato</p>
+                            <span class="notif-time">2 mins ago</span>
+                          </div>
+                        </div>
+                  
+                        <!-- Item 2 -->
+                        <div class="notif-item unread">
+                          <div class="notif-icon-box">🪑</div>
+                          <div class="notif-content">
+                            <p class="notif-title">Table Reservation</p>
+                            <p class="notif-sub">Table 4 reserved for 4:00 PM</p>
+                            <span class="notif-time">15 mins ago</span>
+                          </div>
+                        </div>
+                  
+                        <!-- Item 3 -->
+                        <div class="notif-item unread">
+                          <div class="notif-icon-box">📦</div>
+                          <div class="notif-content">
+                            <p class="notif-title">Low Stock Alert</p>
+                            <p class="notif-sub">Whole Milk supply below 5L</p>
+                            <span class="notif-time">1 hour ago</span>
+                          </div>
+                        </div>
+                  
+                        <!-- Item 4 -->
+                        <div class="notif-item unread">
+                          <div class="notif-icon-box">💳</div>
+                          <div class="notif-content">
+                            <p class="notif-title">Payment Received</p>
+                            <p class="notif-sub">Order #1039 paid via GCash</p>
+                            <span class="notif-time">2 hours ago</span>
+                          </div>
+                        </div>
+                  
+                        <!-- Item 5 -->
+                        <div class="notif-item">
+                          <div class="notif-icon-box">📝</div>
+                          <div class="notif-content">
+                            <p class="notif-title">Daily Sales Report</p>
+                            <p class="notif-sub">Yesterday's report ready to download</p>
+                            <span class="notif-time">1 day ago</span>
+                          </div>
+                        </div>
+                      </div>
+                  
+                      <div class="notif-footer">
+                        <a href="#">View all notifications →</a>s
+                      </div>
+                    </div>
+                  </div>
 
 
                 <div class="user-dropdown">
@@ -2917,6 +2980,7 @@ document.getElementById("logoutModal")
 
 
 </script>
+<script src="js/notification.js"></script>
 <!-- =========================================================
      LOGOUT CONFIRMATION MODAL
 ========================================================= -->
