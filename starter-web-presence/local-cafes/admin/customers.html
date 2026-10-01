@@ -1171,7 +1171,55 @@
     background: #b63d3d;
 
 }
+.export-container {
+    position: relative;
+    display: inline-block;
+}
 
+.export-arrow {
+    margin-left: 6px;
+    font-size: 12px;
+}
+
+.export-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    width: 190px;
+
+    background: #ffffff;
+    border: 1px solid #e5e0db;
+    border-radius: 8px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+    padding: 6px;
+    z-index: 1000;
+}
+
+.export-menu.show {
+    display: block;
+}
+
+.export-option {
+    width: 100%;
+    border: none;
+    background: transparent;
+
+    padding: 11px 12px;
+
+    text-align: left;
+    font-size: 14px;
+    color: #292421;
+
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.export-option:hover {
+    background: #f6f4f1;
+}
     </style>
 </head>
 
@@ -1590,16 +1638,41 @@
                     <div class="action-bar">
 
                         <div class="action-bar-left">
-                            <input type="text" class="search-input" placeholder="Search by name, phone, or email..." />
+                            <input 
+                                type="text" 
+                                id="customerSearch"
+                                class="search-input"
+                                placeholder="Search by name, phone, or email..."
+                            >
                         </div>
 
                         <div class="action-bar-right">
-                            <button class="btn btn-secondary">
-                                <span>📤</span> Export
-                            </button>
-                            <button class="btn btn-primary">
-                                <span>➕</span> New Customer
-                            </button>
+
+                            <div class="export-container">
+                        
+                                <button type="button" class="btn btn-secondary" id="exportBtn">
+                                    <span>📤</span> Export
+                                    <span class="export-arrow">▾</span>
+                                </button>
+                        
+                                <div class="export-menu" id="exportMenu">
+                        
+                                    <button type="button" class="export-option" id="exportExcel">
+                                        📊 Excel (.xlsx)
+                                    </button>
+                        
+                                    <button type="button" class="export-option" id="exportPdf">
+                                        📕 PDF
+                                    </button>
+                        
+                                    <button type="button" class="export-option" id="exportWord">
+                                        📄 Word (.docx)
+                                    </button>
+                        
+                                </div>
+                        
+                            </div>
+                        
                         </div>
 
                     </div>
@@ -1621,7 +1694,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="customerTableBody">
 
                         <tr>
                             <td><span class="customer-id">CUS-1001</span></td>
@@ -1852,6 +1925,729 @@
             sidebar.classList.remove("open");
         }
     });
+    document.addEventListener("DOMContentLoaded", function () {
+
+const searchInput = document.getElementById("customerSearch");
+const tableBody = document.getElementById("customerTableBody");
+
+searchInput.addEventListener("input", function () {
+
+    // Get what the user typed
+    const searchValue = this.value.toLowerCase().trim();
+
+    // Get all customer rows
+    const rows = tableBody.querySelectorAll("tr");
+
+    rows.forEach(function (row) {
+
+        // Get the customer ID
+        const customerId = row
+            .querySelector(".customer-id")
+            ?.textContent
+            .toLowerCase() || "";
+
+        // Get the customer name
+        const customerName = row
+            .querySelector(".customer-name")
+            ?.textContent
+            .toLowerCase() || "";
+
+        // Get the customer phone
+        const customerPhone = row
+            .querySelector(".customer-phone")
+            ?.textContent
+            .toLowerCase() || "";
+
+        // Get the customer email
+        const customerEmail = row
+            .querySelector(".customer-email")
+            ?.textContent
+            .toLowerCase() || "";
+
+        // Check if the search matches any of the fields
+        const matches =
+            customerId.includes(searchValue) ||
+            customerName.includes(searchValue) ||
+            customerPhone.includes(searchValue) ||
+            customerEmail.includes(searchValue);
+
+        // Show or hide the row
+        if (matches) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+
+});
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+/* =========================================================
+   EXPORT MENU
+   ========================================================= */
+
+const exportBtn = document.getElementById("exportBtn");
+const exportMenu = document.getElementById("exportMenu");
+
+if (exportBtn && exportMenu) {
+
+    // Open / close export menu
+    exportBtn.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        exportMenu.classList.toggle("show");
+
+    });
+
+    // Prevent menu clicks from bubbling to document
+    exportMenu.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", function () {
+
+        exportMenu.classList.remove("show");
+
+    });
+
+}
+
+
+/* =========================================================
+   EXCEL EXPORT
+   ========================================================= */
+
+const exportExcel = document.getElementById("exportExcel");
+
+if (exportExcel) {
+
+    exportExcel.addEventListener("click", function () {
+
+        exportMenu.classList.remove("show");
+
+        exportToExcel();
+
+    });
+
+}
+
+
+/* =========================================================
+   PDF EXPORT
+   ========================================================= */
+
+const exportPdf = document.getElementById("exportPdf");
+
+if (exportPdf) {
+
+    exportPdf.addEventListener("click", function () {
+
+        exportMenu.classList.remove("show");
+
+        exportToPDF();
+
+    });
+
+}
+
+
+/* =========================================================
+   WORD EXPORT
+   ========================================================= */
+
+const exportWord = document.getElementById("exportWord");
+
+if (exportWord) {
+
+    exportWord.addEventListener("click", function () {
+
+        exportMenu.classList.remove("show");
+
+        exportToWord();
+
+    });
+
+}
+
+
+/* =========================================================
+   GET CUSTOMER DATA
+   ========================================================= */
+
+function getCustomerData() {
+
+    const tbody = document.getElementById("customerTableBody");
+
+    if (!tbody) {
+
+        alert("Customer table not found.");
+
+        return [];
+
+    }
+
+
+    const rows = tbody.querySelectorAll("tr");
+
+    const customers = [];
+
+
+    rows.forEach(function (row) {
+
+        const cells = row.querySelectorAll("td");
+
+
+        // Make sure this is a valid customer row
+        if (cells.length < 8) {
+
+            return;
+
+        }
+
+
+        customers.push({
+
+            id: cells[0].innerText.trim(),
+
+            name: cells[1].innerText.trim(),
+
+            phone: cells[2].innerText.trim(),
+
+            email: cells[3].innerText.trim(),
+
+            visits: cells[4].innerText.trim(),
+
+            spent: cells[5].innerText.trim(),
+
+            lastVisit: cells[6].innerText.trim(),
+
+            membership: cells[7].innerText.trim()
+
+        });
+
+    });
+
+
+    return customers;
+
+}
+
+
+/* =========================================================
+   EXCEL EXPORT
+   ========================================================= */
+
+function exportToExcel() {
+
+    const customers = getCustomerData();
+
+
+    if (customers.length === 0) {
+
+        alert("There are no customers to export.");
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <html>
+
+        <head>
+
+            <meta charset="UTF-8">
+
+            <style>
+
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    font-family: Arial, sans-serif;
+                }
+
+                th {
+                    background-color: #6f4e37;
+                    color: white;
+                    font-weight: bold;
+                    padding: 10px;
+                    border: 1px solid #555;
+                }
+
+                td {
+                    padding: 8px;
+                    border: 1px solid #cccccc;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <h2>Café Customer Report</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Total Visits</th>
+                        <th>Total Spent</th>
+                        <th>Last Visit</th>
+                        <th>Membership</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+    `;
+
+
+    customers.forEach(function (customer) {
+
+        html += `
+
+            <tr>
+
+                <td>${escapeHTML(customer.id)}</td>
+
+                <td>${escapeHTML(customer.name)}</td>
+
+                <td>${escapeHTML(customer.phone)}</td>
+
+                <td>${escapeHTML(customer.email)}</td>
+
+                <td>${escapeHTML(customer.visits)}</td>
+
+                <td>${escapeHTML(customer.spent)}</td>
+
+                <td>${escapeHTML(customer.lastVisit)}</td>
+
+                <td>${escapeHTML(customer.membership)}</td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+                </tbody>
+
+            </table>
+
+        </body>
+
+        </html>
+
+    `;
+
+
+    // Create Excel-compatible file
+    const blob = new Blob(
+        [html],
+        {
+            type: "application/vnd.ms-excel"
+        }
+    );
+
+
+    // Create temporary download URL
+    const url = URL.createObjectURL(blob);
+
+
+    // Create download link
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = url;
+
+    downloadLink.download = "Cafe_Customers.xls";
+
+
+    // Start download
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+
+
+    // Clean up
+    document.body.removeChild(downloadLink);
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   WORD EXPORT
+   ========================================================= */
+
+function exportToWord() {
+
+    const customers = getCustomerData();
+
+
+    if (customers.length === 0) {
+
+        alert("There are no customers to export.");
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <html>
+
+        <head>
+
+            <meta charset="UTF-8">
+
+            <style>
+
+                body {
+                    font-family: Arial, sans-serif;
+                }
+
+                h1 {
+                    text-align: center;
+                    color: #6f4e37;
+                }
+
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+
+                th {
+                    background-color: #6f4e37;
+                    color: white;
+                    padding: 8px;
+                    border: 1px solid #555;
+                }
+
+                td {
+                    padding: 8px;
+                    border: 1px solid #999;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <h1>Café Customer Report</h1>
+
+            <table>
+
+                <tr>
+
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Total Visits</th>
+                    <th>Total Spent</th>
+                    <th>Last Visit</th>
+                    <th>Membership</th>
+
+                </tr>
+    `;
+
+
+    customers.forEach(function (customer) {
+
+        html += `
+
+            <tr>
+
+                <td>${escapeHTML(customer.id)}</td>
+
+                <td>${escapeHTML(customer.name)}</td>
+
+                <td>${escapeHTML(customer.phone)}</td>
+
+                <td>${escapeHTML(customer.email)}</td>
+
+                <td>${escapeHTML(customer.visits)}</td>
+
+                <td>${escapeHTML(customer.spent)}</td>
+
+                <td>${escapeHTML(customer.lastVisit)}</td>
+
+                <td>${escapeHTML(customer.membership)}</td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+            </table>
+
+        </body>
+
+        </html>
+
+    `;
+
+
+    // Create Word-compatible document
+    const blob = new Blob(
+        [html],
+        {
+            type: "application/msword"
+        }
+    );
+
+
+    const url = URL.createObjectURL(blob);
+
+
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = url;
+
+    downloadLink.download = "Cafe_Customers.doc";
+
+
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+
+
+    document.body.removeChild(downloadLink);
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   PDF EXPORT
+   ========================================================= */
+
+function exportToPDF() {
+
+    const customers = getCustomerData();
+
+
+    if (customers.length === 0) {
+
+        alert("There are no customers to export.");
+
+        return;
+
+    }
+
+
+    let printWindow = window.open("", "_blank");
+
+
+    let html = `
+
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>Café Customer Report</title>
+
+            <style>
+
+                @page {
+                    size: A4 landscape;
+                    margin: 15mm;
+                }
+
+                body {
+                    font-family: Arial, sans-serif;
+                    color: #292421;
+                }
+
+                h1 {
+                    text-align: center;
+                    margin-bottom: 5px;
+                }
+
+                .report-date {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    color: #666;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                th {
+                    background: #6f4e37;
+                    color: white;
+                    padding: 9px;
+                    border: 1px solid #555;
+                    text-align: left;
+                }
+
+                td {
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                }
+
+                tr:nth-child(even) {
+                    background: #f7f7f7;
+                }
+
+                .footer {
+                    margin-top: 20px;
+                    font-size: 11px;
+                    color: #777;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <h1>Café Customer Report</h1>
+
+            <div class="report-date">
+                Customer List
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Total Visits</th>
+                        <th>Total Spent</th>
+                        <th>Last Visit</th>
+                        <th>Membership</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+    `;
+
+
+    customers.forEach(function (customer) {
+
+        html += `
+
+            <tr>
+
+                <td>${escapeHTML(customer.id)}</td>
+
+                <td>${escapeHTML(customer.name)}</td>
+
+                <td>${escapeHTML(customer.phone)}</td>
+
+                <td>${escapeHTML(customer.email)}</td>
+
+                <td>${escapeHTML(customer.visits)}</td>
+
+                <td>${escapeHTML(customer.spent)}</td>
+
+                <td>${escapeHTML(customer.lastVisit)}</td>
+
+                <td>${escapeHTML(customer.membership)}</td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+                </tbody>
+
+            </table>
+
+            <div class="footer">
+                Café Management System — Customer Report
+            </div>
+
+            <script>
+
+                window.onload = function () {
+
+                    window.print();
+
+                };
+
+            <\/script>
+
+        </body>
+
+        </html>
+
+    `;
+
+
+    printWindow.document.open();
+
+    printWindow.document.write(html);
+
+    printWindow.document.close();
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+   ========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+});
+
 /* =========================================================
    USER PROFILE DROPDOWN
 ========================================================= */
