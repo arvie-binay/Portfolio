@@ -416,7 +416,7 @@ function setLoading(isLoading) {
 
         loginButton.querySelector(
             ".button-text"
-        ).textContent = "Sign In to Dashboard";
+        ).textContent = "Sign In to Menu";
 
 
         loginButton.querySelector(
