@@ -1,11 +1,11 @@
 /* ============================================================
-   LOCAL CAFÉ - STAFF LOGIN JAVASCRIPT
+   LOCAL CAFÉ - CUSTOMER LOGIN JAVASCRIPT
 
    This version does NOT connect to a database.
 
    Demo credentials:
-       Username: staff
-       Password: staff123
+       Username: customer
+       Password: customer123
 
    Later, this JavaScript can be replaced with PHP/AJAX
    authentication connected to MySQL.
@@ -16,7 +16,7 @@
    GET HTML ELEMENTS
 ============================================================ */
 
-const loginForm = document.getElementById("staffLoginForm");
+const loginForm = document.getElementById("customerLoginForm");
 
 const usernameInput = document.getElementById("username");
 
@@ -54,9 +54,9 @@ const modalOkay = document.getElementById("modalOkay");
    Do NOT use this method for a real production system.
 ============================================================ */
 
-const DEMO_USERNAME = "staff";
+const DEMO_USERNAME = "customer";
 
-const DEMO_PASSWORD = "staff123";
+const DEMO_PASSWORD = "customer123";
 
 
 /* ============================================================
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Remember me".
     */
 
-    const savedUsername = localStorage.getItem("cafeStaffUsername");
+    const savedUsername = localStorage.getItem("cafeCustomerUsername");
 
     if (savedUsername) {
 
@@ -216,13 +216,13 @@ loginForm.addEventListener("submit", function(event) {
     // ==========================================
 
     if (
-        username === "staff" &&
-        password === "staff123"
+        username === "customer" &&
+        password === "customer123"
     ) {
 
         // Start 1-second countdown
         showLoginMessage(
-            "Login successful! Opening your orders...",
+            "Login successful! Opening your Menu...",
             "success"
         );
 
@@ -230,7 +230,7 @@ loginForm.addEventListener("submit", function(event) {
         // Wait 5 seconds, then redirect
         setTimeout(function() {
 
-            window.location.href = "orders.html";
+            window.location.href = "menu.html";
 
         }, 1000);
 
