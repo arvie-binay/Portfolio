@@ -3295,80 +3295,7 @@
 
         <div class="content">
 
-            <!-- =================================
-                 STATISTICS
-            ================================== -->
-
-            <div class="stats">
-
-                <div class="stat-card">
-
-                    <div>
-                        <h4>Total Items</h4>
-                        <h2>56</h2>
-                        <div class="stat-sub">
-                            Across all categories
-                        </div>
-                    </div>
-
-                    <div class="stat-icon brown">
-                        🍽️
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div>
-                        <h4>Categories</h4>
-                        <h2>7</h2>
-                        <div class="stat-sub">
-                            Active menu groups
-                        </div>
-                    </div>
-
-                    <div class="stat-icon green">
-                        🗂️
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div>
-                        <h4>Out of Stock</h4>
-                        <h2>4</h2>
-                        <div class="stat-sub" style="color:#b43226;">
-                            Requires restocking
-                        </div>
-                    </div>
-
-                    <div class="stat-icon orange">
-                        ⚠️
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div>
-                        <h4>Best Seller Today</h4>
-                        <h2 style="font-size:20px;">Spanish Latte</h2>
-                        <div class="stat-sub">
-                            42 sold today
-                        </div>
-                    </div>
-
-                    <div class="stat-icon blue">
-                        🏆
-                    </div>
-
-                </div>
-
-            </div>
+           
 
 
             <!-- =================================
@@ -3378,26 +3305,19 @@
             <div class="filter-bar">
 
                 <div class="category-chips">
-                    <button class="chip active">All</button>
-                    <button class="chip">Coffee</button>
-                    <button class="chip">Tea</button>
-                    <button class="chip">Pastries</button>
-                    <button class="chip">Desserts</button>
-                    <button class="chip">Cold Drinks</button>
-                    <button class="chip">Specials</button>
+                    <button class="chip active" data-category="all">All</button>
+                    <button class="chip" data-category="coffee">Coffee</button>
+                    <button class="chip" data-category="tea">Tea</button>
+                    <button class="chip" data-category="pastries">Pastries</button>
+                    <button class="chip" data-category="desserts">Desserts</button>
+                    <button class="chip" data-category="cold-drinks">Cold Drinks</button>
+                    <button class="chip" data-category="specials">Specials</button>
                 </div>
 
                <div style="display:flex; gap:10px; flex-wrap:wrap;">
 
            
-            <button
-                type="button"
-                class="btn-primary"
-                onclick="openAddMenuModal()">
-                <span>➕</span>
-                Add Item
-            </button>
-
+          
         </div>
 
             </div>
@@ -3410,7 +3330,7 @@
             <div class="menu-grid">
 
                 <!-- 1. Spanish Latte -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="coffee">
                     <div class="menu-card-icon">☕</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Spanish Latte</div>
@@ -3419,7 +3339,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>145</div>
                     <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('spanish-latte')">In stock</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                       
                         <button
                         id="order-btn-spanish-latte"
                         class="btn-action btn-order"
@@ -3427,12 +3347,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                       
                     </div>
                 </div>
 
                 <!-- 2. Matcha Latte -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="tea">
                     <div class="menu-card-icon">🍵</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Matcha Latte</div>
@@ -3441,7 +3361,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>160</div>
                     <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('matcha-latte')">In stock</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                       
                         <button
                         id="order-btn-matcha-latte"
                         class="btn-action btn-order"
@@ -3449,12 +3369,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                       
                     </div>
                 </div>
 
                 <!-- 3. Caramel Macchiato -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="coffee">
                     <div class="menu-card-icon">☕</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Caramel Macchiato</div>
@@ -3463,7 +3383,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>155</div>
                     <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('caramel-macchiato')">In stock</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-caramel-macchiato"
                         class="btn-action btn-order"
@@ -3471,12 +3391,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                        
                     </div>
                 </div>
 
                 <!-- 4. Hot Choco -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="desserts">
                     <div class="menu-card-icon">🍫</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Hot Choco</div>
@@ -3485,7 +3405,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>135</div>
                     <button type="button" class="stock-badge stock-low" onclick="openIngredientStockModal('hot-choco')">Low</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-hot-choco"
                         class="btn-action btn-order"
@@ -3493,12 +3413,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                       
                     </div>
                 </div>
 
                 <!-- 5. Butter Croissant -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="pastries">
                     <div class="menu-card-icon">🥐</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Butter Croissant</div>
@@ -3507,7 +3427,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>120</div>
                     <button type="button" class="stock-badge stock-low" onclick="openIngredientStockModal('butter-croissant')">Low</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-butter-croissant"
                         class="btn-action btn-order"
@@ -3515,12 +3435,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                       
                     </div>
                 </div>
 
                 <!-- 6. Cheesecake -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="desserts">
                     <div class="menu-card-icon">🍰</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Cheesecake</div>
@@ -3529,7 +3449,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>180</div>
                     <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('cheesecake')">In Stock</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-cheesecake"
                         class="btn-action btn-order"
@@ -3537,12 +3457,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                        
                     </div>
                 </div>
 
                 <!-- 7. Americano -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="coffee">
                     <div class="menu-card-icon">☕</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Americano</div>
@@ -3551,7 +3471,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>110</div>
                     <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('americano')">In Stock</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                       
                         <button
                         id="order-btn-americano"
                         class="btn-action btn-order"
@@ -3559,12 +3479,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
-                    </div>
+                        
+                    </div>  
                 </div>
 
                 <!-- 8. Cappuccino -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="coffee">
                     <div class="menu-card-icon">☕</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Cappuccino</div>
@@ -3573,7 +3493,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>130</div>
                     <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('cappuccino')">OOS</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-cappuccino"
                         class="btn-action btn-order"
@@ -3581,12 +3501,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                       
                     </div>
                 </div>
 
                 <!-- 9. Iced Vanilla Latte -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="cold-drinks">
                     <div class="menu-card-icon">🧋</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Iced Vanilla Latte</div>
@@ -3595,7 +3515,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>155</div>
                     <button type="button" class="stock-badge stock-in" onclick="openIngredientStockModal('iced-vanilla-latte')">In Stock</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-iced-vanilla-latte"
                         class="btn-action btn-order"
@@ -3603,12 +3523,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                        
                     </div>
                 </div>
 
                 <!-- 10. Blueberry Muffin -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="pastries">
                     <div class="menu-card-icon">🧁</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Blueberry Muffin</div>
@@ -3617,7 +3537,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>115</div>
                     <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('blueberry-muffin')">OOS</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-blueberry-muffin"
                         class="btn-action btn-order"
@@ -3625,12 +3545,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                       
                     </div>
                 </div>
 
                 <!-- 11. Tuna Sandwich -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="specials">
                     <div class="menu-card-icon">🥪</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Tuna Sandwich</div>
@@ -3639,7 +3559,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>140</div>
                     <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('tuna-sandwich')">OOS</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                        
                         <button
                         id="order-btn-tuna-sandwich"
                         class="btn-action btn-order"
@@ -3647,12 +3567,12 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                        
                     </div>
                 </div>
 
                 <!-- 12. Iced Tea -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="cold-drinks">
                     <div class="menu-card-icon">🧊</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Iced Tea</div>
@@ -3661,7 +3581,7 @@
                     <div class="menu-card-price"><span class="currency">₱</span>100</div>
                     <button type="button" class="stock-badge stock-oos" onclick="openIngredientStockModal('iced-tea')">OOS</button>
                     <div class="menu-card-actions">
-                        <button class="btn-action btn-edit">✏️ Edit</button>
+                       
                         <button
                         id="order-btn-iced-tea"
                         class="btn-action btn-order"
@@ -3669,7 +3589,7 @@
                     >
                         🛒 Order
                     </button>
-                        <button class="btn-action btn-delete">🗑️ Delete</button>
+                        
                     </div>
                 </div>
 
@@ -6300,6 +6220,34 @@ function closeIngredientStockModal() {
     }
 
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const chips = document.querySelectorAll('.chip');
+    const menuCards = document.querySelectorAll('.menu-card');
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            // 1. Remove 'active' class from all chips
+            chips.forEach(c => c.classList.remove('active'));
+
+            // 2. Add 'active' class to the clicked chip
+            chip.classList.add('active');
+
+            // 3. Get chosen category
+            const selectedCategory = chip.getAttribute('data-category');
+
+            // 4. Filter the cards
+            menuCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+
+                if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                    card.style.display = 'block'; // Show item
+                } else {
+                    card.style.display = 'none';  // Hide item
+                }
+            });
+        });
+    });
+});
 </script>
 </body>
 </html>
