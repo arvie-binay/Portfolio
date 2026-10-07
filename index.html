@@ -4,23 +4,293 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
+<style>
+  /* =====================================================
+   MOBILE NAVIGATION - FINAL FIX
+===================================================== */
 
+/* Desktop */
+.mobile-menu-btn {
+    display: none;
+}
+
+
+/* =====================================================
+   PHONE
+===================================================== */
+
+@media screen and (max-width: 768px) {
+
+    /* Navbar */
+    .navbar {
+        position: relative !important;
+        width: 100% !important;
+        overflow: visible !important;
+        z-index: 9999 !important;
+    }
+
+
+    /* Navbar container */
+    .navbar .container {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        padding: 10px 15px !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* =================================================
+       LOGO
+    ================================================= */
+
+    .logo {
+        display: flex !important;
+        align-items: center !important;
+
+        text-decoration: none !important;
+
+        font-size: 18px !important;
+
+        white-space: nowrap !important;
+
+        max-width: calc(100% - 60px) !important;
+
+        overflow: hidden !important;
+    }
+
+    .logo-image {
+        height: 45px !important;
+        width: auto !important;
+
+        flex-shrink: 0 !important;
+    }
+
+
+    /* =================================================
+       HIDE DESKTOP NAVIGATION
+    ================================================= */
+
+    .nav-links {
+        display: none !important;
+    }
+
+
+    /* Hide desktop View Sample button */
+    .auth-button {
+        display: none !important;
+    }
+
+
+    /* =================================================
+       HAMBURGER BUTTON
+    ================================================= */
+
+    .mobile-menu-btn {
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        width: 44px !important;
+        height: 44px !important;
+
+        min-width: 44px !important;
+
+        padding: 0 !important;
+
+        border: none !important;
+        border-radius: 8px !important;
+
+        background: #555555 !important;
+
+        color: #ffffff !important;
+
+        font-size: 25px !important;
+
+        line-height: 1 !important;
+
+        cursor: pointer !important;
+
+        flex-shrink: 0 !important;
+
+        position: relative !important;
+
+        z-index: 10001 !important;
+    }
+
+
+    /* =================================================
+       OPEN MENU
+    ================================================= */
+
+    .navbar.mobile-open .nav-links {
+
+        display: flex !important;
+
+        position: absolute !important;
+
+        top: 100% !important;
+
+        left: 10px !important;
+        right: 10px !important;
+
+        width: auto !important;
+
+        margin: 0 !important;
+
+        padding: 10px !important;
+
+        flex-direction: column !important;
+
+        align-items: stretch !important;
+
+        gap: 4px !important;
+
+        background: #ffffff !important;
+
+        border-radius: 12px !important;
+
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+
+        z-index: 10000 !important;
+
+        list-style: none !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* Menu items */
+    .navbar.mobile-open .nav-links li {
+
+        display: block !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+    }
+
+
+    /* Menu links */
+    .navbar.mobile-open .nav-links li a {
+
+        display: block !important;
+
+        width: 100% !important;
+
+        padding: 14px 16px !important;
+
+        box-sizing: border-box !important;
+
+        color: #292929 !important;
+
+        background: transparent !important;
+
+        text-decoration: none !important;
+
+        font-size: 16px !important;
+
+        font-weight: 600 !important;
+
+        border-radius: 8px !important;
+    }
+
+
+    .navbar.mobile-open .nav-links li a:hover {
+
+        background: #eeeeee !important;
+
+        color: #222222 !important;
+    }
+
+
+    /* =================================================
+       SAMPLE WEBSITE BUTTON INSIDE MOBILE MENU
+    ================================================= */
+
+    .navbar.mobile-open .auth-button {
+
+        display: block !important;
+
+        position: absolute !important;
+
+        top: calc(100% + 165px) !important;
+
+        left: 20px !important;
+        right: 20px !important;
+
+        width: auto !important;
+
+        box-sizing: border-box !important;
+
+        padding: 14px 16px !important;
+
+        text-align: center !important;
+
+        background: #555555 !important;
+
+        color: #ffffff !important;
+
+        border-radius: 8px !important;
+
+        text-decoration: none !important;
+
+        z-index: 10001 !important;
+    }
+
+}
+</style>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
-<a href="#" class="logo">
-          <img src="image/Logo.png" alt="King's BizOps Solutions Logo" class="logo-image">King's BizOps Solutions
+
+        <a href="#" class="logo">
+            <img src="image/Logo.png"
+                 alt="King's BizOps Solutions Logo"
+                 class="logo-image">
+            <span>King's BizOps Solutions</span>
         </a>
-      <ul class="nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <a href="#" class="auth-button" id="viewSamplesBtn">View Sample Websites</a>
+
+        <ul class="nav-links">
+            <li>
+                <a href="#services">Services</a>
+            </li>
+
+            <li>
+                <a href="#about">About</a>
+            </li>
+
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
+        </ul>
+
+        <a href="#"
+           class="auth-button"
+           id="viewSamplesBtn">
+            View Sample Websites
+        </a>
+
+        <!-- MOBILE BUTTON -->
+        <button
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            type="button">
+            ☰
+        </button>
+
     </div>
-  </nav>
+</nav>
 
   <section class="hero">
     <div class="container">
@@ -377,5 +647,45 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    
+        const navbar = document.querySelector(".navbar");
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    
+        if (!navbar || !mobileMenuBtn) {
+            return;
+        }
+    
+        mobileMenuBtn.addEventListener("click", function () {
+    
+            navbar.classList.toggle("mobile-open");
+    
+            if (navbar.classList.contains("mobile-open")) {
+                mobileMenuBtn.innerHTML = "✕";
+            } else {
+                mobileMenuBtn.innerHTML = "☰";
+            }
+    
+        });
+    
+    
+        /* Close menu when clicking a navigation link */
+        const navLinks = document.querySelectorAll(".nav-links a");
+    
+        navLinks.forEach(function (link) {
+    
+            link.addEventListener("click", function () {
+    
+                navbar.classList.remove("mobile-open");
+    
+                mobileMenuBtn.innerHTML = "☰";
+    
+            });
+    
+        });
+    
+    });
+    </script>
 </body>
 </html>
