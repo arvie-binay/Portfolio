@@ -1003,6 +1003,7 @@
 
 }
     </style>
+    <link rel="stylesheet" href="css/notification.css">
 </head>
 
 <body>
@@ -1077,10 +1078,50 @@
 
             <div class="topbar-right">
 
-                <div class="notification">
-                    🔔
-                    <span class="notification-badge">4</span>
-                </div>
+                <div class="notification-container">
+                    <!-- Bell Icon Trigger -->
+                    <div class="notification" id="notifBtn">
+                      🔔
+                      <span class="notification-badge">4</span>
+                    </div>
+                  
+                    <!-- Dropdown Card -->
+                    <div class="notification-dropdown" id="notifDropdown">
+                      <div class="notif-header">
+                        <h3>Notifications</h3>
+                        <span class="mark-read-btn">Mark all read</span>
+                      </div>
+                  
+                      <div class="notif-list">
+                        <!-- Item 1 -->
+                        <div class="notif-item unread">
+                          <div class="notif-icon-box">☕</div>
+                          <div class="notif-content">
+                            <p class="notif-title">New Order #1042</p>
+                            <p class="notif-sub">Spanish Latte, Caramel Macchiato</p>
+                            <span class="notif-time">2 mins ago</span>
+                          </div>
+                        </div>
+                  
+                        <!-- Item 2 -->
+                        <div class="notif-item unread">
+                          <div class="notif-icon-box">🪑</div>
+                          <div class="notif-content">
+                            <p class="notif-title">Table Reservation</p>
+                            <p class="notif-sub">Table 4 reserved for 4:00 PM</p>
+                            <span class="notif-time">15 mins ago</span>
+                          </div>
+                        </div>
+                  
+                       
+                       
+                      </div>
+                  
+                      <div class="notif-footer">
+                        <a href="#">View all notifications →</a>
+                      </div>
+                    </div>
+                  </div>
 
                 <div class="user-dropdown">
 
@@ -1137,32 +1178,7 @@
         <div class="dropdown-divider"></div>
 
 
-        <a href="settings.html#my-profile" class="dropdown-item">
-
-            <span>
-                👤
-            </span>
-
-            <div>
-                <strong>My Profile</strong>
-                <small>View your account</small>
-            </div>
-
-        </a>
-
-
-        <a href="settings.html" class="dropdown-item">
-
-            <span>
-                ⚙️
-            </span>
-
-            <div>
-                <strong>Settings</strong>
-                <small>Manage system settings</small>
-            </div>
-
-        </a>
+        
 
 
         <div class="dropdown-divider"></div>
@@ -1606,6 +1622,7 @@ document.getElementById("logoutModal")
 
     });
 </script>
+<script src="js/notification.js"></script>
 <!-- =========================================================
      LOGOUT CONFIRMATION MODAL
 ========================================================= -->
