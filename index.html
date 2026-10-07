@@ -245,7 +245,14 @@
 
         z-index: 10001 !important;
     }
-
+    @media screen and (max-width: 768px) {
+    /* Hide nav links dropdown when modal is active */
+    .sample-modal-active .navbar .nav-links,
+    .sample-modal-active .navbar .auth-button,
+    .sample-modal-active .mobile-menu-btn {
+        display: none !important;
+    }
+}
 }
 </style>
   <link rel="stylesheet" href="styles.css">
@@ -648,73 +655,84 @@
 
   <script src="script.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
     
-        const navbar = document.querySelector(".navbar");
-        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-    
-        if (!navbar || !mobileMenuBtn) {
-            console.log("Mobile navigation elements not found.");
-            return;
+    const navbar = document.querySelector(".navbar");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+
+    if (!navbar || !mobileMenuBtn) {
+        console.log("Mobile navigation elements not found.");
+        return;
+    }
+
+    mobileMenuBtn.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        navbar.classList.toggle("mobile-open");
+
+        if (navbar.classList.contains("mobile-open")) {
+
+            mobileMenuBtn.innerHTML = "✕";
+            mobileMenuBtn.setAttribute("aria-label", "Close menu");
+
+        } else {
+
+            mobileMenuBtn.innerHTML = "☰";
+            mobileMenuBtn.setAttribute("aria-label", "Open menu");
+
         }
-    
-        mobileMenuBtn.addEventListener("click", function (event) {
-    
-            event.preventDefault();
-            event.stopPropagation();
-    
-            navbar.classList.toggle("mobile-open");
-    
-            if (navbar.classList.contains("mobile-open")) {
-    
-                mobileMenuBtn.innerHTML = "✕";
-                mobileMenuBtn.setAttribute("aria-label", "Close menu");
-    
-            } else {
-    
-                mobileMenuBtn.innerHTML = "☰";
-                mobileMenuBtn.setAttribute("aria-label", "Open menu");
-    
-            }
-    
-        });
-    
-    
-        /* Close menu after clicking Services/About/Contact */
-        const navigationLinks = document.querySelectorAll(
-            ".nav-links a"
-        );
-    
-        navigationLinks.forEach(function (link) {
-    
-            link.addEventListener("click", function () {
-    
-                navbar.classList.remove("mobile-open");
-    
-                mobileMenuBtn.innerHTML = "☰";
-    
-            });
-    
-        });
-    
-    
-        /* Close menu if user clicks outside */
-        document.addEventListener("click", function (event) {
-    
-            if (
-                navbar.classList.contains("mobile-open") &&
-                !navbar.contains(event.target)
-            ) {
-    
-                navbar.classList.remove("mobile-open");
-    
-                mobileMenuBtn.innerHTML = "☰";
-    
-            }
-    
-        });
-    
+
     });
+
+
+    /* Close menu after clicking Services/About/Contact */
+    const navigationLinks = document.querySelectorAll(
+        ".nav-links a"
+    );
+
+    navigationLinks.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            navbar.classList.remove("mobile-open");
+
+            mobileMenuBtn.innerHTML = "☰";
+
+        });
+
+    });
+
+
+    /* Close menu if user clicks outside */
+    document.addEventListener("click", function (event) {
+
+        if (
+            navbar.classList.contains("mobile-open") &&
+            !navbar.contains(event.target)
+        ) {
+
+            navbar.classList.remove("mobile-open");
+
+            mobileMenuBtn.innerHTML = "☰";
+
+        }
+
+    });
+
+
+    /* Automatically close the mobile navigation menu when Sample Website button is clicked */
+    const viewSampleBtn = document.querySelector(".auth-button"); 
+
+    if (viewSampleBtn) {
+        viewSampleBtn.addEventListener("click", function () {
+            navbar.classList.remove("mobile-open");
+            mobileMenuBtn.innerHTML = "☰";
+        });
+    }
+
+});
     </script>
 </body>
 </html>
