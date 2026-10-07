@@ -311,19 +311,27 @@ body.dark-mode .moon-icon {
   gap: 40px;
 }
 
-.auth-button {
-  text-decoration: none;
-  background: #555555;
-  color: white;
-  font-weight: 600;
-  padding: 10px 24px;
-  border-radius: 8px;
-  transition: background 0.3s ease, transform 0.3s ease;
+/* Base state para sa button */
+.auth-button,
+.auth-button:link,
+.auth-button:visited {
+  text-decoration: none !important;
+  background: #555555 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  display: inline-block !important;
+  transition: background 0.3s ease, transform 0.3s ease !important;
 }
 
-.auth-button:hover {
-  background: #333333;
-  transform: translateY(-2px);
+/* Hover, Focus, at Active states */
+.auth-button:hover,
+.auth-button:focus,
+.auth-button:active {
+  background: #333333 !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
 }
 
 .logo {

@@ -19,33 +19,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Safe Navigation Links Smooth Scroll (Fixed # Selector Bug)
   const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
   
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      e.preventDefault();
       const targetId = link.getAttribute('href');
-      const targetSection = document.querySelector(targetId);
-      
-      if (targetSection) {
-        const navHeight = 88;
-        const targetPosition = targetSection.offsetTop - navHeight;
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
+
+      if (targetId && targetId !== '#' && targetId.startsWith('#')) {
+        const targetSection = document.querySelector(targetId);
+        
+        if (targetSection) {
+          e.preventDefault();
+          const navHeight = 88;
+          const targetPosition = targetSection.offsetTop - navHeight;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
       }
     });
   });
 
   const navbar = document.querySelector('.navbar');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 100) {
-      navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-    } else {
-      navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
-    }
-  });
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+      } else {
+        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+      }
+    });
+  }
 
   const observerOptions = {
     threshold: 0.1,
@@ -115,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (searchBoxWrapper.classList.contains('active')) {
         searchInput.focus();
       } else {
-        searchResults.classList.remove('active');
+        if (searchResults) searchResults.classList.remove('active');
       }
     });
   }
@@ -203,7 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoutModalOverlay = document.getElementById('logoutModalOverlay');
   const logoutCancelBtn = document.getElementById('logoutCancelBtn');
 
-  // Open modal when clicking logout trigger
   if (logoutTriggerBtn && logoutModalOverlay) {
     logoutTriggerBtn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -211,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close modal when clicking cancel button
   if (logoutCancelBtn && logoutModalOverlay) {
     logoutCancelBtn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -219,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close modal when clicking outside the modal content
   if (logoutModalOverlay) {
     logoutModalOverlay.addEventListener('click', (e) => {
       if (e.target === logoutModalOverlay) {
@@ -232,7 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewSamplesBtn = document.getElementById('viewSamplesBtn');
   const samplesModalOverlay = document.getElementById('samplesModalOverlay');
   const samplesModalClose = document.getElementById('samplesModalClose');
-  const samplesModalCards = document.querySelectorAll('.samples-modal-card');
 
   // Starter Web Presence Sub-Modal
   const starterPresenceCard = document.getElementById('starterPresenceCard');
@@ -249,12 +251,14 @@ document.addEventListener('DOMContentLoaded', () => {
       starterSubModalOverlay.classList.remove('active');
     }
     document.body.style.overflow = '';
+    document.body.classList.remove('modal-open'); // Restores navbar on mobile
   };
 
   const openSamplesModal = () => {
     if (samplesModalOverlay) {
       samplesModalOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open'); // Hides navbar on mobile
     }
   };
 
@@ -265,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (starterSubModalOverlay) {
       starterSubModalOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open'); // Hides navbar on mobile
     }
   };
 
@@ -276,15 +281,21 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Open modal when clicking View Sample Websites button
-  if (viewSamplesBtn && samplesModalOverlay) {
+  if (viewSamplesBtn) {
     viewSamplesBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      
+      const navbar = document.querySelector('.navbar');
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      if (navbar) navbar.classList.remove('mobile-open');
+      if (mobileMenuBtn) mobileMenuBtn.innerHTML = '☰';
+
       openSamplesModal();
     });
   }
 
   // Close main samples modal when clicking close button
-  if (samplesModalClose && samplesModalOverlay) {
+  if (samplesModalClose) {
     samplesModalClose.addEventListener('click', (e) => {
       e.preventDefault();
       closeSamplesModal();
@@ -308,16 +319,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Custom Management System card (still logs + closes for now)
+  // Custom Management System card
   if (customManagementCard) {
     customManagementCard.addEventListener('click', () => {
-      console.log('Selected: CUSTOM MANAGEMENT SYSTEM');
       closeSamplesModal();
     });
   }
 
   // Close starter sub-modal when clicking close button
-  if (starterSubModalClose && starterSubModalOverlay) {
+  if (starterSubModalClose) {
     starterSubModalClose.addEventListener('click', (e) => {
       e.preventDefault();
       closeSamplesModal();
@@ -341,60 +351,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Close contact modal when clicking backdrop (safely attached inside DOMContentLoaded)
+  const contactModal = document.getElementById('contactModal');
+  if (contactModal) {
+    contactModal.addEventListener('click', function(event) {
+      if (event.target === this) {
+        closeContactModal();
+      }
+    });
+  }
+
   // Close modals when pressing Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      const starterActive = starterSubModalOverlay && starterSubModalOverlay.classList.contains('active');
-      const samplesActive = samplesModalOverlay && samplesModalOverlay.classList.contains('active');
-      if (starterActive) {
-        closeSamplesModal();
-      } else if (samplesActive) {
-        closeSamplesModal();
-      }
+      closeSamplesModal();
+      closeContactModal();
     }
   });
 
-  // Remove legacy generic card-click handler (handled via individual IDs now)
-  // (kept as no-op for any non-handled future cards via data attributes if needed)
 });
 
-
+// Global Contact Modal Helper Functions
 function openContactModal() {
-    const modal = document.getElementById("contactModal");
-
-    modal.classList.add("show");
-
-    // Prevent background scrolling
-    document.body.style.overflow = "hidden";
+  const modal = document.getElementById('contactModal');
+  if (modal) {
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
 }
-
 
 function closeContactModal() {
-    const modal = document.getElementById("contactModal");
-
-    modal.classList.remove("show");
-
-    // Restore background scrolling
-    document.body.style.overflow = "";
+  const modal = document.getElementById('contactModal');
+  if (modal) {
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
 }
-
-
-
-document.getElementById("contactModal").addEventListener("click", function(event) {
-
-    // Only close if the dark background itself was clicked
-    if (event.target === this) {
-        closeContactModal();
-    }
-
-});
-
-
-
-document.addEventListener("keydown", function(event) {
-
-    if (event.key === "Escape") {
-        closeContactModal();
-    }
-
-});
