@@ -3535,13 +3535,13 @@
             <div class="filter-bar">
 
                 <div class="category-chips">
-                    <button class="chip active">All</button>
-                    <button class="chip">Coffee</button>
-                    <button class="chip">Tea</button>
-                    <button class="chip">Pastries</button>
-                    <button class="chip">Desserts</button>
-                    <button class="chip">Cold Drinks</button>
-                    <button class="chip">Specials</button>
+                    <button class="chip active" data-category="all">All</button>
+                    <button class="chip" data-category="coffee">Coffee</button>
+                    <button class="chip" data-category="tea">Tea</button>
+                    <button class="chip" data-category="pastries">Pastries</button>
+                    <button class="chip" data-category="desserts">Desserts</button>
+                    <button class="chip" data-category="cold-drinks">Cold Drinks</button>
+                    <button class="chip" data-category="specials">Specials</button>
                 </div>
 
                <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -3567,7 +3567,7 @@
             <div class="menu-grid">
 
                 <!-- 1. Spanish Latte -->
-                <div class="menu-card">
+                <div class="menu-card" data-category="coffee">
                     <div class="menu-card-icon">☕</div>
                     <div class="menu-card-header">
                         <div class="menu-card-name">Spanish Latte</div>
@@ -6457,6 +6457,34 @@ function closeIngredientStockModal() {
     }
 
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const chips = document.querySelectorAll('.chip');
+    const menuCards = document.querySelectorAll('.menu-card');
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            // 1. Remove 'active' class from all chips
+            chips.forEach(c => c.classList.remove('active'));
+
+            // 2. Add 'active' class to the clicked chip
+            chip.classList.add('active');
+
+            // 3. Get chosen category
+            const selectedCategory = chip.getAttribute('data-category');
+
+            // 4. Filter the cards
+            menuCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+
+                if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                    card.style.display = 'block'; // Show item
+                } else {
+                    card.style.display = 'none';  // Hide item
+                }
+            });
+        });
+    });
+});
 </script>
 <script src="js/notification.js"></script>
 </body>
